@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Void Runner — سفر به ایستگاه آلفا</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<style>
+  :root{
+    --bg:#04040d;
+    --cyan:#22d3ee;
+    --magenta:#e879f9;
+    --yellow:#facc15;
+    --green:#4ade80;
+    --red:#f87171;
+    --mono:'Consolas','Menlo','Monaco','Courier New',monospace;
+    --ui:system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden}
+  body{
+    background:var(--bg);
+    background-image:radial-gradient(1200px 600px at 80% -10%, rgba(124,58,237,.14), transparent 60%),
+                     radial-gradient(900px 500px at 10% 110%, rgba(34,211,238,.10), transparent 60%);
+    color:#e2e8f0;
+    font-family:var(--ui);
+    -webkit-tap-highlight-color:transparent;
+  }
+  /* ---------- پس‌زمینه و لایه‌های تزئینی ---------- */
+  .gridv{position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:repeating-linear-gradient(90deg, rgba(34,211,238,.05) 0 1px, transparent 1px 90px);}
+  .gridfloor{position:fixed;left:-30%;right:-30%;bottom:-12%;height:52%;pointer-events:none;z-index:0;
+    background:repeating-linear-gradient(0deg, rgba(34,211,238,.16) 0 1px, transparent 1px 42px);
+    transform:perspective(320px) rotateX(64deg);transform-origin:bottom;
+    -webkit-mask-image:linear-gradient(transparent, #000 45%);
+    mask-image:linear-gradient(transparent, #000 45%);}
+  .vignette{position:fixed;inset:0;pointer-events:none;z-index:44;
+    background:radial-gradient(ellipse at center, transparent 58%, rgba(0,0,0,.55));}
+  #lowo2{position:fixed;inset:0;pointer-events:none;z-index:43;opacity:0;transition:opacity .5s;
+    background:radial-gradient(ellipse at center, transparent 52%, rgba(248,113,113,.28));}
+  #lowo2.on{opacity:1;animation:redPulse 1.6s ease-in-out infinite}
+  @keyframes redPulse{0%,100%{opacity:.5}50%{opacity:1}}
+  #heatGlow{position:fixed;inset:0;pointer-events:none;z-index:43;opacity:0;transition:opacity .45s;
+    background:radial-gradient(ellipse at center, transparent 50%, rgba(251,146,60,.35))}
+
+  /* ---------- چیدمان ---------- */
+  .wrap{display:flex;flex-direction:column;gap:12px;height:100vh;height:100dvh;
+    padding:12px clamp(10px,3vw,28px) 14px;max-width:1120px;margin:0 auto;position:relative;z-index:2}
+
+  /* ---------- HUD ---------- */
+  .hud{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .stat{position:relative;flex:1 1 160px;min-width:150px;border:1px solid rgba(255,255,255,.09);
+    border-radius:14px;padding:9px 13px 11px;
+    background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    box-shadow:0 6px 26px rgba(0,0,0,.45);overflow:hidden}
+  .stat::before{content:'';position:absolute;top:0;right:12%;left:12%;height:1px;
+    background:linear-gradient(90deg, transparent, var(--acc), transparent);opacity:.7}
+  .stat .head{display:flex;align-items:center;gap:7px;font-size:12.5px;color:#cbd5e1;margin-bottom:6px}
+  .stat .head svg{width:15px;height:15px;flex:none;filter:drop-shadow(0 0 5px var(--acc))}
+  .stat .head .en-tag{margin-inline-start:auto;font-family:var(--mono);font-size:10px;color:#94a3b8}
+  .stat-val{font-family:var(--mono);font-size:clamp(19px,3vw,23px);font-weight:700;color:var(--acc);
+    text-shadow:0 0 12px var(--acc);margin-bottom:7px;direction:ltr;text-align:right}
+  .bar{height:7px;border-radius:99px;background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);overflow:hidden}
+  .fill{height:100%;border-radius:99px;transition:width .25s ease;box-shadow:0 0 12px var(--acc)}
+  .stat.o2{--acc:var(--cyan)}
+  .stat.en{--acc:var(--magenta)}
+  .stat.di{--acc:var(--yellow)}
+  .o2fill{background:linear-gradient(90deg,#0e7490,var(--cyan))}
+  .enfill{background:linear-gradient(90deg,#a21caf,var(--magenta))}
+  .disfill{background:linear-gradient(90deg,#a16207,var(--yellow))}
+  .stat.tp{--acc:#fb923c}
+  .tpfill{background:linear-gradient(90deg,#b45309,#fb923c,#ef4444)}
+  .stat.cr{--acc:#4ade80}
+  .crfill{background:linear-gradient(90deg,#166534,var(--green))}
+  .stat.tp.hot .stat-val{animation:hotPulse 1.3s ease-in-out infinite}
+  @keyframes hotPulse{50%{opacity:.55}}
+  .bar{position:relative}
+  .zmark{position:absolute;top:-1px;bottom:-1px;left:65%;width:2px;background:rgba(255,255,255,.55);
+    box-shadow:0 0 6px rgba(255,255,255,.9);z-index:2}
+  .stat.crit .stat-val{animation:blink .8s steps(2,start) infinite}
+  .stat.crit.o2 .o2fill{background:linear-gradient(90deg,#7f1d1d,var(--red))}
+  .stat.crit.en .enfill{background:linear-gradient(90deg,#7f1d1d,var(--red))}
+  @keyframes blink{50%{opacity:.25}}
+
+  /* ---------- نمای بازی ---------- */
+  .viewport{position:relative;flex:1;min-height:0;direction:ltr;border-radius:18px;
+    border:1px solid rgba(34,211,238,.22);overflow:hidden;perspective:1000px;
+    background:radial-gradient(ellipse at 18% 42%, rgba(14,116,144,.10), transparent 55%),
+               radial-gradient(ellipse at 85% 30%, rgba(232,121,249,.08), transparent 50%), #05050f;
+    box-shadow:inset 0 0 70px rgba(34,211,238,.05), 0 0 44px rgba(124,58,237,.14)}
+  .viewport.shake{animation:vshake .13s linear}
+  @keyframes vshake{25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}
+    75%{transform:translate(2px,2px)}100%{transform:translate(-2px,-1px)}}
+  #stars{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+
+  /* ---------- نمای داخلی (همیشه فعال) ---------- */
+  #interior{position:absolute;inset:0;z-index:2;
+    background:linear-gradient(180deg,#0a1122,#070b18);overflow:hidden}
+
+  .i-wall{position:absolute;inset:0 0 44%;
+    background:repeating-linear-gradient(90deg, rgba(34,211,238,.06) 0 1px, transparent 1px 74px),
+               linear-gradient(180deg,#0c1330,#080d1f);border-bottom:2px solid rgba(34,211,238,.22)}
+  .i-door{position:absolute;left:38%;top:22%;width:9%;aspect-ratio:.55;border-radius:8px 8px 0 0;
+    border:2px solid rgba(232,121,249,.35);
+    background:linear-gradient(180deg,rgba(232,121,249,.12),rgba(6,10,22,.4))}
+  .i-window{position:absolute;left:56%;top:13%;width:21%;aspect-ratio:1.7;border-radius:12px;overflow:hidden;
+    border:2px solid rgba(34,211,238,.45);
+    background:radial-gradient(2px 2px at 22% 34%, #fff 30%, transparent 60%),
+      radial-gradient(1.5px 1.5px at 62% 58%, #cfefff 30%, transparent 60%),
+      radial-gradient(1.5px 1.5px at 80% 22%, #e879f9 30%, transparent 60%),
+      radial-gradient(1.5px 1.5px at 38% 74%, #fff 30%, transparent 60%),
+      radial-gradient(1px 1px at 12% 66%, #facc15 30%, transparent 60%),
+      #02030a;box-shadow:0 0 16px rgba(34,211,238,.15)}
+  #stationWin{position:absolute;inset:0;width:52%;height:52%;margin:auto;opacity:0;
+    transform:scale(.22);transform-origin:center}
+  .i-floor{position:absolute;left:-4%;right:-4%;bottom:-6%;height:46%;
+    background:repeating-linear-gradient(90deg, rgba(34,211,238,.13) 0 2px, transparent 2px 58px),
+               repeating-linear-gradient(0deg, rgba(34,211,238,.09) 0 1px, transparent 1px 30px), #050a16;
+    transform:perspective(220px) rotateX(32deg);transform-origin:top;opacity:.85;
+    -webkit-mask-image:linear-gradient(#000 60%, transparent);mask-image:linear-gradient(#000 60%, transparent)}
+  .i-panel{position:absolute;padding:4px 7px;font:9px/1.4 var(--mono);letter-spacing:1px;color:#7dd3fc;
+    border:1px solid rgba(34,211,238,.35);border-radius:8px;background:rgba(6,12,26,.92);
+    text-align:center;white-space:nowrap}
+  .i-panel i{display:inline-block;width:5px;height:5px;border-radius:50%;background:#22d3ee;margin:0 1px;
+    box-shadow:0 0 6px #22d3ee}
+  .i-panel i{animation:pblink 1.5s steps(2,start) infinite}
+  .i-panel i:nth-child(2){animation-delay:.55s}
+  @keyframes pblink{50%{opacity:.2}}
+  .i-strip{position:absolute;top:0;left:0;right:0;height:6px;opacity:0;transition:opacity .4s;
+    background:linear-gradient(90deg,transparent,rgba(248,113,113,.85),transparent)}
+  .i-strip.on{opacity:1}
+  .i-npcs{position:absolute;inset:0}
+  .npc{position:absolute;left:0;top:0;width:18px;height:30px;z-index:3;
+    transition:transform 1.6s ease-in-out;will-change:transform;pointer-events:auto;cursor:pointer}
+  .npc i{position:absolute;left:4px;top:3px;width:10px;height:10px;border-radius:50%;
+    background:#e0f2fe;box-shadow:0 0 6px #67e8f9}
+  .npc b{position:absolute;left:1px;top:14px;width:16px;height:15px;border-radius:5px;opacity:.9}
+  .npc .tool{position:absolute;top:-11px;left:1px;font-size:9px;opacity:0;transition:opacity .3s;pointer-events:none}
+  .npc b{animation:npcBob .7s ease-in-out infinite alternate}
+  @keyframes npcBob{to{transform:translateY(-2px)}}
+  .npc.work .tool{opacity:1;animation:toolUse .7s ease-in-out infinite}
+  @keyframes toolUse{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-4px) rotate(10deg)}}
+  .npc.work b{animation:npcBob .35s ease-in-out infinite alternate}
+  .npc.fix i{background:#fbbf24;box-shadow:0 0 8px #fbbf24}
+  .npc.fix .tool{opacity:1;animation:toolUse .5s ease-in-out infinite}
+  /* ---------- نوار حادثهٔ جمع‌وجور ---------- */
+  #incBar{position:absolute;top:8px;left:8px;right:8px;z-index:7;display:none;direction:ltr}
+  #incBar.show{display:block}
+  .inc-headrow{display:flex;align-items:center;gap:7px;border:1px solid #fb923c;border-radius:10px;
+    background:rgba(5,8,18,.96);padding:6px 10px;cursor:pointer}
+  .inc-title{font:700 11px var(--mono);letter-spacing:1px;flex:1;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .inc-toggle{font:9px var(--mono);color:#94a3b8;white-space:nowrap}
+  .inc-body{display:none;border:1px solid rgba(255,255,255,.2);border-top:none;border-radius:0 0 10px 10px;
+    background:rgba(5,8,18,.96);padding:7px 10px}
+  .inc-body.open{display:block}
+  .inc-desc{font:10px/1.5 var(--mono);color:#cbd5e1;margin-bottom:3px}
+  .inc-rec{font:10px var(--mono);color:#94a3b8;margin-bottom:6px}
+  .inc-rec b.ok{color:#4ade80}
+  .inc-rec b.off{color:#f87171}
+  .inc-opts{display:flex;gap:5px;flex-wrap:wrap}
+  .inc-opts button{font:600 10px var(--mono);letter-spacing:.5px;color:#e2e8f0;
+    padding:5px 9px;border-radius:8px;border:1px solid rgba(34,211,238,.4);
+    background:rgba(6,12,26,.94);cursor:pointer}
+  .inc-opts button i{display:block;font:400 8.5px var(--mono);color:#7dd3fc;margin-top:1px;font-style:normal}
+  .inc-opts button:disabled{opacity:.45;cursor:default}
+
+  /* ---------- پنل وضعیت خدمه ---------- */
+
+
+  /* ---------- کارت اعزام خدمه ---------- */
+  #crewCard{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:8;
+    width:min(250px,82%);display:none;direction:ltr;text-align:left;
+    border:1px solid rgba(34,211,238,.45);border-radius:12px;background:rgba(5,8,18,.96);
+    padding:9px 11px;box-shadow:0 0 18px rgba(34,211,238,.2)}
+  #crewCard.show{display:block}
+  .cc-head{font:700 12px var(--mono);color:#67e8f9;letter-spacing:.5px}
+  .cc-status{font:10.5px var(--mono);color:#cbd5e1;margin:4px 0 7px}
+  #crewCard button{display:block;width:100%;margin-top:5px;font:600 11px var(--mono);letter-spacing:1px;
+    padding:6px;border-radius:8px;border:1px solid rgba(232,121,249,.5);color:#f5d0fe;
+    background:rgba(232,121,249,.12);cursor:pointer}
+  #crewCard button.cc-x{border-color:rgba(255,255,255,.2);color:#94a3b8;background:rgba(255,255,255,.05)}
+  #crewCard button:disabled{opacity:.4;cursor:default}
+
+  /* سفینه */
+  #ship{position:absolute;left:7%;top:52%;width:clamp(64px,13vw,122px);z-index:3;
+    transform:translateY(-35%);
+    filter:drop-shadow(0 0 14px rgba(34,211,238,.6));
+    animation:bob 3.4s ease-in-out infinite}
+  @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -7px}}
+  #ship.thrusting{animation:tshake .11s linear infinite}
+  @keyframes tshake{0%{translate:0 0}50%{translate:-3px 1px}100%{translate:1px -1px}}
+  .flame{opacity:0;transition:opacity .08s;transform-origin:right center}
+  #ship.thrusting .flame{opacity:1;animation:flicker .09s linear infinite}
+  @keyframes flicker{0%{transform:scaleY(1) scaleX(.85)}50%{transform:scaleY(1.28) scaleX(1.12)}
+    100%{transform:scaleY(.92) scaleX(1)}}
+  #ship.hot{filter:drop-shadow(0 0 16px rgba(251,146,60,.8))}
+  #ship.overheating{animation:none;filter:saturate(.35) drop-shadow(0 0 10px rgba(248,113,113,.5))}
+  #ship.overheating .flame{opacity:0!important}
+
+  /* مقصد */
+  #dest{position:absolute;right:3.5%;top:30%;width:clamp(70px,13vw,116px);z-index:3;text-align:center;
+    opacity:0;transform-origin:right center}
+  #dest .dsvg{width:100%;filter:drop-shadow(0 0 10px rgba(34,211,238,.5))}
+  #dest .dlabel{font-size:11px;color:#a5f3fc;text-shadow:0 0 8px rgba(34,211,238,.8);
+    letter-spacing:1px;margin-top:2px;direction:rtl}
+
+  /* زیرمتن کارت‌های HUD */
+  .stat-sub{font-family:var(--mono);font-size:10px;color:#94a3b8;margin-bottom:7px;direction:rtl}
+
+  /* اعلان رویدادها */
+  #toast{position:absolute;top:46px;left:50%;transform:translateX(-50%);z-index:6;
+    font-family:var(--mono);font-size:11.5px;color:#fff;padding:5px 12px;border-radius:10px;
+    max-width:min(88%,440px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    border:1px solid var(--cyan);background:rgba(4,10,20,.92);
+    box-shadow:0 0 18px rgba(34,211,238,.3);opacity:0;transition:opacity .22s,transform .22s;
+    pointer-events:none;direction:rtl}
+  #toast.show{opacity:1}
+  #toast.big{font-size:22px;padding:8px 16px;border-color:var(--magenta);
+    box-shadow:0 0 24px rgba(232,121,249,.45);max-width:94%}
+  #toast .tic{font-style:normal;margin-inline-end:5px}
+
+  /* ---------- کنترل‌ها ---------- */
+  .controls{display:flex;flex-direction:column;align-items:center;gap:7px}
+  .thrust{position:relative;width:min(350px,88vw);display:block;padding:16px 10px 13px;border-radius:18px;
+    cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation;
+    border:2px solid rgba(232,121,249,.75);color:#f5d0fe;
+    background:linear-gradient(180deg, rgba(232,121,249,.17), rgba(88,28,135,.10)), rgba(10,6,20,.65);
+    box-shadow:0 0 28px rgba(232,121,249,.28), inset 0 0 24px rgba(232,121,249,.09);
+    font-family:var(--mono);transition:transform .06s, box-shadow .2s, filter .25s}
+  .thrust::after{content:'';position:absolute;inset:-2px;border-radius:20px;pointer-events:none;
+    background:radial-gradient(60% 80% at 50% 0%, rgba(232,121,249,.30), transparent 72%);
+    opacity:0;transition:opacity .15s}
+  .thrust:hover{box-shadow:0 0 40px rgba(232,121,249,.45), inset 0 0 28px rgba(232,121,249,.14)}
+  .thrust.held,.thrust:active{transform:translateY(2px) scale(.985);
+    box-shadow:0 0 52px rgba(232,121,249,.6), inset 0 0 34px rgba(232,121,249,.22)}
+  .thrust.held::after{opacity:1;animation:thrustGlow 1.2s ease-in-out infinite}
+  @keyframes thrustGlow{0%,100%{opacity:.4}50%{opacity:1}}
+  .thrust.low{filter:saturate(.3) brightness(.65)}
+  .thrust.off{filter:grayscale(.75) brightness(.55);border-color:rgba(148,163,184,.35);
+    box-shadow:0 0 14px rgba(0,0,0,.45);cursor:not-allowed}
+  .thrust .big{font-size:27px;letter-spacing:7px;display:block;text-shadow:0 0 14px var(--magenta)}
+  .thrust .sub{font-size:11px;color:#c4b5fd;display:block;margin-top:5px}
+  .cdbar{width:min(350px,88vw);height:4px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+  #cdFill{height:100%;width:100%;border-radius:99px;background:var(--yellow);
+    box-shadow:0 0 10px rgba(250,204,21,.8);transition:width .08s linear}
+  .keyhint{font-size:11.5px;color:#64748b}
+  .keyhint kbd{font-family:var(--mono);color:#94a3b8;border:1px solid rgba(255,255,255,.18);
+    border-radius:6px;padding:1px 7px;background:rgba(255,255,255,.04)}
+
+  /* ---------- اورلی‌ها ---------- */
+  .overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+    background:rgba(2,2,9,.9);padding:18px}
+  .overlay.hidden{display:none}
+  .panel{width:min(580px,94vw);border:1px solid rgba(34,211,238,.35);border-radius:22px;
+    padding:28px 26px;text-align:center;
+    background:linear-gradient(180deg, rgba(8,15,30,.93), rgba(4,6,14,.95));
+    box-shadow:0 0 70px rgba(34,211,238,.16), inset 0 0 44px rgba(34,211,238,.05);
+    animation:panelIn .5s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes panelIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+  .panel.win{border-color:rgba(74,222,128,.5);box-shadow:0 0 70px rgba(74,222,128,.2)}
+  .panel.lose{border-color:rgba(248,113,113,.5);box-shadow:0 0 70px rgba(248,113,113,.22)}
+  .logo{font-family:var(--mono);letter-spacing:9px;font-size:12px;color:var(--cyan);
+    text-shadow:0 0 14px var(--cyan);margin-bottom:4px}
+  .panel h1{font-size:clamp(21px,4.5vw,29px);margin:6px 0 10px;font-weight:800;
+    background:linear-gradient(90deg,#67e8f9,#e879f9,#facc15);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .panel p{font-size:13.5px;line-height:1.9;color:#94a3b8;margin-bottom:12px}
+  .rules{list-style:none;text-align:right;margin:0 0 18px;display:flex;flex-direction:column;gap:8px}
+  .rules li{font-size:12.5px;color:#cbd5e1;background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px 12px;line-height:1.7}
+  .rules li b{color:var(--acc, #67e8f9)}
+  .bigbtn{font-family:var(--ui);font-weight:700;font-size:17px;padding:13px 38px;border-radius:14px;
+    cursor:pointer;border:2px solid rgba(34,211,238,.7);color:#06121a;
+    background:linear-gradient(90deg,#22d3ee,#67e8f9);
+    box-shadow:0 0 32px rgba(34,211,238,.5);transition:transform .08s, box-shadow .2s}
+  .bigbtn:hover{box-shadow:0 0 48px rgba(34,211,238,.8)}
+  .bigbtn:active{transform:scale(.96)}
+  .panel .hint{margin-top:12px;font-size:11.5px;color:#64748b}
+  .results{display:flex;gap:9px;margin:16px 0 20px}
+  .result{flex:1;border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:10px 6px;
+    background:rgba(255,255,255,.035)}
+  .result .rv{font-family:var(--mono);font-size:19px;font-weight:700;color:#fff;
+    text-shadow:0 0 10px var(--acc2, var(--cyan))}
+  .result .rl{font-size:11px;color:#7dd3fc;margin-top:4px}
+  .r-cyan{--acc2:var(--cyan)} .r-mag{--acc2:var(--magenta)} .r-yel{--acc2:var(--yellow)} .r-grn{--acc2:var(--green)}
+
+  /* دکمه صدا */
+  #muteBtn{position:fixed;bottom:14px;left:14px;z-index:60;width:42px;height:42px;border-radius:12px;
+    border:1px solid rgba(255,255,255,.16);background:rgba(6,8,18,.9);
+    font-size:18px;cursor:pointer;transition:transform .1s}
+  #muteBtn:active{transform:scale(.9)}
+</style>
+</head>
+<body>
+  <div class="gridv"></div>
+  <div class="gridfloor"></div>
+  <div class="vignette"></div>
+  <div id="lowo2"></div>
+  <div id="heatGlow"></div>
+
+  <div class="wrap">
+    <!-- HUD -->
+    <header class="hud">
+      <div class="stat o2" id="statO2">
+        <div class="head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M12 2c3 4 6 7.5 6 11a6 6 0 1 1-12 0c0-3.5 3-7 6-11z"/>
+          </svg>
+          <span>اکسیژن</span>
+        </div>
+        <div class="stat-val" id="o2Val">۱۰۰٪</div>
+        <div class="bar"><div class="fill o2fill" id="o2Bar" style="width:100%"></div></div>
+      </div>
+      <div class="stat en" id="statEn">
+        <div class="head">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+          <span>انرژی</span>
+        </div>
+        <div class="stat-val" id="enVal">۱۰۰</div>
+        <div class="bar"><div class="fill enfill" id="enBar" style="width:100%"></div></div>
+      </div>
+      <div class="stat di" id="statDist">
+        <div class="head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 20 20 4M8 4h12v12"/>
+          </svg>
+          <span>مسافت باقی‌مانده</span>
+        </div>
+        <div class="stat-val" id="distVal">۹٬۰۰۰ کیلومتر</div>
+        <div class="bar"><div class="fill disfill" id="distBar" style="width:0%"></div></div>
+      </div>
+      <div class="stat tp" id="statTp">
+        <div class="head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/>
+          </svg>
+          <span>موتور</span>
+        </div>
+        <div class="stat-val" id="tempVal">۰°</div>
+        <div class="stat-sub" id="engSubVal">وضعیت: فعال</div>
+        <div class="bar"><div class="fill tpfill" id="tempBar" style="width:0%"></div><span class="zmark"></span></div>
+      </div>
+      <div class="stat cr" id="statCr">
+        <div class="head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+          </svg>
+          <span>خدمه</span>
+        </div>
+        <div class="stat-val" id="crewVal">۴</div>
+        <div class="stat-sub" id="crewSubVal">آزاد: ۴</div>
+        <div class="bar"><div class="fill crfill" id="crewBar" style="width:100%"></div></div>
+      </div>
+    </header>
+
+    <!-- نمای بازی -->
+    <main class="viewport" id="viewport">
+      <div id="interior">
+        <div class="i-wall"></div>
+        <div class="i-floor"></div>
+        <div class="i-window">
+          <svg id="stationWin" viewBox="0 0 100 100">
+            <defs>
+              <radialGradient id="stG">
+                <stop offset="0" stop-color="#e0f2fe"/><stop offset=".6" stop-color="#22d3ee"/>
+                <stop offset="1" stop-color="#0e7490"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="50" cy="50" rx="36" ry="11" fill="none" stroke="#f0abfc" stroke-width="1.4"
+              transform="rotate(-18 50 50)"/>
+            <circle cx="50" cy="50" r="17" fill="url(#stG)" stroke="#a5f3fc" stroke-width="1"/>
+            <circle cx="50" cy="50" r="4" fill="#fff"/>
+            <path d="M50 32 V22 M78 42 L88 39 M22 42 L12 39" stroke="#67e8f9" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="i-door"></div>
+        <div class="i-panel" style="left:9%;top:31%">حیات<i></i><i></i></div>
+        <div class="i-panel" style="left:26%;top:27%">سیستم<i></i><i></i></div>
+        <div class="i-panel" style="left:45%;top:29%">ناوبری<i></i><i></i></div>
+        <div class="i-panel" style="left:72%;top:33%">موتور<i></i><i></i></div>
+        <div class="i-strip" id="iStrip"></div>
+        <div class="i-npcs" id="iNpcs"></div>
+      </div>
+
+      <div id="incBar"></div>
+      <div id="crewCard"></div>
+      <div id="toast"></div>
+    </main>
+
+    <!-- کنترل‌ها -->
+    <div class="controls">
+      <button class="thrust" id="thrustBtn">
+        <span class="big">⚡ شتاب</span>
+        <span class="sub" id="thrustSub">مصرف فعلی ۳ انرژی | فاصله ۳۰ کیلومتر</span>
+      </button>
+      <div class="cdbar"><div id="cdFill"></div></div>
+      <div class="keyhint">ریتم‌دار شتاب بده · روی خدمه کلیک کن و مأموریت بده</div>
+    </div>
+  </div>
+
+  <!-- صفحه شروع -->
+  <div class="overlay" id="startOverlay">
+    <div class="panel">
+      <div class="logo">وُید رانر</div>
+      <h1>سفر به ایستگاه آلفا</h1>
+      <p>تو فرماندهٔ سفینه‌ای. سفر ۲۰ تا ۳۰ دقیقه‌ای: ۹٬۰۰۰ کیلومتر تا ایستگاه آلفا، همراه با خدمه‌ای که فقط به فرمان تو عمل می‌کنند.</p>
+      <ul class="rules">
+        <li><b>🫁 اکسیژن</b> — آرام مصرف می‌شود؛ خدمهٔ بیشتر یعنی مصرف بیشتر. تصمیم‌های بد هزینهٔ واقعی دارند.</li>
+        <li><b>⚡ انرژی</b> — شتاب و اعزام خدمه انرژی می‌خورد؛ خودبه‌خود بازیابی می‌شود.</li>
+        <li><b>🌡️ دمای موتور</b> — خیلی آهسته خنک می‌شود؛ بالای حد امن (۴۰۰) گرمای بیشتر. اورهیت موتور یک حادثهٔ واقعی است.</li>
+        <li><b>👥 فرماندهی خدمه</b> — رویدادها خودشان حل نمی‌شوند! در Interior View روی خدمه کلیک کن، نقششان را بسنج و مأموریت بده.</li>
+      </ul>
+      <button class="bigbtn" id="startBtn">🚀 آغاز مأموریت</button>
+      <div class="hint">هر خدمه یک نقش دارد — Engineer برای موتور، Technician برای برق، Medic برای خدمه...</div>
+    </div>
+  </div>
+
+  <!-- پایان بازی -->
+  <div class="overlay hidden" id="endOverlay">
+    <div class="panel" id="endPanel">
+      <div class="logo">گزارش مأموریت</div>
+      <h1 id="endTitle">مأموریت موفق!</h1>
+      <p id="endSub">به ایستگاه آلفا رسیدی.</p>
+      <div class="results">
+        <div class="result r-cyan"><div class="rv" id="rTime">۰</div><div class="rl">زمان سفر</div></div>
+        <div class="result r-mag"><div class="rv" id="rThrusts">۰</div><div class="rl">تعداد شتاب</div></div>
+        <div class="result r-yel"><div class="rv" id="rEvents">۰</div><div class="rl">رویدادها</div></div>
+        <div class="result r-grn"><div class="rv" id="rO2">۰</div><div class="rl">اکسیژن باقی</div></div>
+      </div>
+      <button class="bigbtn" id="retryBtn">🔄 تلاش دوباره</button>
+    </div>
+  </div>
+
+  <button id="muteBtn" title="صدا">🔊</button>
+
+<script>
+(function(){
+'use strict';
+const $ = id => document.getElementById(id);
+
+/* ---------- پارامترهای بازی ---------- */
+const THRUST_DIST = 30, COOLDOWN = 0.32, REGEN = 1.3, O2_DRAIN = 0.055, TOTAL = 9000;
+const STATION_SIG = 2000, STATION_VIEW = 1000;   // فاصله‌های ظهور ایستگاه
+const SAFE_SPEED = 400, SPEED_GAIN = 300, MAX_SPEED = 1000;
+const COOLING = 2.2, MAX_TEMP = 100, DMG_HIT = 20, DMG_REPAIR = 1.5;  // خنک‌شدن زمان‌بر — مدیریت با تصمیم
+const costOf = t => 3 + Math.floor(t * 0.03);         // هزینه هر شتاب: 3 تا 6
+const heatPerThrust = spd => 4 + (spd > SAFE_SPEED ? 3 : 0);
+
+const state = {
+  phase:'start',            // start | countdown | run | end
+  oxygen:100, energy:100, distance:TOTAL, time:0,
+  cooldown:0, holding:false, thrustAnim:0, speed:0,
+  temperature:0, damage:0,
+  thrusts:0, events:0, regenMul:1, regenMulT:0, failCd:0,
+  crew:4, o2Rate:.13, sigShown:false, viewShown:false,
+  incident:null, pendingOverheat:false, crewT:3, npcTick:2,
+  nextEvent:11, lowO2Beep:0, heatBeep:0,
+  o2warn1:false, o2warn2:false, heatWarn1:false, heatWarn2:false
+};
+let last = performance.now();
+let muted = false, AC = null;
+let cdT = 0, lastCd = 99;
+
+/* ---------- صدا (WebAudio — بدون فایل خارجی) ---------- */
+function ac(){
+  if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+  if(AC.state === 'suspended') AC.resume();
+  return AC;
+}
+function tone(f, d, type, vol, to){
+  if(muted) return;
+  try{
+    const a = ac(), o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
+    o.type = type;
+    o.frequency.setValueAtTime(f, t);
+    if(to) o.frequency.exponentialRampToValueAtTime(Math.max(to, 1), t + d);
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(g); g.connect(a.destination);
+    o.start(t); o.stop(t + d + .05);
+  }catch(e){}
+}
+/* نویز سفید یک‌باره ساخته می‌شود و برای افکت‌های بادی استفاده می‌شود (سبک و کم‌هزینه) */
+let noiseBuf = null;
+function noiseBuffer(){
+  if(!noiseBuf){
+    const a = ac(), len = Math.floor(a.sampleRate * .5);
+    noiseBuf = a.createBuffer(1, len, a.sampleRate);
+    const d = noiseBuf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1;
+  }
+  return noiseBuf;
+}
+function whoosh(vol, dur, fFrom, fTo){
+  if(muted) return;
+  try{
+    const a = ac(), t = a.currentTime;
+    const src = a.createBufferSource();
+    src.buffer = noiseBuffer(); src.loop = true;
+    const f = a.createBiquadFilter();
+    f.type = 'bandpass'; f.Q.value = 1;
+    f.frequency.setValueAtTime(fFrom, t);
+    f.frequency.exponentialRampToValueAtTime(Math.max(fTo, 20), t + dur);
+    const g = a.createGain();
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    src.connect(f); f.connect(g); g.connect(a.destination);
+    src.start(t); src.stop(t + dur + .05);
+  }catch(e){}
+}
+/* هوم فضایی آرام — دو نوسان‌ساز ثابت با ولوم بسیار کم (بدون LFO برای مصرف کم CPU) */
+let amb = null;
+function ambOn(){
+  if(muted || amb) return;
+  try{
+    const a = ac(), t = a.currentTime;
+    const g = a.createGain();
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(.05, t + 2.5);
+    const o1 = a.createOscillator(); o1.type = 'sine'; o1.frequency.value = 55;
+    const o2 = a.createOscillator(); o2.type = 'sine'; o2.frequency.value = 82.5;
+    o1.connect(g); o2.connect(g); g.connect(a.destination);
+    o1.start(t); o2.start(t);
+    amb = { g, o1, o2 };
+  }catch(e){}
+}
+function ambOff(){
+  if(!amb) return;
+  try{
+    const a = ac(), t = a.currentTime;
+    amb.g.gain.cancelScheduledValues(t);
+    amb.g.gain.setValueAtTime(.05, t);
+    amb.g.gain.linearRampToValueAtTime(0, t + .8);
+    const old = amb;
+    setTimeout(()=>{ try{ old.o1.stop(); old.o2.stop(); }catch(e){} }, 900);
+  }catch(e){}
+  amb = null;
+}
+const sfx = {
+  thrust(){
+    tone(95, .3, 'sawtooth', .055, 40);
+    whoosh(.035, .3, 1000, 180);
+  },
+  win(){ [392,494,587,784].forEach((f,i)=>setTimeout(()=>tone(f,.32,'sine',.07),i*150)); },
+  lose(){ [320,240,170,100].forEach((f,i)=>setTimeout(()=>tone(f,.45,'sawtooth',.07),i*230)); },
+  tempWarn(){ tone(620,.1,'square',.035); setTimeout(()=>tone(430,.12,'square',.035),140); },
+  o2Warn(){ tone(340,.14,'sine',.055,300); },
+  event(kind){
+    if(kind === 'good'){ tone(523,.12,'sine',.055); setTimeout(()=>tone(784,.18,'sine',.05),110); }
+    else if(kind === 'bad'){ tone(330,.14,'sawtooth',.04); setTimeout(()=>tone(247,.2,'sawtooth',.04),120); }
+    else { tone(494,.12,'triangle',.045); }
+  },
+  signal(){ tone(880,.35,'sine',.05,1760); },
+  view(){ tone(660,.18,'sine',.055); setTimeout(()=>tone(990,.22,'sine',.055),160); },
+  fail(){ tone(130,.09,'square',.05); },
+  overheat(){
+    for(let i=0;i<3;i++){
+      setTimeout(()=>tone(680,.13,'square',.055), i*300);
+      setTimeout(()=>tone(430,.13,'square',.055), i*300+150);
+    }
+  },
+  go(){ tone(440,.16,'triangle',.09,880); }
+};
+
+/* ---------- نمای بازی (فقط داخلی — بدون کانواس) ---------- */
+const viewport = $('viewport');
+
+/* ---------- اعلان‌ها ---------- */
+let toastTimer = null;
+function toast(icon, text, color){
+  const el = $('toast');
+  el.innerHTML = '<i class="tic">' + icon + '</i>' + text;
+  el.style.borderColor = color || '#22d3ee';
+  el.style.boxShadow = '0 0 28px ' + (color || '#22d3ee') + '55';
+  el.classList.remove('big'); el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 2300);
+}
+function bigToast(text, size){
+  const el = $('toast');
+  el.innerHTML = text; el.classList.add('big','show');
+  el.style.fontSize = (size || 30) + 'px';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show','big'), size > 28 ? 900 : 2200);
+}
+
+/* ---------- حوادث: بازیکن تصمیم می‌گیرد و خدمه را اعزام می‌کند ---------- */
+const ROOM_LABEL = {eng:'اتاق موتور', life:'پشتیبانی حیات', sys:'هستهٔ برق', nav:'کنسول ناوبری',
+  battery:'اتاق انرژی', med:'اتاق خدمه', hull:'بخش بدنه', window:'عرشهٔ دید', hall:'راهرو'};
+const INCIDENTS = {
+  engineOverheat:{ icon:'🔥', title:'گرمای بیش از حد موتور', color:'#fb923c',
+    desc:()=> 'دمای موتور: ' + fa(Math.round(state.temperature)) + '° — دما در حال افزایش است',
+    rec:['مهندس'], kind:'bad',
+    passive: dt => { state.temperature = Math.min(MAX_TEMP, state.temperature + .9*dt); },
+    options:[
+      {id:'cool', label:'خنک‌سازی موتور', roles:['مهندس'], room:'eng', dur:9, energy:3, o2:1,
+       during: dt => { state.temperature = Math.max(0, state.temperature - 2.5*dt); },
+       done:()=>{ state.temperature = Math.max(0, state.temperature - 12); toast('❄️','مهندس موتور را خنک کرد — دما −۱۲°','#4ade80'); }},
+      {id:'inspect', label:'بررسی موتور', roles:['مهندس','تکنسین'], room:'eng', dur:5, energy:1, o2:0,
+       done:()=>{ state.temperature = Math.max(0, state.temperature - 6); state.damage = Math.max(0, state.damage - 4);
+         toast('🔍','بازرسی انجام شد — دما −۶° و آسیب −۴٪','#4ade80'); }},
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 10);
+        toast('🔥','موتور بی‌حفاظ ماند — آسیب +۱۰٪','#f87171'); }}
+    ]},
+  battery:{ icon:'🔋', title:'خرابی باتری کوانتومی', color:'#a78bfa',
+    desc:()=> 'بازیابی انرژی مختل شده است',
+    rec:['تکنسین','دانشمند'], kind:'bad',
+    options:[
+      {id:'replace', label:'تعویض باتری', roles:['تکنسین'], room:'battery', dur:7, energy:4, o2:1,
+       done:()=>{ state.energy = Math.min(100, state.energy + 12); toast('🔋','باتری کوانتومی نصب شد! +۱۲ انرژی','#a78bfa'); }},
+      {id:'inspect', label:'بررسی سیستم', roles:['دانشمند','تکنسین'], room:'battery', dur:5, energy:2, o2:0,
+       done:()=>{ state.energy = Math.min(100, state.energy + 5); toast('🔬','بررسی سیستم — +۵ انرژی','#a78bfa'); }},
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 8);
+        toast('⚡','تخلیهٔ باتری — −۸ انرژی','#f87171'); }}
+    ]},
+  oxygen:{ icon:'💨', title:'نشت اکسیژن', color:'#f87171',
+    desc:()=> 'مصرف اکسیژن ×۱٫۳ شده است',
+    rec:['تکنسین'], kind:'bad',
+    options:[
+      {id:'repair', label:'تعمیر نشت', roles:['تکنسین'], room:'life', dur:6, energy:2, o2:1,
+       done:()=>{ state.oxygen = Math.min(100, state.oxygen + 2); toast('🛠️','نشت تعمیر شد — مصرف عادی · +۲٪ اکسیژن','#4ade80'); }},
+      {id:'seal', label:'مهر و موم اضطراری', roles:['امنیتی','تکنسین'], room:'life', dur:3, energy:4, o2:1,
+       done:()=>{ toast('🧯','مهر و موم اضطراری انجام شد','#4ade80'); }},
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 5);
+        toast('💨','نشت ادامه یافت — −۵٪ اکسیژن','#f87171'); }}
+    ]},
+  power:{ icon:'⚡', title:'قطعی برق', color:'#fbbf24',
+    desc:()=> 'بازیابی انرژی متوقف شده است',
+    rec:['تکنسین'], kind:'bad',
+    options:[
+      {id:'repair', label:'تعمیر ژنراتور', roles:['تکنسین'], room:'sys', dur:6, energy:3, o2:1,
+       done:()=>{ state.energy = Math.min(100, state.energy + 6); toast('⚡','ژنراتور تعمیر شد — برق بازگشت','#4ade80'); }},
+      {id:'restart', label:'راه‌اندازی مجدد', roles:['تکنسین','مهندس'], room:'sys', dur:4, energy:2, o2:0,
+       done:()=>{ state.regenMul = 1.5; state.regenMulT = 12; toast('⚡','راه‌اندازی مجدد — بازیابی انرژی ×۱٫۵','#4ade80'); }},
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 10);
+        toast('🕯️','خاموشی طولانی شد — −۱۰ انرژی','#f87171'); }}
+    ]},
+  nav:{ icon:'🛰️', title:'خطای ناوبری', color:'#22d3ee',
+    desc:()=> 'مسیر از هدف منحرف شده است',
+    rec:['ناوبر'], kind:'bad',
+    options:[
+      {id:'recalc', label:'محاسبهٔ مجدد مسیر', roles:['ناوبر'], room:'nav', dur:6, energy:2, o2:1,
+       done:()=>{ state.distance = Math.max(0, state.distance - 200); toast('🧭','مسیر اصلاح شد — +۲۰۰ کیلومتر پیشروی','#22d3ee'); }},
+      {id:'manual', label:'اصلاح دستی', roles:['ناوبر','خدمه'], room:'nav', dur:8, energy:1, o2:0,
+       done:()=>{ state.distance = Math.max(0, state.distance - 120); toast('🧭','اصلاح دستی — +۱۲۰ کیلومتر','#22d3ee'); }},
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.distance = Math.min(TOTAL, state.distance + 150);
+        toast('🛰️','انحراف مسیر — +۱۵۰ کیلومتر','#f87171'); }}
+    ]},
+  hull:{ icon:'🛡️', title:'آسیب بدنه', color:'#fca5a5',
+    desc:()=> 'بدنهٔ سفینه آسیب دیده است',
+    rec:['مهندس','امنیتی'], kind:'bad',
+    options:[
+      {id:'repair', label:'تعمیر بدنه', roles:['مهندس','امنیتی'], room:'hull', dur:7, energy:3, o2:1,
+       done:()=>{ state.damage = Math.max(0, state.damage - 15); toast('🛠️','بدنه تعمیر شد — آسیب −۱۵٪','#4ade80'); }},
+      {id:'seal', label:'مهر موقت', roles:['امنیتی','خدمه'], room:'hull', dur:4, energy:5, o2:0,
+       done:()=>{ state.damage = Math.max(0, state.damage - 8); toast('🧯','مهر موقت — آسیب −۸٪','#4ade80'); }},
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 8);
+        toast('🛡️','ترک خوردگی بیشتر شد — آسیب +۸٪','#f87171'); }}
+    ]},
+  medical:{ icon:'⚕️', title:'اورژانس پزشکی خدمه', color:'#f472b6',
+    desc:()=> 'مصرف اکسیژن خدمه ×۱٫۲ شده است',
+    rec:['پزشک'], kind:'bad',
+    options:[
+      {id:'treat', label:'درمان خدمه', roles:['پزشک'], room:'med', dur:6, energy:2, o2:1,
+       done:()=>{ state.oxygen = Math.min(100, state.oxygen + 3); toast('⚕️','درمان انجام شد — +۳٪ اکسیژن','#4ade80'); }},
+      {id:'stab', label:'پایدارسازی', roles:['پزشک','خدمه'], room:'med', dur:4, energy:3, o2:0,
+       done:()=>{ state.oxygen = Math.min(100, state.oxygen + 1); toast('⚕️','وضعیت پایدار شد — +۱٪ اکسیژن','#4ade80'); }},
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 4);
+        toast('🚑','وضعیت وخیم شد — −۴٪ اکسیژن','#f87171'); }}
+    ]},
+  signal:{ icon:'🌌', title:'سیگنال ناشناس', color:'#c084fc',
+    desc:()=> 'سیگنال ناشناس در اطراف سفینه',
+    rec:['دانشمند','امنیتی'], kind:'neutral',
+    options:[
+      {id:'investigate', label:'بررسی میدانی', roles:['امنیتی','دانشمند'], room:'window', dur:6, energy:2, o2:1,
+       done:()=>{ if(Math.random() < .65){ state.distance = Math.max(0, state.distance - 150); toast('👽','سیگنال یک گذرگاه کیهانی بود! +۱۵۰ کیلومتر','#22d3ee'); }
+         else toast('🌌','فقط یک سیگنال کهنه بود...','#94a3b8'); }},
+      {id:'scan', label:'اسکن', roles:['دانشمند','ناوبر'], room:'nav', dur:4, energy:1, o2:0,
+       done:()=>{ if(Math.random() < .5){ state.distance = Math.max(0, state.distance - 100); toast('📡','اسکن مسیر بهتری پیدا کرد! +۱۰۰ کیلومتر','#22d3ee'); }
+         else toast('📡','هیچ چیز مفیدی پیدا نشد','#94a3b8'); }},
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ toast('🌌','سیگنال نادیده گرفته شد','#94a3b8'); }}
+    ]}
+};
+const INC_WEIGHT = ['engineOverheat','battery','oxygen','power','nav','hull','medical','signal'];
+
+function triggerEvent(){
+  if(state.incident) return;
+  state.events++;
+  const key = INC_WEIGHT[Math.floor(Math.random()*INC_WEIGHT.length)];
+  openIncident(key);
+}
+function openIncident(key){
+  if(state.incident || state.phase !== 'run') return;
+  const def = INCIDENTS[key];
+  if(!def) return;
+  state.incident = { key, def, assigned:false };
+  renderIncident();
+  toast(def.icon, def.title + ' — پیشنهاد: ' + def.rec.join(' / '), def.color);
+  sfx.event(def.kind === 'neutral' ? 'neutral' : 'bad');
+  npcAlert(1600);
+}
+function closeIncident(){
+  state.incident = null;
+  renderIncident();
+  if(state.pendingOverheat){ state.pendingOverheat = false; openIncident('engineOverheat'); }
+  else state.nextEvent = 25 + Math.random()*15;
+}
+function findCrew(roles){
+  for(const r of roles) for(const n of npcs)
+    if(n.role === r && n.state !== 'busy' && n.state !== 'working') return n;
+  for(const n of npcs)
+    if(n.state !== 'busy' && n.state !== 'working') return n;
+  return null;
+}
+function startOption(opt){
+  const inc = state.incident; if(!inc || inc.assigned) return;
+  if(!opt.roles){                       // IGNORE: تصمیمِ رها کردن — پیامد فوری
+    opt.done();
+    closeIncident();
+    return;
+  }
+  if(state.energy < (opt.energy||0)){ toast('⚠️','انرژی کافی برای این کار نیست!','#f87171'); sfx.fail(); return; }
+  const n = findCrew(opt.roles);
+  if(!n){ toast('⚠️','هیچ خدمهٔ آزادی در دسترس نیست!','#f87171'); sfx.fail(); return; }
+  assignTask(n, opt, false);
+}
+function assignTask(n, opt, direct){
+  const inc = state.incident; if(!inc) return;
+  state.energy = Math.max(0, state.energy - (opt.energy||0));
+  state.oxygen = Math.max(0, state.oxygen - (opt.o2||0));
+  inc.assigned = true;
+  const fit = opt.roles.includes(n.role);
+  n.task = { opt, t:0, dur: direct && !fit ? Math.round(opt.dur*1.6) : opt.dur, phase:'walk' };
+  n.state = 'busy';
+  npcWalk(n, ST[opt.room], 1.2);
+  n.state = 'busy';
+  n.el.classList.add('fix');
+  toast('👥','خدمهٔ #' + fa(n.i+1) + ' — ' + n.role + ' ← ' + ROOM_LABEL[opt.room], '#67e8f9');
+  renderIncident();
+}
+function renderIncident(){
+  const p = get('incBar');
+  const inc = state.incident;
+  if(!inc){ p.innerHTML = ''; p.classList.remove('show'); return; }
+  const d = inc.def;
+  const recs = d.rec.map(r => {
+    const avail = npcs.some(n => n.role === r && n.state !== 'busy' && n.state !== 'working');
+    return r + ' <b class="' + (avail ? 'ok' : 'off') + '">' + (avail ? '✓' : '✗') + '</b>';
+  }).join(' · ');
+  let html = '<div class="inc-headrow" id="incHead" style="border-color:' + d.color + '">'
+    + '<span class="inc-title" style="color:' + d.color + '">' + d.icon + ' ' + d.title + '</span>'
+    + '<span class="inc-toggle" id="incTog">' + (inc.assigned ? 'در حال انجام…' : '▾ گزینه‌ها') + '</span></div>';
+  html += '<div class="inc-body" id="incBody">';
+  html += '<div class="inc-desc">' + d.desc() + '</div>';
+  html += '<div class="inc-rec">پیشنهاد: ' + recs + '</div>';
+  html += '<div class="inc-opts">';
+  for(const o of d.options){
+    const cost = o.roles ? (o.energy||0) + '⚡·' + (o.o2||0) + '٪O₂·' + o.dur + 's' : '';
+    html += '<button data-opt="' + o.id + '"' + (inc.assigned ? ' disabled' : '') + '>' + o.label
+         + (cost ? '<i>' + cost + '</i>' : '') + '</button>';
+  }
+  html += '</div></div>';
+  p.innerHTML = html;
+  p.classList.add('show');
+  $('incHead').addEventListener('click', () => $('incBody').classList.toggle('open'));
+  p.querySelectorAll('.inc-opts button').forEach(b => b.addEventListener('click', () => {
+    const opt = d.options.find(o => o.id === b.dataset.opt);
+    if(opt) startOption(opt);
+  }));
+}
+
+/* ---------- NPC خدمه + نمای داخل سفینه (فقط transform — بسیار سبک) ---------- */
+const ST = {
+  life:{x:9,y:33}, sys:{x:26,y:26}, nav:{x:44,y:29}, eng:{x:70,y:36},
+  window:{x:57,y:19}, hall:{x:50,y:58}, battery:{x:60,y:48}, med:{x:18,y:56},
+  hull:{x:66,y:52}
+};
+const STKEYS = Object.keys(ST);
+const ROLES = ['مهندس','تکنسین','ناوبر','دانشمند','امنیتی','پزشک','خدمه'];
+const ROLE_TOOL = {'مهندس':'🔧','تکنسین':'🛠️','ناوبر':'🧭','دانشمند':'🔬','امنیتی':'🛡️','پزشک':'⚕️','خدمه':'📋'};
+const NPC_COLORS = ['#22d3ee','#e879f9','#facc15','#4ade80','#f87171','#60a5fa','#fb923c','#a78bfa'];
+const SPAWN_SLOTS = [
+  {x:12,y:30},{x:30,y:24},{x:44,y:27},{x:70,y:33},
+  {x:55,y:16},{x:50,y:58},{x:62,y:45},{x:22,y:54}
+];
+const GATHER_WINDOW = [
+  {x:52,y:15},{x:63,y:15},{x:57,y:22},{x:50,y:22},
+  {x:66,y:21},{x:46,y:20},{x:60,y:27},{x:53,y:27}
+];
+let npcs = [], claims = {};   // claims: ایستگاه -> ایندکس NPC (مقصد یکتا)
+
+/* ساخت خدمه: تعداد دقیقاً برابر CREW — هر نفر نقش و جایگاه اسپاون یکتا دارد */
+function buildCrew(count){
+  const host = $('iNpcs');
+  host.innerHTML = '';
+  npcs = []; claims = {};
+  const roles = ROLES.slice(0, count);
+  for(let i=0;i<count;i++){
+    const el = document.createElement('div');
+    el.className = 'npc';
+    el.innerHTML = '<i></i><b></b><span class="tool">' + ROLE_TOOL[roles[i]] + '</span>';
+    el.querySelector('b').style.background = NPC_COLORS[i % NPC_COLORS.length];
+    host.appendChild(el);
+    npcs.push({
+      el, i, role: roles[i],
+      pos: { ...SPAWN_SLOTS[i] },         // اسپاون بدون هم‌پوشانی
+      state: 'idle', stateT: 1 + Math.random()*2,
+      path: null, claimKey: null, task: null
+    });
+  }
+  npcs.forEach(n => n.el.addEventListener('click', () => openCrewCard(n)));
+  npcs.forEach(place);
+}
+function place(n){
+  const r = $('iNpcs').getBoundingClientRect();
+  if(r.width < 10) return;
+  const ox = (n.i % 2 === 0 ? -7 : 7);    // آفست اختصاصی هر نفر — عبور از داخل هم ممنوع
+  n.el.style.transform = 'translate(' + ((n.pos.x/100*r.width) + ox) + 'px,' + (n.pos.y/100*r.height) + 'px)';
+}
+function npcWalk(n, st, dur){
+  if(n.claimKey){ delete claims[n.claimKey]; n.claimKey = null; }
+  n.state = 'walk';
+  n.path = { sx:n.pos.x, sy:n.pos.y, ex:st.x, ey:st.y, t:0, dur:dur || 1.6 };
+  n.el.classList.remove('work');
+}
+function claimStation(n, key){ claims[key] = n.i; n.claimKey = key; }
+
+/* تصمیم روتین: کار با کنسول یا رفتن به یک ایستگاهِ آزاد (مقصد هرگز تکراری نیست) */
+function decide(n){
+  const opts = STKEYS.filter(k => claims[k] === undefined || claims[k] === n.i);
+  if(!opts.length){ n.stateT = 1.5; return; }
+  if(Math.random() < .45){
+    n.state = 'work';                 // پشت کنسول مشغول کار
+    n.stateT = 2 + Math.random()*3;
+    n.el.classList.add('work');
+  } else {
+    const k = opts[Math.floor(Math.random()*opts.length)];
+    const st = ST[k];
+    if(Math.abs(st.x - n.pos.x) < 4 && Math.abs(st.y - n.pos.y) < 4){ n.stateT = .8; return; }
+    npcWalk(n, st, 1.4 + Math.random()*.8);
+    claimStation(n, k);
+  }
+}
+function npcTick(dt){
+  for(const n of npcs){
+    if(n.path){                       // در حال حرکت: روتین یا اعزام مأموریت
+      n.path.t += dt;
+      const k = Math.min(1, n.path.t / n.path.dur);
+      n.pos.x = n.path.sx + (n.path.ex - n.path.sx)*k;
+      n.pos.y = n.path.sy + (n.path.ey - n.path.sy)*k;
+      place(n);
+      if(k >= 1){
+        n.path = null;
+        if(n.state === 'walk'){ n.state = 'idle'; n.stateT = 1 + Math.random()*3; }
+        else if(n.state === 'busy'){
+          n.state = 'working'; n.task.phase = 'working';
+          n.el.classList.add('work');
+        }
+      }
+      continue;
+    }
+    if(n.state === 'idle'){
+      n.stateT -= dt;
+      if(n.stateT <= 0) decide(n);
+    } else if(n.state === 'work'){
+      n.stateT -= dt;
+      if(n.stateT <= 0){ n.state = 'idle'; n.stateT = 1 + Math.random()*2.5; n.el.classList.remove('work'); }
+    } else if(n.state === 'working' && n.task){
+      const task = n.task;
+      task.t += dt;
+      if(task.opt.during) task.opt.during(dt);   // خنک‌کاری تدریجی و...
+      if(task.t >= task.dur){
+        task.opt.done();
+        n.task = null;
+        n.state = 'idle'; n.stateT = 1 + Math.random()*2;
+        n.el.classList.remove('work','fix');
+        closeIncident();
+      }
+    }
+  }
+}
+function npcTo(n, st, dur){ npcWalk(n, st, dur); n.stateT = 0; }
+function npcOne(st, dur){ if(npcs.length) npcTo(npcs[Math.floor(Math.random()*npcs.length)], st, dur); }
+let npcAlertT = null;
+function npcAlert(dur){
+  const s = get('iStrip');
+  s.classList.add('on');
+  clearTimeout(npcAlertT);
+  npcAlertT = setTimeout(()=>s.classList.remove('on'), dur || 2500);
+}
+
+/* --- کارت اعزام خدمه --- */
+function openCrewCard(n){
+  const c = get('crewCard');
+  const inc = state.incident;
+  const busy = n.state === 'busy' || n.state === 'working';
+  let html = '<div class="cc-head">خدمهٔ #' + fa(n.i+1) + ' — ' + n.role + '</div>';
+  html += '<div class="cc-status">وضعیت: ' + (busy ? 'مشغول' : 'آزاد') + '</div>';
+  if(inc){
+    const o = inc.def.options[0];
+    if(busy) html += '<button disabled>در حال مأموریت است...</button>';
+    else html += '<button id="ccSend">اعزام به ' + ROOM_LABEL[o.room] + '</button>';
+  }
+  html += '<button id="ccClose" class="cc-x">بستن ✕</button>';
+  c.innerHTML = html;
+  c.classList.add('show');
+  const send = $('ccSend');
+  if(send) send.addEventListener('click', () => { c.classList.remove('show'); assignTask(n, inc.def.options[0], true); });
+  $('ccClose').addEventListener('click', () => c.classList.remove('show'));
+}
+function npcReact(mode){
+  if(mode === 'window'){
+    npcs.forEach((n, i) => npcTo(n, GATHER_WINDOW[i % GATHER_WINDOW.length], 1.3 + (i%3)*.2));
+  }
+}
+window.addEventListener('resize', () => npcs.forEach(place));
+buildCrew(4);   // پیش‌نمایش اولیه؛ با شروع بازی طبق CREW واقعی بازسازی می‌شود
+
+/* --- نمای داخلی همیشه فعال است؛ پنل خدمه و کارت اعزام ساده --- */
+
+/* ---------- منطق بازی ---------- */
+function thrust(){
+  if(state.phase !== 'run') return;
+  const cost = costOf(state.temperature);
+  if(state.energy < cost){
+    if(state.failCd <= 0){ state.failCd = 1.1; toast('⚠️','انرژی ناکافی!','#f87171'); sfx.fail(); }
+    return;
+  }
+  state.energy -= cost;
+  state.distance = Math.max(0, state.distance - Math.round(THRUST_DIST * (1 - state.damage * 0.004)));
+  state.cooldown = COOLDOWN;
+  state.thrusts++;
+  state.thrustAnim = 1;
+  state.speed = Math.min(state.speed + SPEED_GAIN, MAX_SPEED);
+  state.temperature = Math.min(MAX_TEMP, state.temperature + heatPerThrust(state.speed));
+  if(state.temperature >= MAX_TEMP){
+    state.damage = Math.min(100, state.damage + 12);
+    state.temperature = 88;
+    toast('🔥','اورهیت! آسیب +۱۲٪ — Engineer را اعزام کن','#f87171');
+    sfx.overheat();
+    if(state.incident) state.pendingOverheat = true;
+    else openIncident('engineOverheat');
+  }
+  state.shakeT = .16; viewport.classList.add('shake');
+  sfx.thrust();
+}
+
+const fa = n => Math.round(n).toLocaleString('fa-IR');
+const btn = $('thrustBtn');
+
+/* --- HUD بهینه: فقط وقتی مقدار تغییر کرد DOM را به‌روز می‌کنیم (بدون بازنویسی هر فریم) --- */
+const elCache = {}, txtCache = {}, barCache = {}, clsCache = {};
+let destKey = -1, hgCache = -1;
+const get = id => elCache[id] || (elCache[id] = $(id));
+function setText(id, txt){
+  if(txtCache[id] === txt) return;
+  txtCache[id] = txt;
+  get(id).textContent = txt;
+}
+function setBar(id, pct){
+  const v = Math.round(pct * 2);
+  if(barCache[id] === v) return;
+  barCache[id] = v;
+  get(id).style.width = pct + '%';
+}
+function setCls(id, cls, on){
+  const key = id + '|' + cls, v = on ? 1 : 0;
+  if(clsCache[key] === v) return;
+  clsCache[key] = v;
+  get(id).classList.toggle(cls, on);
+}
+
+function updateHUD(){
+  const t = state.temperature, hot = t > 55, need = costOf(t);
+  const dmg = Math.round(state.damage);
+  setText('o2Val', fa(Math.round(Math.max(0, state.oxygen))) + '٪');
+  setText('enVal', fa(Math.floor(Math.max(0, state.energy))));
+  setText('distVal', fa(Math.ceil(Math.max(0, state.distance))) + ' کیلومتر');
+  setBar('o2Bar', Math.max(0, state.oxygen));
+  setBar('enBar', Math.max(0, state.energy));
+  setBar('distBar', (1 - state.distance / TOTAL) * 100);
+  setBar('tempBar', t);
+  setText('tempVal', fa(Math.round(t)) + '°');
+  setText('engSubVal', 'وضعیت: ' + (dmg > 0 ? 'آسیب ' + fa(dmg) + '٪' : (hot ? 'داغ' : 'فعال')));
+  const free = npcs.filter(n => n.state !== 'busy' && n.state !== 'working').length;
+  setText('crewVal', state.crew);
+  setText('crewSubVal', 'آزاد: ' + fa(free) + ' · مشغول: ' + fa(state.crew - free));
+  setBar('crewBar', state.crew ? free / state.crew * 100 : 0);
+  setCls('statO2', 'crit', state.oxygen < 25);
+  setCls('statEn', 'crit', state.energy < need);
+  setCls('statTp', 'hot', hot && dmg === 0);
+  setCls('statTp', 'crit', dmg > 0);
+  setCls('thrustBtn', 'low', state.energy < need);
+  setCls('thrustBtn', 'off', dmg >= 60);
+  setCls('lowo2', 'on', state.oxygen < 25 && state.phase === 'run');
+  const hg = Math.round((dmg > 0 ? .45 : (t > 55 ? Math.min(.4, (t - 55) / 45 * .4) : 0)) * 20) / 20;
+  if(hgCache !== hg){ hgCache = hg; get('heatGlow').style.opacity = hg; }
+  setBar('cdFill', Math.max(0, 1 - state.cooldown/COOLDOWN) * 100);
+  setText('thrustSub', dmg > 0
+    ? 'آسیب موتور ' + fa(dmg) + '٪ — شتاب‌های آرام‌تر تا تعمیر'
+    : 'مصرف ' + fa(Math.round(need)) + ' انرژی · گرما +' + fa(heatPerThrust(Math.min(state.speed + SPEED_GAIN, MAX_SPEED))) + '° · فاصله ' + fa(THRUST_DIST) + ' کیلومتر');
+  // --- ظهور تدریجی ایستگاه داخل پنجره (فقط transform/opacity) ---
+  const sv = Math.max(0, 1 - state.distance / STATION_VIEW);
+  const sw = get('stationWin');
+  if(sv > 0){
+    const sc = .22 + .78 * sv;
+    const key = Math.round(sc * 40);
+    if(destKey !== key){
+      destKey = key;
+      sw.style.transform = 'scale(' + sc.toFixed(3) + ')';
+      sw.style.opacity = (.3 + .7 * sv).toFixed(2);
+    }
+  } else if(destKey !== -1){
+    destKey = -1;
+    sw.style.opacity = 0;
+  }
+}
+
+function end(win){
+  state.phase = 'end';
+  ambOff();
+  const panel = $('endPanel');
+  panel.className = 'panel ' + (win ? 'win' : 'lose');
+  $('endTitle').textContent = win ? 'مأموریت موفق!' : 'اتمام اکسیژن!';
+  $('endSub').textContent = win
+    ? 'به ایستگاه آلفا رسیدی — خدمهٔ ایستگاه از دیدن تو خوشحال‌اند! 🎉'
+    : 'اکسیژن قبل از رسیدن به مقصد تمام شد... سفینه در فضا سرگردان ماند. 💀';
+  $('rTime').textContent = fa(Math.floor(state.time)) + ' ثانیه';
+  $('rThrusts').textContent = fa(state.thrusts);
+  $('rEvents').textContent = fa(state.events);
+  $('rO2').textContent = fa(Math.round(state.oxygen)) + '٪';
+  $('endOverlay').classList.remove('hidden');
+  btn.classList.remove('held');
+  if(win) sfx.win(); else sfx.lose();
+}
+
+function resetGame(){
+  Object.assign(state, {
+    phase:'countdown', oxygen:100, energy:100, distance:TOTAL, time:0,
+    cooldown:0, holding:false, thrustAnim:0, speed:0,
+    temperature:0, damage:0,
+    thrusts:0, events:0, regenMul:1, regenMulT:0, failCd:0, nextEvent:11,
+    crew:1 + Math.floor(Math.random()*8),   // خدمهٔ تصادفی: 1 تا 8 نفر
+    sigShown:false, viewShown:false,
+    incident:null, pendingOverheat:false, crewT:3, npcTick:2,
+    lowO2Beep:0, heatBeep:0,
+    o2warn1:false, o2warn2:false, heatWarn1:false, heatWarn2:false, shakeT:0
+  });
+  state.o2Rate = O2_DRAIN * (0.85 + state.crew * 0.045);  // ۱ نفر: ~۳۴ دقیقه · ۸ نفر: ~۲۵ دقیقه
+  buildCrew(state.crew);   // تعداد NPCها دقیقاً برابر CREW با نقش‌های اختصاصی
+  cdT = 3.2; lastCd = 99;
+  $('endOverlay').classList.add('hidden');
+  $('startOverlay').classList.add('hidden');
+  updateHUD();
+}
+function startGame(){
+  ac();
+  resetGame();
+}
+
+/* ---------- حلقهٔ اصلی ---------- */
+function frame(now){
+  const dt = Math.min(.05, (now - last)/1000);
+  last = now;
+
+  state.speed = Math.max(0, state.speed - state.speed*1.2*dt);
+  if(state.thrustAnim > 0) state.thrustAnim = Math.max(0, state.thrustAnim - dt*4);
+  if(state.shakeT > 0){ state.shakeT -= dt; if(state.shakeT <= 0) viewport.classList.remove('shake'); }
+  // خدمه: حرکت، کار با کنسول و تعمیر حادثه‌ها
+  state.npcTick -= dt;
+  if(state.npcTick <= 0){ state.npcTick = 0.15; npcTick(0.15); }
+
+  if(state.phase === 'countdown'){
+    cdT -= dt;
+    const c = Math.ceil(cdT);
+    if(c !== lastCd && c > 0){ lastCd = c; bigToast(['','۳','۲','۱'][c]); tone(520,.12,'triangle',.08); }
+    if(cdT <= 0){
+      state.phase = 'run'; ambOn(); sfx.go();
+      toast('🚀','مأموریت آغاز شد — خدمه: ' + fa(state.crew) + ' نفر · اکسیژن: ~' + fa(Math.round(100/state.o2Rate/60)) + ' دقیقه','#4ade80');
+      state.nextEvent = 18 + Math.random()*10;
+    }
+  }
+
+  if(state.phase === 'run'){
+    state.time += dt;
+    state.distance = Math.max(0, state.distance - 1*dt);   // حرکت خودکار: ۱ کیلومتر در ثانیه
+    // اثرات حوادث فعال: نشت اکسیژن/اورژانس پزشکی → مصرف بیشتر · قطعی برق → بازیابی صفر
+    const incKey = state.incident ? state.incident.key : null;
+    const oxMult = (incKey === 'oxygen' ? 1.3 : 1) * (incKey === 'medical' ? 1.2 : 1);
+    const pwrOn  = incKey !== 'power';
+    state.oxygen = Math.max(0, state.oxygen - state.o2Rate*oxMult*dt);
+    state.energy = Math.min(100, state.energy + REGEN*state.regenMul*(pwrOn ? 1 : 0)*dt);
+    if(state.regenMulT > 0){ state.regenMulT -= dt; if(state.regenMulT <= 0) state.regenMul = 1; }
+    if(state.incident && state.incident.def.passive) state.incident.def.passive(dt);
+    // --- سیستم حرارتی (تدریجی و قابل جبران) ---
+    state.temperature = Math.max(0, state.temperature - COOLING*dt);
+    state.damage = Math.max(0, state.damage - DMG_REPAIR*dt);
+    if(state.temperature > 70){
+      state.heatBeep -= dt;
+      if(state.heatBeep <= 0){ sfx.tempWarn(); state.heatBeep = 1.4; }
+    }
+    if(state.temperature > 55 && !state.heatWarn1){
+      state.heatWarn1 = true; toast('🌡️','دمای موتور در حال بالا رفتن است!','#fb923c');
+    }
+    if(state.temperature > 75 && !state.heatWarn2){
+      state.heatWarn2 = true; toast('🔥','مراقب باش — نزدیک آسیب موتور!','#f87171');
+    }
+    state.cooldown -= dt; state.failCd -= dt;
+    if(state.holding && state.cooldown <= 0) thrust();
+    if(!state.incident){
+      state.nextEvent -= dt;
+      if(state.nextEvent <= 0) triggerEvent();
+    }
+    state.crewT -= dt;
+    if(state.oxygen < 25){
+      state.lowO2Beep -= dt;
+      if(state.lowO2Beep <= 0){ sfx.o2Warn(); state.lowO2Beep = 1.8; }
+    }
+    if(state.oxygen < 25 && !state.o2warn1){
+      state.o2warn1 = true; toast('⚠️','هشدار: اکسیژن رو به اتمام است!','#f87171');
+      npcAlert(2000);
+    }
+    if(state.oxygen < 12 && !state.o2warn2){
+      state.o2warn2 = true; toast('🆘','آخرین نفس‌ها! زودتر برس!','#f87171');
+    }
+    if(!state.sigShown && state.distance < STATION_SIG){
+      state.sigShown = true;
+      bigToast('📡 سیگنال ایستگاه دریافت شد!', 18); sfx.signal();
+    }
+    if(!state.viewShown && state.distance < STATION_VIEW){
+      state.viewShown = true;
+      bigToast('🛰️ ایستگاه در دید است!', 20); sfx.view();
+      npcReact('window');
+    }
+    if(state.oxygen <= 0) end(false);
+    else if(state.distance <= 0) end(true);
+  }
+
+  updateHUD();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ---------- ورودی‌ها ---------- */
+const press = () => {
+  if(state.phase !== 'run') return;
+  state.holding = true;
+  btn.classList.add('held');
+  if(state.cooldown <= 0) thrust();   // پاسخ تقریباً فوری — بدون انتظار فریم
+};
+const release = () => { state.holding = false; btn.classList.remove('held'); };
+btn.addEventListener('pointerdown', e => { e.preventDefault(); press(); });
+btn.addEventListener('pointerup', release);
+btn.addEventListener('pointerleave', release);
+btn.addEventListener('pointercancel', release);
+btn.addEventListener('contextmenu', e => e.preventDefault());
+
+window.addEventListener('keydown', e => {
+  if(e.code === 'Space'){
+    e.preventDefault();
+    if(state.phase === 'run') press();
+    else if(state.phase === 'start') startGame();
+    else if(state.phase === 'end') resetGame();
+  }
+  if(e.code === 'Enter' || e.code === 'KeyR'){
+    if(state.phase === 'start') startGame();
+    else if(state.phase === 'end') resetGame();
+  }
+});
+window.addEventListener('keyup', e => { if(e.code === 'Space') release(); });
+window.addEventListener('blur', release);
+
+$('startBtn').addEventListener('click', startGame);
+$('retryBtn').addEventListener('click', () => { ac(); resetGame(); });
+$('muteBtn').addEventListener('click', () => {
+  muted = !muted;
+  $('muteBtn').textContent = muted ? '🔇' : '🔊';
+  if(muted) ambOff(); else if(state.phase === 'run') ambOn();
+});
+})();
+</script>
+</body>
+</html>
