@@ -155,8 +155,11 @@
   .npc.fix .tool{opacity:1;animation:toolUse .5s ease-in-out infinite}
   /* ---------- نوار حادثه: جمع‌وجور، خوانا و محدودشده در موبایل ---------- */
   #incBar{position:absolute;top:8px;left:50%;transform:translateX(-50%);
-    width:min(520px, calc(100% - 16px));z-index:7;display:none;direction:rtl}
-  #incBar.show{display:block;animation:incIn .25s cubic-bezier(.2,1.3,.4,1)}
+    width:min(520px, calc(100% - 16px));z-index:7;display:none;direction:rtl;
+    flex-direction:column;gap:6px;max-height:calc(100% - 16px);overflow-y:auto}
+  #incBar.show{display:flex;animation:incIn .25s cubic-bezier(.2,1.3,.4,1)}
+  .inc-count{font:700 11.5px var(--ui);color:#fca5a5;text-align:center;letter-spacing:.5px;
+    text-shadow:0 0 10px rgba(248,113,113,.65);animation:blink 1.1s steps(2,start) infinite}
   @keyframes incIn{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}
   .inc-headrow{display:flex;align-items:center;gap:7px;border:1px solid #fb923c;border-radius:10px;
     background:rgba(5,8,18,.96);padding:7px 11px;cursor:pointer}
@@ -165,7 +168,7 @@
   .inc-toggle{font:10px var(--ui);color:#94a3b8;white-space:nowrap}
   .inc-body{display:none;border:1px solid rgba(255,255,255,.2);border-top:none;border-radius:0 0 12px 12px;
     background:rgba(5,8,18,.97);padding:9px 11px;
-    max-height:230px;max-height:min(42dvh, 230px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+    max-height:230px;max-height:min(34dvh, 190px);overflow-y:auto;-webkit-overflow-scrolling:touch}
   .inc-body.open{display:block}
   .inc-desc{font:12.5px/1.7 var(--ui);color:#e2e8f0;margin-bottom:4px}
   .inc-rec{font:12px var(--ui);color:#94a3b8;margin-bottom:8px}
@@ -424,7 +427,7 @@
         <li><b>🫁 اکسیژن</b> — آرام مصرف می‌شود؛ خدمهٔ بیشتر یعنی مصرف بیشتر. تصمیم‌های بد هزینهٔ واقعی دارند.</li>
         <li><b>⚡ انرژی</b> — شتاب و اعزام خدمه انرژی می‌خورد؛ خودبه‌خود بازیابی می‌شود.</li>
         <li><b>🌡️ دمای موتور</b> — خیلی آهسته خنک می‌شود؛ بالای حد امن (۴۰۰) گرمای بیشتر. اورهیت موتور یک حادثهٔ واقعی است.</li>
-        <li><b>👥 فرماندهی خدمه</b> — رویدادها خودشان حل نمی‌شوند! در Interior View روی خدمه کلیک کن، نقششان را بسنج و مأموریت بده.</li>
+        <li><b>👥 فرماندهی خدمه</b> — رویدادها خودشان حل نمی‌شوند و ممکن است چند بحران همزمان بالا بیاید! بحران‌ها با گذشت زمان بدتر می‌شوند؛ روی خدمه کلیک کن، نقششان را بسنج و سریع مأموریت بده.</li>
       </ul>
       <button class="bigbtn" id="startBtn">🚀 آغاز مأموریت</button>
       <div class="hint">هر خدمه یک نقش دارد — Engineer برای موتور، Technician برای برق، Medic برای خدمه...</div>
@@ -459,6 +462,9 @@ const THRUST_DIST = 30, COOLDOWN = 0.32, REGEN = 1.3, O2_DRAIN = 0.055, TOTAL = 
 const STATION_SIG = 2000, STATION_VIEW = 1000;   // فاصله‌های ظهور ایستگاه
 const SAFE_SPEED = 400, SPEED_GAIN = 300, MAX_SPEED = 1000;
 const COOLING = 2.2, MAX_TEMP = 100, DMG_HIT = 20, DMG_REPAIR = 1.5;  // خنک‌شدن زمان‌بر — مدیریت با تصمیم
+const MAX_INCIDENTS = 3;                        // چند بحران همزمان — بازی سخت‌تر
+const eventGap = () => 9 + Math.random()*9;     // رویداد بعدی حتی حین بحران فعال (۹ تا ۱۸ ثانیه)
+const calmGap  = () => 15 + Math.random()*11;   // آرامش کوتاه بعد از رفعِ همهٔ بحران‌ها
 const costOf = t => 3 + Math.floor(t * 0.03);         // هزینه هر شتاب: 3 تا 6
 const heatPerThrust = spd => 4 + (spd > SAFE_SPEED ? 3 : 0);
 
@@ -469,7 +475,7 @@ const state = {
   temperature:0, damage:0,
   thrusts:0, events:0, regenMul:1, regenMulT:0, failCd:0,
   crew:4, o2Rate:.13, sigShown:false, viewShown:false,
-  incident:null, pendingOverheat:false, crewT:3, npcTick:2,
+  incidents:[], pendingOverheat:false, crewT:3, npcTick:2,
   nextEvent:11, lowO2Beep:0, heatBeep:0,
   o2warn1:false, o2warn2:false, heatWarn1:false, heatWarn2:false
 };
@@ -609,89 +615,92 @@ const INCIDENTS = {
     rec:['مهندس'], kind:'bad',
     passive: dt => { state.temperature = Math.min(MAX_TEMP, state.temperature + .9*dt); },
     options:[
-      {id:'cool', label:'خنک‌سازی موتور', roles:['مهندس'], room:'eng', dur:9, energy:3, o2:1,
-       during: dt => { state.temperature = Math.max(0, state.temperature - 2.5*dt); },
+      {id:'cool', label:'خنک‌سازی موتور', roles:['مهندس'], room:'eng', dur:18, energy:3, o2:1,
+       during: dt => { state.temperature = Math.max(0, state.temperature - 2.6*dt); },
        done:()=>{ state.temperature = Math.max(0, state.temperature - 12); toast('❄️','مهندس موتور را خنک کرد — دما −۱۲°','#4ade80'); }},
-      {id:'inspect', label:'بررسی موتور', roles:['مهندس','تکنسین'], room:'eng', dur:5, energy:1, o2:0,
+      {id:'inspect', label:'بررسی موتور', roles:['مهندس','تکنسین'], room:'eng', dur:11, energy:1, o2:0,
        done:()=>{ state.temperature = Math.max(0, state.temperature - 6); state.damage = Math.max(0, state.damage - 4);
          toast('🔍','بازرسی انجام شد — دما −۶° و آسیب −۴٪','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 10);
-        toast('🔥','موتور بی‌حفاظ ماند — آسیب +۱۰٪','#f87171'); }}
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 14);
+        toast('🔥','موتور بی‌حفاظ ماند — آسیب +۱۴٪','#f87171'); }}
     ]},
   battery:{ icon:'🔋', title:'خرابی باتری کوانتومی', color:'#a78bfa',
-    desc:()=> 'بازیابی انرژی مختل شده است',
+    desc:()=> 'بازیابی انرژی مختل شده و شارژ در حال تخلیه است',
     rec:['تکنسین','دانشمند'], kind:'bad',
+    passive: dt => { state.energy = Math.max(0, state.energy - .7*dt); },
     options:[
-      {id:'replace', label:'تعویض باتری', roles:['تکنسین'], room:'battery', dur:7, energy:4, o2:1,
+      {id:'replace', label:'تعویض باتری', roles:['تکنسین'], room:'battery', dur:15, energy:4, o2:1,
        done:()=>{ state.energy = Math.min(100, state.energy + 12); toast('🔋','باتری کوانتومی نصب شد! +۱۲ انرژی','#a78bfa'); }},
-      {id:'inspect', label:'بررسی سیستم', roles:['دانشمند','تکنسین'], room:'battery', dur:5, energy:2, o2:0,
+      {id:'inspect', label:'بررسی سیستم', roles:['دانشمند','تکنسین'], room:'battery', dur:10, energy:2, o2:0,
        done:()=>{ state.energy = Math.min(100, state.energy + 5); toast('🔬','بررسی سیستم — +۵ انرژی','#a78bfa'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 8);
-        toast('⚡','تخلیهٔ باتری — −۸ انرژی','#f87171'); }}
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 12);
+        toast('⚡','تخلیهٔ باتری — −۱۲ انرژی','#f87171'); }}
     ]},
   oxygen:{ icon:'💨', title:'نشت اکسیژن', color:'#f87171',
     desc:()=> 'مصرف اکسیژن ×۱٫۳ شده است',
     rec:['تکنسین'], kind:'bad',
     options:[
-      {id:'repair', label:'تعمیر نشت', roles:['تکنسین'], room:'life', dur:6, energy:2, o2:1,
+      {id:'repair', label:'تعمیر نشت', roles:['تکنسین'], room:'life', dur:14, energy:2, o2:1,
        done:()=>{ state.oxygen = Math.min(100, state.oxygen + 2); toast('🛠️','نشت تعمیر شد — مصرف عادی · +۲٪ اکسیژن','#4ade80'); }},
-      {id:'seal', label:'مهر و موم اضطراری', roles:['امنیتی','تکنسین'], room:'life', dur:3, energy:4, o2:1,
+      {id:'seal', label:'مهر و موم اضطراری', roles:['امنیتی','تکنسین'], room:'life', dur:8, energy:4, o2:1,
        done:()=>{ toast('🧯','مهر و موم اضطراری انجام شد','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 5);
-        toast('💨','نشت ادامه یافت — −۵٪ اکسیژن','#f87171'); }}
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 8);
+        toast('💨','نشت ادامه یافت — −۸٪ اکسیژن','#f87171'); }}
     ]},
   power:{ icon:'⚡', title:'قطعی برق', color:'#fbbf24',
     desc:()=> 'بازیابی انرژی متوقف شده است',
     rec:['تکنسین'], kind:'bad',
     options:[
-      {id:'repair', label:'تعمیر ژنراتور', roles:['تکنسین'], room:'sys', dur:6, energy:3, o2:1,
+      {id:'repair', label:'تعمیر ژنراتور', roles:['تکنسین'], room:'sys', dur:14, energy:3, o2:1,
        done:()=>{ state.energy = Math.min(100, state.energy + 6); toast('⚡','ژنراتور تعمیر شد — برق بازگشت','#4ade80'); }},
-      {id:'restart', label:'راه‌اندازی مجدد', roles:['تکنسین','مهندس'], room:'sys', dur:4, energy:2, o2:0,
+      {id:'restart', label:'راه‌اندازی مجدد', roles:['تکنسین','مهندس'], room:'sys', dur:9, energy:2, o2:0,
        done:()=>{ state.regenMul = 1.5; state.regenMulT = 12; toast('⚡','راه‌اندازی مجدد — بازیابی انرژی ×۱٫۵','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 10);
-        toast('🕯️','خاموشی طولانی شد — −۱۰ انرژی','#f87171'); }}
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 14);
+        toast('🕯️','خاموشی طولانی شد — −۱۴ انرژی','#f87171'); }}
     ]},
   nav:{ icon:'🛰️', title:'خطای ناوبری', color:'#22d3ee',
-    desc:()=> 'مسیر از هدف منحرف شده است',
+    desc:()=> 'مسیر از هدف منحرف شده — سفینه در حال دور شدن است',
     rec:['ناوبر'], kind:'bad',
+    passive: dt => { state.distance = Math.min(TOTAL, state.distance + 1.8*dt); },
     options:[
-      {id:'recalc', label:'محاسبهٔ مجدد مسیر', roles:['ناوبر'], room:'nav', dur:6, energy:2, o2:1,
+      {id:'recalc', label:'محاسبهٔ مجدد مسیر', roles:['ناوبر'], room:'nav', dur:13, energy:2, o2:1,
        done:()=>{ state.distance = Math.max(0, state.distance - 200); toast('🧭','مسیر اصلاح شد — +۲۰۰ کیلومتر پیشروی','#22d3ee'); }},
-      {id:'manual', label:'اصلاح دستی', roles:['ناوبر','خدمه'], room:'nav', dur:8, energy:1, o2:0,
+      {id:'manual', label:'اصلاح دستی', roles:['ناوبر','خدمه'], room:'nav', dur:17, energy:1, o2:0,
        done:()=>{ state.distance = Math.max(0, state.distance - 120); toast('🧭','اصلاح دستی — +۱۲۰ کیلومتر','#22d3ee'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.distance = Math.min(TOTAL, state.distance + 150);
-        toast('🛰️','انحراف مسیر — +۱۵۰ کیلومتر','#f87171'); }}
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.distance = Math.min(TOTAL, state.distance + 220);
+        toast('🛰️','انحراف مسیر — +۲۲۰ کیلومتر','#f87171'); }}
     ]},
   hull:{ icon:'🛡️', title:'آسیب بدنه', color:'#fca5a5',
-    desc:()=> 'بدنهٔ سفینه آسیب دیده است',
+    desc:()=> 'بدنهٔ سفینه آسیب دیده — ترک‌ها در حال گسترش‌اند',
     rec:['مهندس','امنیتی'], kind:'bad',
+    passive: dt => { state.damage = Math.min(100, state.damage + .5*dt); },
     options:[
-      {id:'repair', label:'تعمیر بدنه', roles:['مهندس','امنیتی'], room:'hull', dur:7, energy:3, o2:1,
+      {id:'repair', label:'تعمیر بدنه', roles:['مهندس','امنیتی'], room:'hull', dur:15, energy:3, o2:1,
        done:()=>{ state.damage = Math.max(0, state.damage - 15); toast('🛠️','بدنه تعمیر شد — آسیب −۱۵٪','#4ade80'); }},
-      {id:'seal', label:'مهر موقت', roles:['امنیتی','خدمه'], room:'hull', dur:4, energy:5, o2:0,
+      {id:'seal', label:'مهر موقت', roles:['امنیتی','خدمه'], room:'hull', dur:9, energy:5, o2:0,
        done:()=>{ state.damage = Math.max(0, state.damage - 8); toast('🧯','مهر موقت — آسیب −۸٪','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 8);
-        toast('🛡️','ترک خوردگی بیشتر شد — آسیب +۸٪','#f87171'); }}
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 12);
+        toast('🛡️','ترک خوردگی بیشتر شد — آسیب +۱۲٪','#f87171'); }}
     ]},
   medical:{ icon:'⚕️', title:'اورژانس پزشکی خدمه', color:'#f472b6',
     desc:()=> 'مصرف اکسیژن خدمه ×۱٫۲ شده است',
     rec:['پزشک'], kind:'bad',
     options:[
-      {id:'treat', label:'درمان خدمه', roles:['پزشک'], room:'med', dur:6, energy:2, o2:1,
+      {id:'treat', label:'درمان خدمه', roles:['پزشک'], room:'med', dur:13, energy:2, o2:1,
        done:()=>{ state.oxygen = Math.min(100, state.oxygen + 3); toast('⚕️','درمان انجام شد — +۳٪ اکسیژن','#4ade80'); }},
-      {id:'stab', label:'پایدارسازی', roles:['پزشک','خدمه'], room:'med', dur:4, energy:3, o2:0,
+      {id:'stab', label:'پایدارسازی', roles:['پزشک','خدمه'], room:'med', dur:9, energy:3, o2:0,
        done:()=>{ state.oxygen = Math.min(100, state.oxygen + 1); toast('⚕️','وضعیت پایدار شد — +۱٪ اکسیژن','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 4);
-        toast('🚑','وضعیت وخیم شد — −۴٪ اکسیژن','#f87171'); }}
+      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 7);
+        toast('🚑','وضعیت وخیم شد — −۷٪ اکسیژن','#f87171'); }}
     ]},
   signal:{ icon:'🌌', title:'سیگنال ناشناس', color:'#c084fc',
     desc:()=> 'سیگنال ناشناس در اطراف سفینه',
     rec:['دانشمند','امنیتی'], kind:'neutral',
     options:[
-      {id:'investigate', label:'بررسی میدانی', roles:['امنیتی','دانشمند'], room:'window', dur:6, energy:2, o2:1,
+      {id:'investigate', label:'بررسی میدانی', roles:['امنیتی','دانشمند'], room:'window', dur:12, energy:2, o2:1,
        done:()=>{ if(Math.random() < .65){ state.distance = Math.max(0, state.distance - 150); toast('👽','سیگنال یک گذرگاه کیهانی بود! +۱۵۰ کیلومتر','#22d3ee'); }
          else toast('🌌','فقط یک سیگنال کهنه بود...','#94a3b8'); }},
-      {id:'scan', label:'اسکن', roles:['دانشمند','ناوبر'], room:'nav', dur:4, energy:1, o2:0,
+      {id:'scan', label:'اسکن', roles:['دانشمند','ناوبر'], room:'nav', dur:9, energy:1, o2:0,
        done:()=>{ if(Math.random() < .5){ state.distance = Math.max(0, state.distance - 100); toast('📡','اسکن مسیر بهتری پیدا کرد! +۱۰۰ کیلومتر','#22d3ee'); }
          else toast('📡','هیچ چیز مفیدی پیدا نشد','#94a3b8'); }},
       {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ toast('🌌','سیگنال نادیده گرفته شد','#94a3b8'); }}
@@ -700,26 +709,36 @@ const INCIDENTS = {
 const INC_WEIGHT = ['engineOverheat','battery','oxygen','power','nav','hull','medical','signal'];
 
 function triggerEvent(){
-  if(state.incident) return;
+  if(state.incidents.length >= MAX_INCIDENTS){ state.nextEvent = 6; return; }
   state.events++;
-  const key = INC_WEIGHT[Math.floor(Math.random()*INC_WEIGHT.length)];
+  const avail = INC_WEIGHT.filter(k => !state.incidents.some(i => i.key === k));
+  const key = avail[Math.floor(Math.random()*avail.length)];
   openIncident(key);
 }
 function openIncident(key){
-  if(state.incident || state.phase !== 'run') return;
+  if(state.phase !== 'run') return;
+  if(state.incidents.some(i => i.key === key)) return;   // بحران تکراری نه
+  if(state.incidents.length >= MAX_INCIDENTS){
+    if(key === 'engineOverheat') state.pendingOverheat = true;   // در صف می‌ماند
+    return;
+  }
   const def = INCIDENTS[key];
   if(!def) return;
-  state.incident = { key, def, assigned:false };
+  state.incidents.push({ key, def, assigned:false, open:true });
+  state.nextEvent = eventGap();   // بحران بعدی حتی قبل از رفع بحران فعلی
   renderIncident();
-  toast(def.icon, def.title + ' — پیشنهاد: ' + def.rec.join(' / '), def.color);
+  const extra = state.incidents.length > 1 ? ' — ⚠️ ' + fa(state.incidents.length) + ' بحران همزمان!' : '';
+  toast(def.icon, def.title + extra + ' — پیشنهاد: ' + def.rec.join(' / '), def.color);
   sfx.event(def.kind === 'neutral' ? 'neutral' : 'bad');
   npcAlert(1600);
 }
-function closeIncident(){
-  state.incident = null;
+function closeIncident(inc){
+  const idx = state.incidents.indexOf(inc);
+  if(idx === -1) return;
+  state.incidents.splice(idx, 1);
   renderIncident();
   if(state.pendingOverheat){ state.pendingOverheat = false; openIncident('engineOverheat'); }
-  else state.nextEvent = 25 + Math.random()*15;
+  else if(!state.incidents.length) state.nextEvent = calmGap();
 }
 function findCrew(roles){
   for(const r of roles) for(const n of npcs)
@@ -728,61 +747,74 @@ function findCrew(roles){
     if(n.state !== 'busy' && n.state !== 'working') return n;
   return null;
 }
-function startOption(opt){
-  const inc = state.incident; if(!inc || inc.assigned) return;
+function startOption(inc, opt){
+  if(!inc || inc.assigned) return;
   if(!opt.roles){                       // IGNORE: تصمیمِ رها کردن — پیامد فوری
     opt.done();
-    closeIncident();
+    closeIncident(inc);
     return;
   }
   if(state.energy < (opt.energy||0)){ toast('⚠️','انرژی کافی برای این کار نیست!','#f87171'); sfx.fail(); return; }
   const n = findCrew(opt.roles);
   if(!n){ toast('⚠️','هیچ خدمهٔ آزادی در دسترس نیست!','#f87171'); sfx.fail(); return; }
-  assignTask(n, opt, false);
+  assignTask(inc, n, opt, false);
 }
-function assignTask(n, opt, direct){
-  const inc = state.incident; if(!inc) return;
+function assignTask(inc, n, opt, direct){
+  if(!inc || inc.assigned) return;
   state.energy = Math.max(0, state.energy - (opt.energy||0));
   state.oxygen = Math.max(0, state.oxygen - (opt.o2||0));
   inc.assigned = true;
   const fit = opt.roles.includes(n.role);
-  n.task = { opt, t:0, dur: direct && !fit ? Math.round(opt.dur*1.6) : opt.dur, phase:'walk' };
+  n.task = { inc, opt, t:0, dur: direct && !fit ? Math.round(opt.dur*1.6) : opt.dur, phase:'walk' };
   n.state = 'busy';
-  npcWalk(n, ST[opt.room], 1.2);
-  n.state = 'busy';
+  npcWalk(n, ST[opt.room], 2.4 + Math.random()*1.4);   // رسیدن خدمه به محل بحران حالا کندتر است
+  n.state = 'busy';   // npcWalk حالت را 'walk' کرد — برای شروع کار باید 'busy' بماند
   n.el.classList.add('fix');
   toast('👥','خدمهٔ #' + fa(n.i+1) + ' — ' + n.role + ' ← ' + ROOM_LABEL[opt.room], '#67e8f9');
   renderIncident();
 }
 function renderIncident(){
   const p = get('incBar');
-  const inc = state.incident;
-  if(!inc){ p.innerHTML = ''; p.classList.remove('show'); return; }
-  const d = inc.def;
-  const recs = d.rec.map(r => {
-    const avail = npcs.some(n => n.role === r && n.state !== 'busy' && n.state !== 'working');
-    return r + ' <b class="' + (avail ? 'ok' : 'off') + '">' + (avail ? '✓' : '✗') + '</b>';
-  }).join(' · ');
-  let html = '<div class="inc-headrow" id="incHead" style="border-color:' + d.color + '">'
-    + '<span class="inc-title" style="color:' + d.color + '">' + d.icon + ' ' + d.title + '</span>'
-    + '<span class="inc-toggle" id="incTog">' + (inc.assigned ? 'در حال انجام…' : '▾ گزینه‌ها') + '</span></div>';
-  html += '<div class="inc-body" id="incBody">';
-  html += '<div class="inc-desc">' + d.desc() + '</div>';
-  html += '<div class="inc-rec">پیشنهاد: ' + recs + '</div>';
-  html += '<div class="inc-opts">';
-  for(const o of d.options){
-    const cost = o.roles ? (o.energy||0) + '⚡·' + (o.o2||0) + '٪O₂·' + o.dur + 's' : '';
-    html += '<button data-opt="' + o.id + '"' + (inc.assigned ? ' disabled' : '') + '>' + o.label
-         + (cost ? '<i>' + cost + '</i>' : '') + '</button>';
+  const incs = state.incidents;
+  if(!incs.length){ p.innerHTML = ''; p.classList.remove('show'); return; }
+  let html = '';
+  if(incs.length > 1)
+    html += '<div class="inc-count">⚠️ ' + fa(incs.length) + ' بحران همزمان فعال است!</div>';
+  for(const inc of incs){
+    const d = inc.def;
+    const recs = d.rec.map(r => {
+      const avail = npcs.some(n => n.role === r && n.state !== 'busy' && n.state !== 'working');
+      return r + ' <b class="' + (avail ? 'ok' : 'off') + '">' + (avail ? '✓' : '✗') + '</b>';
+    }).join(' · ');
+    html += '<div class="inc-card" data-key="' + inc.key + '">';
+    html += '<div class="inc-headrow" style="border-color:' + d.color + '">'
+      + '<span class="inc-title" style="color:' + d.color + '">' + d.icon + ' ' + d.title + '</span>'
+      + '<span class="inc-toggle">' + (inc.assigned ? 'در حال انجام…' : '▾ گزینه‌ها') + '</span></div>';
+    html += '<div class="inc-body' + (inc.open ? ' open' : '') + '">';
+    html += '<div class="inc-desc">' + d.desc() + '</div>';
+    html += '<div class="inc-rec">پیشنهاد: ' + recs + '</div>';
+    html += '<div class="inc-opts">';
+    for(const o of d.options){
+      const cost = o.roles ? (o.energy||0) + '⚡·' + (o.o2||0) + '٪O₂·' + o.dur + 's' : '';
+      html += '<button data-opt="' + o.id + '"' + (inc.assigned ? ' disabled' : '') + '>' + o.label
+           + (cost ? '<i>' + cost + '</i>' : '') + '</button>';
+    }
+    html += '</div></div></div>';
   }
-  html += '</div></div>';
   p.innerHTML = html;
   p.classList.add('show');
-  $('incHead').addEventListener('click', () => $('incBody').classList.toggle('open'));
-  p.querySelectorAll('.inc-opts button').forEach(b => b.addEventListener('click', () => {
-    const opt = d.options.find(o => o.id === b.dataset.opt);
-    if(opt) startOption(opt);
-  }));
+  p.querySelectorAll('.inc-card').forEach(card => {
+    const inc = incs.find(x => x.key === card.dataset.key);
+    if(!inc) return;
+    card.querySelector('.inc-headrow').addEventListener('click', () => {
+      inc.open = !inc.open;
+      card.querySelector('.inc-body').classList.toggle('open', inc.open);
+    });
+    card.querySelectorAll('.inc-opts button').forEach(b => b.addEventListener('click', () => {
+      const opt = inc.def.options.find(o => o.id === b.dataset.opt);
+      if(opt) startOption(inc, opt);
+    }));
+  });
 }
 
 /* ---------- NPC خدمه + نمای داخل سفینه (فقط transform — بسیار سبک) ---------- */
@@ -890,7 +922,7 @@ function npcTick(dt){
         n.task = null;
         n.state = 'idle'; n.stateT = 1 + Math.random()*2;
         n.el.classList.remove('work','fix');
-        closeIncident();
+        closeIncident(task.inc);
       }
     }
   }
@@ -908,7 +940,7 @@ function npcAlert(dur){
 /* --- کارت اعزام خدمه --- */
 function openCrewCard(n){
   const c = get('crewCard');
-  const inc = state.incident;
+  const inc = state.incidents.find(i => !i.assigned);
   const busy = n.state === 'busy' || n.state === 'working';
   let html = '<div class="cc-head">خدمهٔ #' + fa(n.i+1) + ' — ' + n.role + '</div>';
   html += '<div class="cc-status">وضعیت: ' + (busy ? 'مشغول' : 'آزاد') + '</div>';
@@ -921,7 +953,7 @@ function openCrewCard(n){
   c.innerHTML = html;
   c.classList.add('show');
   const send = $('ccSend');
-  if(send) send.addEventListener('click', () => { c.classList.remove('show'); assignTask(n, inc.def.options[0], true); });
+  if(send) send.addEventListener('click', () => { c.classList.remove('show'); assignTask(inc, n, inc.def.options[0], true); });
   $('ccClose').addEventListener('click', () => c.classList.remove('show'));
 }
 function npcReact(mode){
@@ -954,8 +986,7 @@ function thrust(){
     state.temperature = 88;
     toast('🔥','اورهیت! آسیب +۱۲٪ — Engineer را اعزام کن','#f87171');
     sfx.overheat();
-    if(state.incident) state.pendingOverheat = true;
-    else openIncident('engineOverheat');
+    openIncident('engineOverheat');   // اگر ظرفیت پر باشد، خودبه‌خود در صف می‌ماند
   }
   state.shakeT = .16; viewport.classList.add('shake');
   sfx.thrust();
@@ -1058,12 +1089,13 @@ function resetGame(){
     thrusts:0, events:0, regenMul:1, regenMulT:0, failCd:0, nextEvent:11,
     crew:1 + Math.floor(Math.random()*8),   // خدمهٔ تصادفی: 1 تا 8 نفر
     sigShown:false, viewShown:false,
-    incident:null, pendingOverheat:false, crewT:3, npcTick:2,
+    incidents:[], pendingOverheat:false, crewT:3, npcTick:2,
     lowO2Beep:0, heatBeep:0,
     o2warn1:false, o2warn2:false, heatWarn1:false, heatWarn2:false, shakeT:0
   });
   state.o2Rate = O2_DRAIN * (0.85 + state.crew * 0.045);  // ۱ نفر: ~۳۴ دقیقه · ۸ نفر: ~۲۵ دقیقه
   buildCrew(state.crew);   // تعداد NPCها دقیقاً برابر CREW با نقش‌های اختصاصی
+  renderIncident();        // پاک‌سازی کارت‌های بحران از دست قبل
   cdT = 3.2; lastCd = 99;
   $('endOverlay').classList.add('hidden');
   $('startOverlay').classList.add('hidden');
@@ -1101,13 +1133,13 @@ function frame(now){
     state.time += dt;
     state.distance = Math.max(0, state.distance - 1*dt);   // حرکت خودکار: ۱ کیلومتر در ثانیه
     // اثرات حوادث فعال: نشت اکسیژن/اورژانس پزشکی → مصرف بیشتر · قطعی برق → بازیابی صفر
-    const incKey = state.incident ? state.incident.key : null;
-    const oxMult = (incKey === 'oxygen' ? 1.3 : 1) * (incKey === 'medical' ? 1.2 : 1);
-    const pwrOn  = incKey !== 'power';
+    const incKeys = state.incidents.map(i => i.key);
+    const oxMult = (incKeys.includes('oxygen') ? 1.3 : 1) * (incKeys.includes('medical') ? 1.2 : 1);
+    const pwrOn  = !incKeys.includes('power');
     state.oxygen = Math.max(0, state.oxygen - state.o2Rate*oxMult*dt);
     state.energy = Math.min(100, state.energy + REGEN*state.regenMul*(pwrOn ? 1 : 0)*dt);
     if(state.regenMulT > 0){ state.regenMulT -= dt; if(state.regenMulT <= 0) state.regenMul = 1; }
-    if(state.incident && state.incident.def.passive) state.incident.def.passive(dt);
+    for(const inc of state.incidents) if(inc.def.passive) inc.def.passive(dt);
     // --- سیستم حرارتی (تدریجی و قابل جبران) ---
     state.temperature = Math.max(0, state.temperature - COOLING*dt);
     state.damage = Math.max(0, state.damage - DMG_REPAIR*dt);
@@ -1123,7 +1155,7 @@ function frame(now){
     }
     state.cooldown -= dt; state.failCd -= dt;
     if(state.holding && state.cooldown <= 0) thrust();
-    if(!state.incident){
+    if(state.incidents.length < MAX_INCIDENTS){
       state.nextEvent -= dt;
       if(state.nextEvent <= 0) triggerEvent();
     }
