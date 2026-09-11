@@ -1,5 +1,15 @@
-/* Last Orbit — سرویس‌ورکر برای نصب PWA و بازی آفلاین */
-const CACHE = 'last-orbit-v1';
+/* Last Orbit — سرویس‌ورکر برای نصب PWA و بازی آفلاین
+ *
+ * مشکل نسخهٔ قبلی (v1): استراتژی «اول کش» برای همه‌چیز + ignoreSearch باعث می‌شد
+ * index.html قدیمی برای همیشه از کش خوانده شود و آپدیت‌های گیت‌هاب پیجز
+ * هیچ‌وقت به کاربر نرسد.
+ *
+ * رفتار جدید:
+ *  - صفحهٔ اصلی و ناوبری‌ها: network-first — همیشه تازه‌ترین نسخه از اینترنت.
+ *  - فایل‌های ثابت (آیکون‌ها، مانیفست): اول کش + به‌روزرسانی پس‌زمینه‌ای.
+ *  - با هر انتشار، CACHE را بالا ببر تا کش قدیمی کاملاً پاک شود.
+ */
+const CACHE = 'last-orbit-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -26,18 +36,54 @@ self.addEventListener('activate', (e) => {
   );
 });
 
+function isPageRequest(req) {
+  if (req.mode === 'navigate') return true;
+  if (req.method !== 'GET') return false;
+  try {
+    const url = new URL(req.url);
+    return url.origin === self.location.origin &&
+      (url.pathname.endsWith('/') || url.pathname.endsWith('index.html'));
+  } catch (e) { return false; }
+}
+
 self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(
-    caches.match(e.request, { ignoreSearch: true }).then((cached) => {
-      if (cached) return cached;
-      return fetch(e.request).then((res) => {
-        if (res.ok && new URL(e.request.url).origin === self.location.origin) {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  let url;
+  try { url = new URL(req.url); } catch (err) { return; }
+  if (url.origin !== self.location.origin) return;   // درخواست خارجی: دست‌نخورده
+
+  // صفحهٔ اصلی: همیشه اول اینترنت (آپدیت‌ها فوری می‌رسند)؛ آفلاین: از کش
+  if (isPageRequest(req)) {
+    e.respondWith(
+      fetch(req).then((res) => {
+        if (res && res.ok) {
           const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(e.request, copy));
+          caches.open(CACHE).then((c) => c.put('./index.html', copy));
         }
         return res;
-      }).catch(() => caches.match('./index.html'));
+      }).catch(() =>
+        caches.match('./index.html').then((hit) => hit || caches.match('./'))
+      )
+    );
+    return;
+  }
+
+  // فایل‌های ثابت: اول کش، با تازه‌سازی پس‌زمینه‌ای
+  e.respondWith(
+    caches.match(req).then((cached) => {
+      const net = fetch(req).then((res) => {
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(req, copy));
+        }
+        return res;
+      }).catch(() => null);
+      if (cached) return cached;
+      return net.then((res) => {
+        if (res) return res;
+        throw new Error('offline + uncached: ' + req.url);
+      });
     })
   );
 });
