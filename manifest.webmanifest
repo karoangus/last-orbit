@@ -1,0 +1,21 @@
+{
+  "name": "لست اوربیت — Last Orbit",
+  "short_name": "لست اوربیت",
+  "description": "سفر ۹٬۰۰۰ کیلومتری به ایستگاه آلفا — بازی فضایی مدیریت اکسیژن، انرژی، دمای موتور و خدمه",
+  "id": "last-orbit",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#04040d",
+  "theme_color": "#04040d",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ]
+}
