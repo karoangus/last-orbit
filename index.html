@@ -427,7 +427,7 @@
         <li><b>🫁 اکسیژن</b> — آرام مصرف می‌شود؛ خدمهٔ بیشتر یعنی مصرف بیشتر. تصمیم‌های بد هزینهٔ واقعی دارند.</li>
         <li><b>⚡ انرژی</b> — شتاب و اعزام خدمه انرژی می‌خورد؛ خودبه‌خود بازیابی می‌شود.</li>
         <li><b>🌡️ دمای موتور</b> — خیلی آهسته خنک می‌شود؛ بالای حد امن (۴۰۰) گرمای بیشتر. اورهیت موتور یک حادثهٔ واقعی است.</li>
-        <li><b>👥 فرماندهی خدمه</b> — رویدادها خودشان حل نمی‌شوند و ممکن است چند بحران همزمان بالا بیاید! بحران‌ها با گذشت زمان بدتر می‌شوند؛ روی خدمه کلیک کن، نقششان را بسنج و سریع مأموریت بده.</li>
+        <li><b>👥 فرماندهی خدمه</b> — رویدادها زودزود می‌آیند، خودشان حل نمی‌شوند و تا ۴ بحران همزمان بالا می‌آید! هر مأموریت ۳۰ تا ۶۰ ثانیه طول می‌کشد؛ بحران‌ها با گذشت زمان بدتر می‌شوند؛ روی خدمه کلیک کن، نقششان را بسنج و سریع مأموریت بده.</li>
       </ul>
       <button class="bigbtn" id="startBtn">🚀 آغاز مأموریت</button>
       <div class="hint">هر خدمه یک نقش دارد — Engineer برای موتور، Technician برای برق، Medic برای خدمه...</div>
@@ -461,10 +461,10 @@ const $ = id => document.getElementById(id);
 const THRUST_DIST = 30, COOLDOWN = 0.32, REGEN = 1.3, O2_DRAIN = 0.055, TOTAL = 9000;
 const STATION_SIG = 2000, STATION_VIEW = 1000;   // فاصله‌های ظهور ایستگاه
 const SAFE_SPEED = 400, SPEED_GAIN = 300, MAX_SPEED = 1000;
-const COOLING = 2.2, MAX_TEMP = 100, DMG_HIT = 20, DMG_REPAIR = 1.5;  // خنک‌شدن زمان‌بر — مدیریت با تصمیم
-const MAX_INCIDENTS = 3;                        // چند بحران همزمان — بازی سخت‌تر
-const eventGap = () => 9 + Math.random()*9;     // رویداد بعدی حتی حین بحران فعال (۹ تا ۱۸ ثانیه)
-const calmGap  = () => 15 + Math.random()*11;   // آرامش کوتاه بعد از رفعِ همهٔ بحران‌ها
+const COOLING = 2.2, MAX_TEMP = 100, DMG_HIT = 20, DMG_REPAIR = 0.5;  // تعمیر خودکار خیلی کند — آسیب‌ها می‌مانند
+const MAX_INCIDENTS = 4;                        // تا ۴ بحران همزمان — بازی سخت‌تر
+const eventGap = () => 5 + Math.random()*6;     // رویداد بعدی زودزود می‌آید، حتی حین بحران فعال (۵ تا ۱۱ ثانیه)
+const calmGap  = () => 4 + Math.random()*4;     // آرامش خیلی کوتاه بعد از رفعِ همهٔ بحران‌ها (۴ تا ۸ ثانیه)
 const costOf = t => 3 + Math.floor(t * 0.03);         // هزینه هر شتاب: 3 تا 6
 const heatPerThrust = spd => 4 + (spd > SAFE_SPEED ? 3 : 0);
 
@@ -476,7 +476,7 @@ const state = {
   thrusts:0, events:0, regenMul:1, regenMulT:0, failCd:0,
   crew:4, o2Rate:.13, sigShown:false, viewShown:false,
   incidents:[], pendingOverheat:false, crewT:3, npcTick:2,
-  nextEvent:11, lowO2Beep:0, heatBeep:0,
+  nextEvent:8, lowO2Beep:0, heatBeep:0,
   o2warn1:false, o2warn2:false, heatWarn1:false, heatWarn2:false
 };
 let last = performance.now();
@@ -615,10 +615,10 @@ const INCIDENTS = {
     rec:['مهندس'], kind:'bad',
     passive: dt => { state.temperature = Math.min(MAX_TEMP, state.temperature + .9*dt); },
     options:[
-      {id:'cool', label:'خنک‌سازی موتور', roles:['مهندس'], room:'eng', dur:18, energy:3, o2:1,
+      {id:'cool', label:'خنک‌سازی موتور', roles:['مهندس'], room:'eng', dur:40, energy:3, o2:1,
        during: dt => { state.temperature = Math.max(0, state.temperature - 2.6*dt); },
        done:()=>{ state.temperature = Math.max(0, state.temperature - 12); toast('❄️','مهندس موتور را خنک کرد — دما −۱۲°','#4ade80'); }},
-      {id:'inspect', label:'بررسی موتور', roles:['مهندس','تکنسین'], room:'eng', dur:11, energy:1, o2:0,
+      {id:'inspect', label:'بررسی موتور', roles:['مهندس','تکنسین'], room:'eng', dur:30, energy:1, o2:0,
        done:()=>{ state.temperature = Math.max(0, state.temperature - 6); state.damage = Math.max(0, state.damage - 4);
          toast('🔍','بازرسی انجام شد — دما −۶° و آسیب −۴٪','#4ade80'); }},
       {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 14);
@@ -629,9 +629,9 @@ const INCIDENTS = {
     rec:['تکنسین','دانشمند'], kind:'bad',
     passive: dt => { state.energy = Math.max(0, state.energy - .7*dt); },
     options:[
-      {id:'replace', label:'تعویض باتری', roles:['تکنسین'], room:'battery', dur:15, energy:4, o2:1,
+      {id:'replace', label:'تعویض باتری', roles:['تکنسین'], room:'battery', dur:36, energy:4, o2:1,
        done:()=>{ state.energy = Math.min(100, state.energy + 12); toast('🔋','باتری کوانتومی نصب شد! +۱۲ انرژی','#a78bfa'); }},
-      {id:'inspect', label:'بررسی سیستم', roles:['دانشمند','تکنسین'], room:'battery', dur:10, energy:2, o2:0,
+      {id:'inspect', label:'بررسی سیستم', roles:['دانشمند','تکنسین'], room:'battery', dur:30, energy:2, o2:0,
        done:()=>{ state.energy = Math.min(100, state.energy + 5); toast('🔬','بررسی سیستم — +۵ انرژی','#a78bfa'); }},
       {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 12);
         toast('⚡','تخلیهٔ باتری — −۱۲ انرژی','#f87171'); }}
@@ -640,9 +640,9 @@ const INCIDENTS = {
     desc:()=> 'مصرف اکسیژن ×۱٫۳ شده است',
     rec:['تکنسین'], kind:'bad',
     options:[
-      {id:'repair', label:'تعمیر نشت', roles:['تکنسین'], room:'life', dur:14, energy:2, o2:1,
+      {id:'repair', label:'تعمیر نشت', roles:['تکنسین'], room:'life', dur:34, energy:2, o2:1,
        done:()=>{ state.oxygen = Math.min(100, state.oxygen + 2); toast('🛠️','نشت تعمیر شد — مصرف عادی · +۲٪ اکسیژن','#4ade80'); }},
-      {id:'seal', label:'مهر و موم اضطراری', roles:['امنیتی','تکنسین'], room:'life', dur:8, energy:4, o2:1,
+      {id:'seal', label:'مهر و موم اضطراری', roles:['امنیتی','تکنسین'], room:'life', dur:30, energy:4, o2:1,
        done:()=>{ toast('🧯','مهر و موم اضطراری انجام شد','#4ade80'); }},
       {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 8);
         toast('💨','نشت ادامه یافت — −۸٪ اکسیژن','#f87171'); }}
@@ -651,9 +651,9 @@ const INCIDENTS = {
     desc:()=> 'بازیابی انرژی متوقف شده است',
     rec:['تکنسین'], kind:'bad',
     options:[
-      {id:'repair', label:'تعمیر ژنراتور', roles:['تکنسین'], room:'sys', dur:14, energy:3, o2:1,
+      {id:'repair', label:'تعمیر ژنراتور', roles:['تکنسین'], room:'sys', dur:33, energy:3, o2:1,
        done:()=>{ state.energy = Math.min(100, state.energy + 6); toast('⚡','ژنراتور تعمیر شد — برق بازگشت','#4ade80'); }},
-      {id:'restart', label:'راه‌اندازی مجدد', roles:['تکنسین','مهندس'], room:'sys', dur:9, energy:2, o2:0,
+      {id:'restart', label:'راه‌اندازی مجدد', roles:['تکنسین','مهندس'], room:'sys', dur:30, energy:2, o2:0,
        done:()=>{ state.regenMul = 1.5; state.regenMulT = 12; toast('⚡','راه‌اندازی مجدد — بازیابی انرژی ×۱٫۵','#4ade80'); }},
       {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 14);
         toast('🕯️','خاموشی طولانی شد — −۱۴ انرژی','#f87171'); }}
@@ -661,11 +661,11 @@ const INCIDENTS = {
   nav:{ icon:'🛰️', title:'خطای ناوبری', color:'#22d3ee',
     desc:()=> 'مسیر از هدف منحرف شده — سفینه در حال دور شدن است',
     rec:['ناوبر'], kind:'bad',
-    passive: dt => { state.distance = Math.min(TOTAL, state.distance + 1.8*dt); },
+    passive: dt => { state.distance = Math.min(TOTAL, state.distance + 3*dt); },
     options:[
-      {id:'recalc', label:'محاسبهٔ مجدد مسیر', roles:['ناوبر'], room:'nav', dur:13, energy:2, o2:1,
+      {id:'recalc', label:'محاسبهٔ مجدد مسیر', roles:['ناوبر'], room:'nav', dur:35, energy:2, o2:1,
        done:()=>{ state.distance = Math.max(0, state.distance - 200); toast('🧭','مسیر اصلاح شد — +۲۰۰ کیلومتر پیشروی','#22d3ee'); }},
-      {id:'manual', label:'اصلاح دستی', roles:['ناوبر','خدمه'], room:'nav', dur:17, energy:1, o2:0,
+      {id:'manual', label:'اصلاح دستی', roles:['ناوبر','خدمه'], room:'nav', dur:38, energy:1, o2:0,
        done:()=>{ state.distance = Math.max(0, state.distance - 120); toast('🧭','اصلاح دستی — +۱۲۰ کیلومتر','#22d3ee'); }},
       {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.distance = Math.min(TOTAL, state.distance + 220);
         toast('🛰️','انحراف مسیر — +۲۲۰ کیلومتر','#f87171'); }}
@@ -673,11 +673,11 @@ const INCIDENTS = {
   hull:{ icon:'🛡️', title:'آسیب بدنه', color:'#fca5a5',
     desc:()=> 'بدنهٔ سفینه آسیب دیده — ترک‌ها در حال گسترش‌اند',
     rec:['مهندس','امنیتی'], kind:'bad',
-    passive: dt => { state.damage = Math.min(100, state.damage + .5*dt); },
+    passive: dt => { state.damage = Math.min(100, state.damage + .8*dt); },
     options:[
-      {id:'repair', label:'تعمیر بدنه', roles:['مهندس','امنیتی'], room:'hull', dur:15, energy:3, o2:1,
+      {id:'repair', label:'تعمیر بدنه', roles:['مهندس','امنیتی'], room:'hull', dur:36, energy:3, o2:1,
        done:()=>{ state.damage = Math.max(0, state.damage - 15); toast('🛠️','بدنه تعمیر شد — آسیب −۱۵٪','#4ade80'); }},
-      {id:'seal', label:'مهر موقت', roles:['امنیتی','خدمه'], room:'hull', dur:9, energy:5, o2:0,
+      {id:'seal', label:'مهر موقت', roles:['امنیتی','خدمه'], room:'hull', dur:31, energy:5, o2:0,
        done:()=>{ state.damage = Math.max(0, state.damage - 8); toast('🧯','مهر موقت — آسیب −۸٪','#4ade80'); }},
       {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 12);
         toast('🛡️','ترک خوردگی بیشتر شد — آسیب +۱۲٪','#f87171'); }}
@@ -686,9 +686,9 @@ const INCIDENTS = {
     desc:()=> 'مصرف اکسیژن خدمه ×۱٫۲ شده است',
     rec:['پزشک'], kind:'bad',
     options:[
-      {id:'treat', label:'درمان خدمه', roles:['پزشک'], room:'med', dur:13, energy:2, o2:1,
+      {id:'treat', label:'درمان خدمه', roles:['پزشک'], room:'med', dur:32, energy:2, o2:1,
        done:()=>{ state.oxygen = Math.min(100, state.oxygen + 3); toast('⚕️','درمان انجام شد — +۳٪ اکسیژن','#4ade80'); }},
-      {id:'stab', label:'پایدارسازی', roles:['پزشک','خدمه'], room:'med', dur:9, energy:3, o2:0,
+      {id:'stab', label:'پایدارسازی', roles:['پزشک','خدمه'], room:'med', dur:30, energy:3, o2:0,
        done:()=>{ state.oxygen = Math.min(100, state.oxygen + 1); toast('⚕️','وضعیت پایدار شد — +۱٪ اکسیژن','#4ade80'); }},
       {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 7);
         toast('🚑','وضعیت وخیم شد — −۷٪ اکسیژن','#f87171'); }}
@@ -697,10 +697,10 @@ const INCIDENTS = {
     desc:()=> 'سیگنال ناشناس در اطراف سفینه',
     rec:['دانشمند','امنیتی'], kind:'neutral',
     options:[
-      {id:'investigate', label:'بررسی میدانی', roles:['امنیتی','دانشمند'], room:'window', dur:12, energy:2, o2:1,
+      {id:'investigate', label:'بررسی میدانی', roles:['امنیتی','دانشمند'], room:'window', dur:34, energy:2, o2:1,
        done:()=>{ if(Math.random() < .65){ state.distance = Math.max(0, state.distance - 150); toast('👽','سیگنال یک گذرگاه کیهانی بود! +۱۵۰ کیلومتر','#22d3ee'); }
          else toast('🌌','فقط یک سیگنال کهنه بود...','#94a3b8'); }},
-      {id:'scan', label:'اسکن', roles:['دانشمند','ناوبر'], room:'nav', dur:9, energy:1, o2:0,
+      {id:'scan', label:'اسکن', roles:['دانشمند','ناوبر'], room:'nav', dur:30, energy:1, o2:0,
        done:()=>{ if(Math.random() < .5){ state.distance = Math.max(0, state.distance - 100); toast('📡','اسکن مسیر بهتری پیدا کرد! +۱۰۰ کیلومتر','#22d3ee'); }
          else toast('📡','هیچ چیز مفیدی پیدا نشد','#94a3b8'); }},
       {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ toast('🌌','سیگنال نادیده گرفته شد','#94a3b8'); }}
@@ -709,7 +709,7 @@ const INCIDENTS = {
 const INC_WEIGHT = ['engineOverheat','battery','oxygen','power','nav','hull','medical','signal'];
 
 function triggerEvent(){
-  if(state.incidents.length >= MAX_INCIDENTS){ state.nextEvent = 6; return; }
+  if(state.incidents.length >= MAX_INCIDENTS){ state.nextEvent = 3; return; }
   state.events++;
   const avail = INC_WEIGHT.filter(k => !state.incidents.some(i => i.key === k));
   const key = avail[Math.floor(Math.random()*avail.length)];
@@ -765,9 +765,9 @@ function assignTask(inc, n, opt, direct){
   state.oxygen = Math.max(0, state.oxygen - (opt.o2||0));
   inc.assigned = true;
   const fit = opt.roles.includes(n.role);
-  n.task = { inc, opt, t:0, dur: direct && !fit ? Math.round(opt.dur*1.6) : opt.dur, phase:'walk' };
+  n.task = { inc, opt, t:0, dur: direct && !fit ? Math.round(opt.dur*1.5) : opt.dur, phase:'walk' };
   n.state = 'busy';
-  npcWalk(n, ST[opt.room], 2.4 + Math.random()*1.4);   // رسیدن خدمه به محل بحران حالا کندتر است
+  npcWalk(n, ST[opt.room], 4.5 + Math.random()*2);   // رسیدن خدمه به محل بحران کند است — فعال‌شدن دیرتر
   n.state = 'busy';   // npcWalk حالت را 'walk' کرد — برای شروع کار باید 'busy' بماند
   n.el.classList.add('fix');
   toast('👥','خدمهٔ #' + fa(n.i+1) + ' — ' + n.role + ' ← ' + ROOM_LABEL[opt.room], '#67e8f9');
@@ -1086,7 +1086,7 @@ function resetGame(){
     phase:'countdown', oxygen:100, energy:100, distance:TOTAL, time:0,
     cooldown:0, holding:false, thrustAnim:0, speed:0,
     temperature:0, damage:0,
-    thrusts:0, events:0, regenMul:1, regenMulT:0, failCd:0, nextEvent:11,
+    thrusts:0, events:0, regenMul:1, regenMulT:0, failCd:0, nextEvent:8,
     crew:1 + Math.floor(Math.random()*8),   // خدمهٔ تصادفی: 1 تا 8 نفر
     sigShown:false, viewShown:false,
     incidents:[], pendingOverheat:false, crewT:3, npcTick:2,
@@ -1125,7 +1125,7 @@ function frame(now){
     if(cdT <= 0){
       state.phase = 'run'; ambOn(); sfx.go();
       toast('🚀','مأموریت آغاز شد — خدمه: ' + fa(state.crew) + ' نفر · اکسیژن: ~' + fa(Math.round(100/state.o2Rate/60)) + ' دقیقه','#4ade80');
-      state.nextEvent = 18 + Math.random()*10;
+      state.nextEvent = 6 + Math.random()*5;   // اولین بحران خیلی زود می‌آید (۶ تا ۱۱ ثانیه)
     }
   }
 
@@ -1237,3 +1237,4 @@ if('serviceWorker' in navigator){
 </script>
 </body>
 </html>
+l>
