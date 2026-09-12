@@ -308,6 +308,101 @@
     border:1px solid rgba(255,255,255,.16);background:rgba(6,8,18,.9);
     font-size:18px;cursor:pointer;transition:transform .1s}
   #muteBtn:active{transform:scale(.9)}
+
+  /* ---------- کارت بحران لایه‌ای (دسته · شدت · شمارش معکوس · گزینه‌های چندگانه) ---------- */
+  .inc-card{position:relative;border-radius:12px;background:rgba(4,8,18,.35)}
+  .inc-card .inc-headrow{border-radius:12px}
+  .inc-card.pinned{box-shadow:0 0 0 1px rgba(250,204,21,.5),0 8px 22px rgba(0,0,0,.5)}
+  .inc-card.pinned .inc-headrow{border-width:2px}
+  .inc-pin{font-size:13px;line-height:1;color:#94a3b8;cursor:pointer;padding:0 3px;flex:none}
+  .inc-pin:active{transform:scale(.86)}
+  .inc-card.pinned .inc-pin{color:var(--yellow)}
+  .inc-stage{font:700 9px var(--mono);color:#cbd5e1;background:rgba(255,255,255,.1);
+    border-radius:5px;padding:1px 4px;margin-inline-start:4px}
+  .inc-sev{font-size:9px;color:#f87171;letter-spacing:-1px;flex:none;min-width:15px;text-align:center}
+  .inc-cd{font:700 10px var(--mono);flex:none;min-width:54px;text-align:center;padding:2px 5px;
+    border-radius:6px;background:rgba(255,255,255,.06);color:#94a3b8}
+  .inc-cd.warn{color:var(--yellow);background:rgba(250,204,21,.13)}
+  .inc-cd.bad{color:#fca5a5;background:rgba(248,113,113,.17);animation:blink 1s steps(2,start) infinite}
+  .inc-cd.work{color:#67e8f9;background:rgba(34,211,238,.14)}
+  .inc-count.q{color:#c4b5fd;border:none;background:rgba(167,139,250,.12);border-radius:8px;
+    padding:3px 8px;font-weight:600;animation:none;text-shadow:none}
+  .inc-tagline{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+  .inc-tag{font:600 9px var(--mono);letter-spacing:.3px;border:1px solid;border-radius:99px;padding:1px 6px;opacity:.92}
+  .inc-chip{font:600 9px var(--ui);border-radius:99px;padding:1px 6px;background:rgba(255,255,255,.07);color:#cbd5e1}
+  .inc-chip.ok{background:rgba(74,222,128,.14);color:#86efac}
+  .inc-chip.bad{background:rgba(248,113,113,.15);color:#fca5a5}
+  .inc-imp{font:10px/1.6 var(--mono);color:#fdba74;margin-bottom:6px}
+  .inc-lock{font:600 10px/1.6 var(--ui);color:#fca5a5;background:rgba(248,113,113,.1);
+    border:1px solid rgba(248,113,113,.32);border-radius:8px;padding:5px 7px;margin-top:2px}
+  .inc-body{max-height:min(40dvh,236px)}
+  .inc-opts button.opt{color:#e2e8f0;text-align:right;padding:7px 9px}
+  .inc-opts button.opt .ol{display:block;font:600 11.5px/1.5 var(--ui)}
+  .inc-opts button.opt .st{font-style:normal;margin-inline-end:2px}
+  .inc-opts button.opt .oc,.inc-opts button.opt .oe,.inc-opts button.opt .ob{
+    display:block;font:400 9.5px var(--mono);margin-top:2px;direction:ltr;text-align:right;font-style:normal}
+  .inc-opts button.opt .oc{color:#7dd3fc}
+  .inc-opts button.opt .oe{color:#86efac;opacity:.85}
+  .inc-opts button.opt .ob{color:#fca5a5}
+  .inc-opts button.opt.safe{border-color:rgba(74,222,128,.45);background:rgba(22,101,52,.14)}
+  .inc-opts button.opt.fast{border-color:rgba(250,204,21,.5);background:rgba(161,98,7,.14)}
+  .inc-opts button.opt.risky{border-color:rgba(248,113,113,.5);background:rgba(127,29,29,.16)}
+  .inc-opts button.opt.ignore{border-color:rgba(148,163,184,.3);background:rgba(148,163,184,.07)}
+  .inc-opts button.opt:not(:disabled):hover{filter:brightness(1.25)}
+  .inc-crew{display:flex;align-items:center;gap:6px;font:600 10px var(--mono);color:#67e8f9;margin:2px 0 6px}
+  .inc-prog{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+  .inc-prog i{display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,#0e7490,#22d3ee);box-shadow:0 0 8px #22d3ee;transition:width .25s linear}
+  .inc-swap{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 4px}
+  button.tiny{font:600 9.5px var(--mono);border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);
+    color:#cbd5e1;border-radius:7px;padding:3px 6px;cursor:pointer;flex:none}
+  button.tiny.pick{text-align:right}
+  button.tiny.pick i{display:block;font:400 9px var(--mono);color:#7dd3fc;font-style:normal}
+  button.tiny:active{transform:scale(.94)}
+
+  /* ---------- نوار وضعیت زیرسیستم‌ها و بافرها ---------- */
+  .sys-strip{position:absolute;left:6px;right:6px;bottom:6px;z-index:5;display:flex;flex-wrap:wrap;
+    gap:5px;justify-content:center;pointer-events:none;direction:rtl}
+  .syschip{display:flex;align-items:center;gap:5px;font:600 9.5px var(--mono);
+    border:1px solid rgba(255,255,255,.1);border-radius:99px;padding:2px 7px;background:rgba(4,8,18,.86)}
+  .syschip i{display:block;width:32px;height:4px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+  .syschip i u{display:block;height:100%;width:100%}
+  .syschip em{font-style:normal;color:#94a3b8}
+  .syschip.mid{border-color:rgba(250,204,21,.45)}
+  .syschip.bad{border-color:rgba(248,113,113,.6);animation:blink 1.5s steps(2,start) infinite}
+  .buffchip{font:600 9px var(--mono);border:1px solid rgba(34,211,238,.4);border-radius:99px;
+    padding:2px 7px;background:rgba(4,8,18,.86);color:#7dd3fc}
+  .buffchip.warn{color:#fdba74;border-color:rgba(251,146,60,.5)}
+  .buffchip.bad{color:#fca5a5;border-color:rgba(248,113,113,.5)}
+
+  /* ---------- خدمه: خستگی و قفل ---------- */
+  .npc u.fatbar{position:absolute;left:1px;bottom:-4px;height:2px;width:0;border-radius:99px;
+    background:linear-gradient(90deg,#4ade80,#facc15,#f87171);box-shadow:0 0 5px rgba(248,113,113,.45)}
+  .npc.lock i{background:#f87171;box-shadow:0 0 8px #f87171}
+  .npc.lock b{opacity:.4;animation:none}
+  .npc.lock::after{content:'🔒';position:absolute;bottom:-14px;left:1px;font-size:8px;line-height:1}
+
+  /* ---------- کارت خدمه ---------- */
+  .cc-skills{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px}
+  .cc-skills span{font:600 9px var(--mono);border-radius:6px;padding:1px 5px;
+    border:1px solid rgba(255,255,255,.12);color:#94a3b8}
+  .cc-skills span.hi{color:#6ee7b7;border-color:rgba(74,222,128,.5);background:rgba(74,222,128,.1)}
+  .cc-skills span.mid{color:#fde68a;border-color:rgba(250,204,21,.35)}
+  .cc-task{font:600 10px var(--mono);color:#67e8f9;margin-bottom:4px;direction:rtl}
+  .cc-note{font:10.5px/1.6 var(--ui);color:#94a3b8;margin-bottom:4px}
+  #crewCard button.cc-send i{display:block;font:400 9px var(--mono);color:#7dd3fc;margin-top:2px;font-style:normal}
+
+  /* ---------- گزارش پایان ---------- */
+  .end-recap{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:12px}
+  .end-recap span{font:600 10.5px var(--mono);color:#cbd5e1;background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:3px 8px}
+  .end-recap b{color:#67e8f9}
+  .panel .intro{font-size:13px;line-height:1.85;color:#a5b4c8;margin-bottom:12px}
+  /* پنل‌های بلند روی موبایل: قابل اسکرول */
+  .overlay{overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .overlay .panel{margin:auto}
+  .inc-headrow.urgent{animation:urgBorder 1.6s ease-in-out infinite}
+  @keyframes urgBorder{0%,100%{box-shadow:0 0 0 rgba(248,113,113,0)}50%{box-shadow:0 0 14px rgba(248,113,113,.45)}}
 </style>
 </head>
 <body>
@@ -328,6 +423,7 @@
           <span>اکسیژن</span>
         </div>
         <div class="stat-val" id="o2Val">۱۰۰٪</div>
+        <div class="stat-sub" id="o2SubVal">مصرف پایه</div>
         <div class="bar"><div class="fill o2fill" id="o2Bar" style="width:100%"></div></div>
       </div>
       <div class="stat en" id="statEn">
@@ -336,6 +432,7 @@
           <span>انرژی</span>
         </div>
         <div class="stat-val" id="enVal">۱۰۰</div>
+        <div class="stat-sub" id="enSubVal">بازیابی ۱٫۳/ث</div>
         <div class="bar"><div class="fill enfill" id="enBar" style="width:100%"></div></div>
       </div>
       <div class="stat di" id="statDist">
@@ -346,6 +443,7 @@
           <span>مسافت باقی‌مانده</span>
         </div>
         <div class="stat-val" id="distVal">۹٬۰۰۰ کیلومتر</div>
+        <div class="stat-sub" id="distSubVal">حرکت خودکار ۱ km/s</div>
         <div class="bar"><div class="fill disfill" id="distBar" style="width:0%"></div></div>
       </div>
       <div class="stat tp" id="statTp">
@@ -397,10 +495,14 @@
         <div class="i-panel" style="left:26%;top:27%">سیستم<i></i><i></i></div>
         <div class="i-panel" style="left:45%;top:29%">ناوبری<i></i><i></i></div>
         <div class="i-panel" style="left:72%;top:33%">موتور<i></i><i></i></div>
+        <div class="i-panel" style="left:79%;top:40%">هوا‌لاک<i></i><i></i></div>
+        <div class="i-panel" style="left:29%;top:41%">آزمایش<i></i><i></i></div>
+        <div class="i-panel" style="left:10%;top:63%">آشپزخانه<i></i><i></i></div>
         <div class="i-strip" id="iStrip"></div>
         <div class="i-npcs" id="iNpcs"></div>
       </div>
 
+      <div class="sys-strip" id="sysStrip"></div>
       <div id="incBar"></div>
       <div id="crewCard"></div>
       <div id="toast"></div>
@@ -413,7 +515,7 @@
         <span class="sub" id="thrustSub">مصرف فعلی ۳ انرژی | فاصله ۳۰ کیلومتر</span>
       </button>
       <div class="cdbar"><div id="cdFill"></div></div>
-      <div class="keyhint">ریتم‌دار شتاب بده · روی خدمه کلیک کن و مأموریت بده</div>
+      <div class="keyhint">ریتم‌دار شتاب بده · روی خدمه کلیک کن و مأموریت بده · کلیدهای ۱/۲/۳ = اعزام سریع به فوری‌ترین بحران</div>
     </div>
   </div>
 
@@ -423,16 +525,20 @@
       <div class="logo">LAST ORBIT</div>
       <h1>لست اوربیت</h1>
       <p class="subtitle">سفر به ایستگاه آلفا</p>
-      <p>تو فرماندهٔ سفینه‌ای. سفر ۲۰ تا ۳۰ دقیقه‌ای: ۹٬۰۰۰ کیلومتر تا ایستگاه آلفا، همراه با خدمه‌ای که فقط به فرمان تو عمل می‌کنند.</p>
+      <p class="intro">تو فرماندهٔ سفینه‌ای. سفر ۲۰ تا ۳۰ دقیقه‌ای: ۹٬۰۰۰ کیلومتر تا ایستگاه آلفا، با خدمه‌ای که هرکدام یک تخصص دارند و هرکدام فقط یک‌کاره‌اند.</p>
       <ul class="rules">
-        <li><b>🫁 اکسیژن</b> — آرام مصرف می‌شود؛ خدمهٔ بیشتر یعنی مصرف بیشتر. تصمیم‌های بد هزینهٔ واقعی دارند.</li>
-        <li><b>⚡ انرژی</b> — شتاب و اعزام خدمه انرژی می‌خورد؛ خودبه‌خود بازیابی می‌شود.</li>
-        <li><b>🌡️ دمای موتور</b> — خیلی آهسته خنک می‌شود؛ بالای حد امن (۴۰۰) گرمای بیشتر. اورهیت موتور یک حادثهٔ واقعی است.</li>
-        <li><b>👥 فرماندهی خدمه</b> — هر ۲۰ تا ۴۰ ثانیه یک بحران تازه می‌آید، خودشان حل نمی‌شوند و تا ۴ بحران همزمان بالا می‌آید! هر مأموریت ۳۰ تا ۶۰ ثانیه طول می‌کشد؛ بحران‌ها با گذشت زمان بدتر می‌شوند؛ روی خدمه کلیک کن، نقششان را بسنج و سریع مأموریت بده.</li>
+        <li><b>🫁 اکسیژن</b> — آرام مصرف می‌شود؛ خدمهٔ بیشتر یعنی مصرف بیشتر. سختی اصلی از تصمیم‌های بد می‌آید، نه از کمبود مصنوعی هوا.</li>
+        <li><b>⚡ انرژی و 🌡️ دما</b> — شتاب و اعزام خدمه انرژی می‌خورد؛ اورهیت موتور یک بحران واقعی است، نه یک عدد.</li>
+        <li><b>🎲 ۷ دستهٔ رویداد</b> — مکانیکی، برقی، پشتیبانی حیات، ناوبری، خدمه، محیطی و ناشناس. بعضی مفیدند، بعضی خنثی، بعضی خطرناک — و چند رویداد نادر که فقط یک‌بار در هر سفر می‌آیند.</li>
+        <li><b>🧩 بحران‌های چندمرحله‌ای</b> — اول «گرمای موتور» می‌آید، عیب‌یابی می‌کنی، بعد معلوم می‌شود مشکل از سیستم خنک‌کننده است و باید انتخاب کنی: تعمیر کامل، راه‌حل موقت، یا کاهش قدرت موتور.</li>
+        <li><b>🔗 اثر متقاطع</b> — قطعی برق، اکسیژن‌سازی را ضعیف می‌کند؛ گرمای موتور، مصرف انرژی را بالا می‌برد؛ طوفان خورشیدی، سیم‌کشی را می‌سوزاند. وضعیت سفینه تعیین می‌کند بحران بعدی از کجا بیاید.</li>
+        <li><b>⏱ بحران‌های همزمان</b> — تا ۴ بحران باز می‌ماند و بقیه در صف‌اند؛ اگر بیش از حد منتظر بمانی، وخیم‌تر می‌شوند (مرحلهٔ ۲ و ۳) و بعد با خسارت می‌سوزند.</li>
+        <li><b>👥 خدمه محدود است</b> — هر نفر تا پایان مأموریت قفل است. خستگی بالا کار را کند و پرریسک می‌کند؛ مصدوم فقط با پزشک برمی‌گردد؛ در تشعشع، EVA ممنوع است.</li>
+        <li><b>🛡 ⚡ 🎲 سه سبک تصمیم</b> — امن و کند / سریع و پرهزینه / ریسکی و ارزان. روی هر گزینه٪ موفقیت با بهترین خدمهٔ آزاد نوشته شده.</li>
       </ul>
       <button class="bigbtn" id="startBtn">🚀 آغاز مأموریت</button>
-      <div class="hint">هر خدمه یک نقش دارد — Engineer برای موتور، Technician برای برق، Medic برای خدمه...</div>
-      <div class="ver">Last Orbit v1.4.0 · بحران تازه هر ۲۰ تا ۴۰ ثانیه</div>
+      <div class="hint">مهندس←موتور و بدنه · تکنسین←برق و حیات · ناوبر←مسیر · دانشمند←ناشناس · امنیتی←EVA · پزشک←مصدوم‌ها · خدمه←همه‌کاره</div>
+      <div class="ver">Last Orbit v1.5.0 · کارگردان بحران تطبیقی · ۶۰+ رویداد چندمرحله‌ای</div>
     </div>
   </div>
 
@@ -457,37 +563,94 @@
 <script>
 (function(){
 'use strict';
-const GAME_VERSION = '1.4.0';
-try{ console.info('%c🚀 Last Orbit v' + GAME_VERSION + ' — بحران تازه هر ۲۰ تا ۴۰ ثانیه', 'color:#22d3ee'); }catch(e){}
+const GAME_VERSION = '1.5.0';
+try{ console.info('%c🚀 Last Orbit v' + GAME_VERSION + ' — کارگردان بحران تطبیقی', 'color:#22d3ee'); }catch(e){}
 const $ = id => document.getElementById(id);
 
-/* ---------- پارامترهای بازی ---------- */
-const THRUST_DIST = 30, COOLDOWN = 0.32, REGEN = 1.3, O2_DRAIN = 0.055, TOTAL = 9000;
+/* ============================================================
+   پارامترهای بازی
+   ============================================================ */
+const THRUST_DIST = 18, COOLDOWN = 0.32, REGEN = 1.3, O2_DRAIN = 0.043, TOTAL = 9000;
 const STATION_SIG = 2000, STATION_VIEW = 1000;   // فاصله‌های ظهور ایستگاه
 const SAFE_SPEED = 400, SPEED_GAIN = 300, MAX_SPEED = 1000;
-const COOLING = 2.2, MAX_TEMP = 100, DMG_HIT = 20, DMG_REPAIR = 0.5;  // تعمیر خودکار خیلی کند — آسیب‌ها می‌مانند
-const MAX_INCIDENTS = 4;                        // تا ۴ بحران همزمان — بازی سخت‌تر
-const eventGap = () => 20 + Math.random()*20;   // بحران تازه هر ۲۰ تا ۴۰ ثانیه، حتی حین بحران‌های فعال
-const calmGap  = () => 12 + Math.random()*8;    // فرصت کوتاه بعد از رفعِ همهٔ بحران‌ها (۱۲ تا ۲۰ ثانیه)
-const costOf = t => 3 + Math.floor(t * 0.03);         // هزینه هر شتاب: 3 تا 6
+const COOLING = 2.2, MAX_TEMP = 100, DMG_REPAIR = 0.5;  // ترمیم خودکار موتور
+const MAX_INCIDENTS = 4;                        // سقف همزمان بحران‌ها (به‌علاوهٔ صف)
+const CREW_MIN = 4, CREW_MAX = 6;               // خدمه: مدیریت همزمان بحران‌ها
+const SYS_TRICKLE = 0.075;                      // ترمیم آهستهٔ زیرسیستم‌ها (٪ بر ثانیه)
+const costOf = t => 3 + Math.floor(t * 0.03);         // هزینهٔ هر شتاب: 3 تا 6
 const heatPerThrust = spd => 4 + (spd > SAFE_SPEED ? 3 : 0);
 
+/* ---------- سرویس‌های سفینه (حافظهٔ وضعیت — روی انتخاب رویداد اثر می‌گذارند) ---------- */
+const SYS = {
+  mech:{ fa:'مکانیک',   color:'#fb923c' },
+  elec:{ fa:'برق',       color:'#fbbf24' },
+  life:{ fa:'حیات',      color:'#22d3ee' },
+  nav:{  fa:'ناوبری',    color:'#a78bfa' },
+  hull:{ fa:'بدنه',      color:'#f87171' }
+};
+const SYSKEYS = Object.keys(SYS);
+const CATS = {
+  mech:{ fa:'مکانیکی',        icon:'⚙️', color:'#fb923c' },
+  elec:{ fa:'برقی',           icon:'⚡', color:'#fbbf24' },
+  life:{ fa:'پشتیبانی حیات',  icon:'🫁', color:'#22d3ee' },
+  nav:{  fa:'ناوبری',          icon:'🧭', color:'#a78bfa' },
+  crew:{ fa:'خدمه',            icon:'👥', color:'#f472b6' },
+  env:{  fa:'محیطی',           icon:'🌪️', color:'#94a3b8' },
+  unk:{  fa:'ناشناس',         icon:'🌌', color:'#c084fc' }
+};
+const CATKEYS = Object.keys(CATS);
+const EFFKEYS_OK = ['o2','en','temp','km','fat','dmg','fix','buff','fx','blind'];
+/* ایستگاه‌های داخل کابین — همان نمای داخلی، با چند ایستگاه تازه */
+const ROOM_LABEL = {
+  eng:'اتاق موتور', life:'پشتیبانی حیات', sys:'هستهٔ برق', nav:'کنسول ناوبری',
+  battery:'اتاق انرژی', med:'بلوک پزشکی', hull:'بخش بدنه', window:'عرشهٔ دید',
+  hall:'راهرو', lock:'هوا‌لاک', lab:'آزمایشگاه', galley:'آشپزخانه'
+};
+/* ایستگاه‌های داخل کابین — همان نمای داخلی، با چند ایستگاه تازه */
+
+/* ---------- وضعیت بازی ---------- */
 const state = {
   phase:'start',            // start | countdown | run | end
   oxygen:100, energy:100, distance:TOTAL, time:0,
   cooldown:0, holding:false, thrustAnim:0, speed:0,
   temperature:0, damage:0,
-  thrusts:0, events:0, regenMul:1, regenMulT:0, failCd:0,
+  thrusts:0, events:0, failCd:0,
   crew:4, o2Rate:.13, sigShown:false, viewShown:false,
-  incidents:[], pendingOverheat:false, crewT:3, npcTick:2,
+  incidents:[], queue:[], uid:1, hist:[], histCat:[],
+  buffs:[], fxt:[], fxNotes:[], auto:false, policy:'greedy', blocked:0, seed:0, hintT:0, lockedN:0,
   nextEvent:12, lowO2Beep:0, heatBeep:0,
-  o2warn1:false, o2warn2:false, heatWarn1:false, heatWarn2:false
+  npcTick:2,
+  o2warn1:false, o2warn2:false, heatWarn1:false, heatWarn2:false,
+  /* --- سیستم بحران (v1.5) --- */
+  sys:{ mech:100, elec:100, life:100, nav:100, hull:100 },
+  mods:null, modsDirty:true,
+  rareT:0, blindT:0,
+  resolved:0, escalated:0, ignored:0, injuries:0, salvaged:0, contact:0, neglect:0,
+  shakeT:0
 };
 let last = performance.now();
 let muted = false, AC = null;
 let cdT = 0, lastCd = 99;
 
-/* ---------- صدا (WebAudio — بدون فایل خارجی) ---------- */
+/* ---------- تصادف با seed: هر Run متفاوت ولی قابل بازتولید ---------- */
+let rngState = (Date.now() ^ 0x9e3779b9) >>> 0;
+function seedRng(s){ rngState = (s >>> 0) || 1; }
+function rnd(){
+  rngState = (rngState + 0x6d2b79f5) >>> 0;
+  let t = rngState;
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+const rndi = (a, b) => a + Math.floor(rnd() * (b - a + 1));
+const rf = (a, b) => a + rnd() * (b - a);
+const chance = p => rnd() < p;
+const pick = arr => arr[Math.floor(rnd() * arr.length)];
+const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
+
+/* ============================================================
+   صدا (WebAudio — بدون فایل خارجی)
+   ============================================================ */
 function ac(){
   if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
   if(AC.state === 'suspended') AC.resume();
@@ -503,7 +666,7 @@ function tone(f, d, type, vol, to){
     g.gain.setValueAtTime(vol, t);
     g.gain.exponentialRampToValueAtTime(.0001, t + d);
     o.connect(g); g.connect(a.destination);
-    o.start(t); o.stop(t + d + .05);
+    o.start(t); g.gain && o.stop(t + d + .05);
   }catch(e){}
 }
 /* نویز سفید یک‌باره ساخته می‌شود و برای افکت‌های بادی استفاده می‌شود (سبک و کم‌هزینه) */
@@ -534,7 +697,7 @@ function whoosh(vol, dur, fFrom, fTo){
     src.start(t); src.stop(t + dur + .05);
   }catch(e){}
 }
-/* هوم فضایی آرام — دو نوسان‌ساز ثابت با ولوم بسیار کم (بدون LFO برای مصرف کم CPU) */
+/* هوم فضایی آرام — دو نوسان‌ساز ثابت با ولوم بسیار کم */
 let amb = null;
 function ambOn(){
   if(muted || amb) return;
@@ -574,8 +737,14 @@ const sfx = {
   event(kind){
     if(kind === 'good'){ tone(523,.12,'sine',.055); setTimeout(()=>tone(784,.18,'sine',.05),110); }
     else if(kind === 'bad'){ tone(330,.14,'sawtooth',.04); setTimeout(()=>tone(247,.2,'sawtooth',.04),120); }
+    else if(kind === 'rare'){ tone(311,.2,'sine',.05); setTimeout(()=>tone(466,.22,'sine',.045),150);
+      setTimeout(()=>tone(622,.3,'sine',.04),320); }
     else { tone(494,.12,'triangle',.045); }
   },
+  escalate(){ tone(220,.16,'square',.05,150); setTimeout(()=>tone(180,.22,'sawtooth',.045,110),140); },
+  resolve(){ tone(660,.1,'triangle',.05); setTimeout(()=>tone(880,.16,'sine',.045),90); },
+  deny(){ tone(150,.12,'square',.05); },
+  crit(){ [784,988,1175].forEach((f,i)=>setTimeout(()=>tone(f,.14,'sine',.05),i*70)); },
   signal(){ tone(880,.35,'sine',.05,1760); },
   view(){ tone(660,.18,'sine',.055); setTimeout(()=>tone(990,.22,'sine',.055),160); },
   fail(){ tone(130,.09,'square',.05); },
@@ -588,249 +757,2078 @@ const sfx = {
   go(){ tone(440,.16,'triangle',.09,880); }
 };
 
-/* ---------- نمای بازی (فقط داخلی — بدون کانواس) ---------- */
+/* ---------- نمای بازی ---------- */
 const viewport = $('viewport');
 
 /* ---------- اعلان‌ها ---------- */
-let toastTimer = null;
+let toastTimer = null, toastQ = [], toastT = 0;
 function toast(icon, text, color){
+  toastQ.push([icon, text, color]);
+  if(toastQ.length > 4) toastQ.shift();
+  if(toastT <= 0) flushToast();
+}
+function flushToast(){
+  const p = toastQ.shift();
+  if(!p){ toastT = 0; return; }
   const el = $('toast');
-  el.innerHTML = '<i class="tic">' + icon + '</i>' + text;
-  el.style.borderColor = color || '#22d3ee';
-  el.style.boxShadow = '0 0 28px ' + (color || '#22d3ee') + '55';
+  el.innerHTML = '<i class="tic">' + p[0] + '</i>' + p[1];
+  el.style.borderColor = p[2] || '#22d3ee';
+  el.style.boxShadow = '0 0 28px ' + (p[2] || '#22d3ee') + '55';
   el.classList.remove('big'); el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>el.classList.remove('show'), 2300);
+  toastT = 2.4;
+  toastTimer = setTimeout(()=>{ el.classList.remove('show'); flushToast(); }, 2100);
 }
 function bigToast(text, size){
   const el = $('toast');
+  clearTimeout(toastTimer);
   el.innerHTML = text; el.classList.add('big','show');
   el.style.fontSize = (size || 30) + 'px';
-  clearTimeout(toastTimer);
   toastTimer = setTimeout(()=>el.classList.remove('show','big'), size > 28 ? 900 : 2200);
 }
 
-/* ---------- حوادث: بازیکن تصمیم می‌گیرد و خدمه را اعزام می‌کند ---------- */
-const ROOM_LABEL = {eng:'اتاق موتور', life:'پشتیبانی حیات', sys:'هستهٔ برق', nav:'کنسول ناوبری',
-  battery:'اتاق انرژی', med:'اتاق خدمه', hull:'بخش بدنه', window:'عرشهٔ دید', hall:'راهرو'};
-const INCIDENTS = {
-  engineOverheat:{ icon:'🔥', title:'گرمای بیش از حد موتور', color:'#fb923c',
-    desc:()=> 'دمای موتور: ' + fa(Math.round(state.temperature)) + '° — دما در حال افزایش است',
-    rec:['مهندس'], kind:'bad',
-    passive: dt => { state.temperature = Math.min(MAX_TEMP, state.temperature + .9*dt); },
-    options:[
-      {id:'cool', label:'خنک‌سازی موتور', roles:['مهندس'], room:'eng', dur:40, energy:3, o2:1,
-       during: dt => { state.temperature = Math.max(0, state.temperature - 2.6*dt); },
-       done:()=>{ state.temperature = Math.max(0, state.temperature - 12); toast('❄️','مهندس موتور را خنک کرد — دما −۱۲°','#4ade80'); }},
-      {id:'inspect', label:'بررسی موتور', roles:['مهندس','تکنسین'], room:'eng', dur:30, energy:1, o2:0,
-       done:()=>{ state.temperature = Math.max(0, state.temperature - 6); state.damage = Math.max(0, state.damage - 4);
-         toast('🔍','بازرسی انجام شد — دما −۶° و آسیب −۴٪','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 14);
-        toast('🔥','موتور بی‌حفاظ ماند — آسیب +۱۴٪','#f87171'); }}
-    ]},
-  battery:{ icon:'🔋', title:'خرابی باتری کوانتومی', color:'#a78bfa',
-    desc:()=> 'بازیابی انرژی مختل شده و شارژ در حال تخلیه است',
-    rec:['تکنسین','دانشمند'], kind:'bad',
-    passive: dt => { state.energy = Math.max(0, state.energy - .7*dt); },
-    options:[
-      {id:'replace', label:'تعویض باتری', roles:['تکنسین'], room:'battery', dur:36, energy:4, o2:1,
-       done:()=>{ state.energy = Math.min(100, state.energy + 12); toast('🔋','باتری کوانتومی نصب شد! +۱۲ انرژی','#a78bfa'); }},
-      {id:'inspect', label:'بررسی سیستم', roles:['دانشمند','تکنسین'], room:'battery', dur:30, energy:2, o2:0,
-       done:()=>{ state.energy = Math.min(100, state.energy + 5); toast('🔬','بررسی سیستم — +۵ انرژی','#a78bfa'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 12);
-        toast('⚡','تخلیهٔ باتری — −۱۲ انرژی','#f87171'); }}
-    ]},
-  oxygen:{ icon:'💨', title:'نشت اکسیژن', color:'#f87171',
-    desc:()=> 'مصرف اکسیژن ×۱٫۳ شده است',
-    rec:['تکنسین'], kind:'bad',
-    options:[
-      {id:'repair', label:'تعمیر نشت', roles:['تکنسین'], room:'life', dur:34, energy:2, o2:1,
-       done:()=>{ state.oxygen = Math.min(100, state.oxygen + 2); toast('🛠️','نشت تعمیر شد — مصرف عادی · +۲٪ اکسیژن','#4ade80'); }},
-      {id:'seal', label:'مهر و موم اضطراری', roles:['امنیتی','تکنسین'], room:'life', dur:30, energy:4, o2:1,
-       done:()=>{ toast('🧯','مهر و موم اضطراری انجام شد','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 8);
-        toast('💨','نشت ادامه یافت — −۸٪ اکسیژن','#f87171'); }}
-    ]},
-  power:{ icon:'⚡', title:'قطعی برق', color:'#fbbf24',
-    desc:()=> 'بازیابی انرژی متوقف شده است',
-    rec:['تکنسین'], kind:'bad',
-    options:[
-      {id:'repair', label:'تعمیر ژنراتور', roles:['تکنسین'], room:'sys', dur:33, energy:3, o2:1,
-       done:()=>{ state.energy = Math.min(100, state.energy + 6); toast('⚡','ژنراتور تعمیر شد — برق بازگشت','#4ade80'); }},
-      {id:'restart', label:'راه‌اندازی مجدد', roles:['تکنسین','مهندس'], room:'sys', dur:30, energy:2, o2:0,
-       done:()=>{ state.regenMul = 1.5; state.regenMulT = 12; toast('⚡','راه‌اندازی مجدد — بازیابی انرژی ×۱٫۵','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.energy = Math.max(0, state.energy - 14);
-        toast('🕯️','خاموشی طولانی شد — −۱۴ انرژی','#f87171'); }}
-    ]},
-  nav:{ icon:'🛰️', title:'خطای ناوبری', color:'#22d3ee',
-    desc:()=> 'مسیر از هدف منحرف شده — سفینه در حال دور شدن است',
-    rec:['ناوبر'], kind:'bad',
-    passive: dt => { state.distance = Math.min(TOTAL, state.distance + 3*dt); },
-    options:[
-      {id:'recalc', label:'محاسبهٔ مجدد مسیر', roles:['ناوبر'], room:'nav', dur:35, energy:2, o2:1,
-       done:()=>{ state.distance = Math.max(0, state.distance - 200); toast('🧭','مسیر اصلاح شد — +۲۰۰ کیلومتر پیشروی','#22d3ee'); }},
-      {id:'manual', label:'اصلاح دستی', roles:['ناوبر','خدمه'], room:'nav', dur:38, energy:1, o2:0,
-       done:()=>{ state.distance = Math.max(0, state.distance - 120); toast('🧭','اصلاح دستی — +۱۲۰ کیلومتر','#22d3ee'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.distance = Math.min(TOTAL, state.distance + 220);
-        toast('🛰️','انحراف مسیر — +۲۲۰ کیلومتر','#f87171'); }}
-    ]},
-  hull:{ icon:'🛡️', title:'آسیب بدنه', color:'#fca5a5',
-    desc:()=> 'بدنهٔ سفینه آسیب دیده — ترک‌ها در حال گسترش‌اند',
-    rec:['مهندس','امنیتی'], kind:'bad',
-    passive: dt => { state.damage = Math.min(100, state.damage + .8*dt); },
-    options:[
-      {id:'repair', label:'تعمیر بدنه', roles:['مهندس','امنیتی'], room:'hull', dur:36, energy:3, o2:1,
-       done:()=>{ state.damage = Math.max(0, state.damage - 15); toast('🛠️','بدنه تعمیر شد — آسیب −۱۵٪','#4ade80'); }},
-      {id:'seal', label:'مهر موقت', roles:['امنیتی','خدمه'], room:'hull', dur:31, energy:5, o2:0,
-       done:()=>{ state.damage = Math.max(0, state.damage - 8); toast('🧯','مهر موقت — آسیب −۸٪','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.damage = Math.min(100, state.damage + 12);
-        toast('🛡️','ترک خوردگی بیشتر شد — آسیب +۱۲٪','#f87171'); }}
-    ]},
-  medical:{ icon:'⚕️', title:'اورژانس پزشکی خدمه', color:'#f472b6',
-    desc:()=> 'مصرف اکسیژن خدمه ×۱٫۲ شده است',
-    rec:['پزشک'], kind:'bad',
-    options:[
-      {id:'treat', label:'درمان خدمه', roles:['پزشک'], room:'med', dur:32, energy:2, o2:1,
-       done:()=>{ state.oxygen = Math.min(100, state.oxygen + 3); toast('⚕️','درمان انجام شد — +۳٪ اکسیژن','#4ade80'); }},
-      {id:'stab', label:'پایدارسازی', roles:['پزشک','خدمه'], room:'med', dur:30, energy:3, o2:0,
-       done:()=>{ state.oxygen = Math.min(100, state.oxygen + 1); toast('⚕️','وضعیت پایدار شد — +۱٪ اکسیژن','#4ade80'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ state.oxygen = Math.max(0, state.oxygen - 7);
-        toast('🚑','وضعیت وخیم شد — −۷٪ اکسیژن','#f87171'); }}
-    ]},
-  signal:{ icon:'🌌', title:'سیگنال ناشناس', color:'#c084fc',
-    desc:()=> 'سیگنال ناشناس در اطراف سفینه',
-    rec:['دانشمند','امنیتی'], kind:'neutral',
-    options:[
-      {id:'investigate', label:'بررسی میدانی', roles:['امنیتی','دانشمند'], room:'window', dur:34, energy:2, o2:1,
-       done:()=>{ if(Math.random() < .65){ state.distance = Math.max(0, state.distance - 150); toast('👽','سیگنال یک گذرگاه کیهانی بود! +۱۵۰ کیلومتر','#22d3ee'); }
-         else toast('🌌','فقط یک سیگنال کهنه بود...','#94a3b8'); }},
-      {id:'scan', label:'اسکن', roles:['دانشمند','ناوبر'], room:'nav', dur:30, energy:1, o2:0,
-       done:()=>{ if(Math.random() < .5){ state.distance = Math.max(0, state.distance - 100); toast('📡','اسکن مسیر بهتری پیدا کرد! +۱۰۰ کیلومتر','#22d3ee'); }
-         else toast('📡','هیچ چیز مفیدی پیدا نشد','#94a3b8'); }},
-      {id:'ignore', label:'نادیده گرفتن', roles:null, done:()=>{ toast('🌌','سیگنال نادیده گرفته شد','#94a3b8'); }}
-    ]}
+/* ============================================================
+   اثرهای متقاطع (FX) — ستون فقرات «رویدادها روی هم اثر می‌گذارند»
+   هر بحران یکی چند FX فعال می‌کند؛ همه در mods جمع می‌شوند.
+   o2/regen: ضریب نسبی · heat/cool: ضریب · thrust: تغییر بازده شتاب
+   drift: کیلومتر بر ثانیه عقب‌رانی · hullDmg: آسیب بدنه بر ثانیه
+   fatigue: خستگی اضافه بر ثانیه برای همه · eva: ممنوعیت بیرون‌زدن
+   w: ضریب وزن دسته‌ها در کارگردان رویداد
+   ============================================================ */
+const FX = {
+  overheat:{   fa:'موتور داغ — مصرف انرژی بالا',     heat:.35, costMul:.28, cool:-.35, regen:-.12, w:{mech:.5, elec:.35} },
+  coolFail:{   fa:'خنک‌سازی از کار افتاده',          cool:-.6, heat:.55, w:{mech:.9, elec:.3} },
+  powerDown:{  fa:'شبکهٔ برق ناقص — اکسیژن‌سازی ضعیف', regen:-.55, o2:.16, cool:-.15, w:{elec:.9, life:.6, unk:.2} },
+  brownOut:{   fa:'افت ولتاژ — سیستم‌ها ضعیف',       regen:-.3, thrust:-.1, w:{elec:.6, life:.4} },
+  o2Leak:{     fa:'نشت اکسیژن',                     o2:.32, w:{life:.8, crew:.3} },
+  scrubOff:{   fa:'اسکربر CO₂ خاموش',                o2:.2, fatigue:.16, w:{life:.7, crew:.5} },
+  hullBreach:{ fa:'پارگی بدنه — تخلیهٔ آرام',         o2:.24, hullDmg:.16, w:{env:.5, mech:.3} },
+  navDrift:{   fa:'انحراف از مسیر',                   drift:1.6, w:{nav:.9} },
+  spin:{       fa:'چرخش کنترل‌شدهٔ سفینه',            thrust:-.18, heat:.15, w:{nav:.7, mech:.3} },
+  commsDown:{  fa:'مخابرات قطع — دید نیمه‌باز',        w:{unk:1.1, env:.4} },
+  bioHazard:{  fa:'آلودگی بیولوژیک',                  o2:.1, fatigue:.2, w:{crew:.9, life:.6} },
+  moraleLow:{  fa:'روحیهٔ پایین خدمه',                fatigue:.24, w:{crew:.8} },
+  debris:{     fa:'میدان تراشه — برد بدنه',            hullDmg:.42, w:{env:.8, mech:.35} },
+  storm:{      fa:'طوفان خورشیدی',                    regen:-.4, hullDmg:.2, heat:.2, w:{elec:1.3, unk:.5} },
+  radiation:{  fa:'کمربند تشعشع — بیرون‌زدن ممنوع',    eva:1, fatigue:.1, w:{env:.7, crew:.5} },
+  drag:{       fa:'ابر کیهانی — پسا و گرمای بیشتر',    thrust:-.22, heat:.4, w:{env:.5, mech:.4} },
+  iceRadi:{    fa:'یخ روی رادیاتور',                   cool:-.45, w:{mech:.4, env:.3} },
+  pumpFault:{  fa:'پمپ سوخت نوسانی',                   costMul:.3, thrust:-.12, w:{mech:.7} },
+  leakCool:{   fa:'نشت مایع خنک‌کننده',                cool:-.5, heat:.3, w:{mech:.8, elec:.25} },
+  fire:{       fa:'حریق در بخش برق',                    hullDmg:.5, regen:-.35, o2:.15, w:{elec:1.1, life:.6, env:.3} },
+  stuckDoor:{  fa:'در فشاری قفل شده',                  o2:.06, fatigue:.1, w:{crew:.4, life:.3} },
+  derate:{     fa:'موتور در حالت احتیاط',               thrust:-.24, heat:-.6, w:{mech:-.3} },
+  tow:{        fa:' یدک‌کشی — سرعت کم',                 thrust:-.3, costMul:.2, w:{nav:.4, mech:.3} },
+  salvage:{    fa:'غنیمة بازیافتی',                     regen:.35, w:{} },
+  goodWind:{   fa:'جریان لغزشی',                        thrust:.28, cool:.3, w:{} },
+  charted:{    fa:'مسیر بهینه‌شده',                     drift:-2.4, w:{nav:-.35} },
+  cabinHot:{   fa:'گرمای کابین — خدمه زود خسته می‌شوند', fatigue:.24, heat:.22, w:{crew:.5, life:.4} },
+  cabinCold:{  fa:'سرمای کابین — کار مکانیکی سخت',        fatigue:.14, cool:.22, w:{mech:.4, crew:.3} },
+  algae:{      fa:'جلبک‌های اکسیژن‌ساز ضعیف',              o2:.15, w:{life:.6} },
+  cryoAlarmFx:{fa:'کایو‌پاد ناپایدار',                     fatigue:.18, o2:.1, w:{crew:.6, life:.3} },
+  towHaul:{    fa:' یدک‌کشی جسم سنگین',                    thrust:-.34, costMul:.15, heat:.2, w:{mech:.5, env:.3} }
 };
-const INC_WEIGHT = ['engineOverheat','battery','oxygen','power','nav','hull','medical','signal'];
 
-function triggerEvent(){
-  if(state.incidents.length >= MAX_INCIDENTS){ state.nextEvent = 5; return; }
-  state.events++;
-  const avail = INC_WEIGHT.filter(k => !state.incidents.some(i => i.key === k));
-  const key = avail[Math.floor(Math.random()*avail.length)];
-  openIncident(key);
+/* ============================================================
+   کمک‌متدهای وضعیت — همهٔ رویدادها از همین‌ها استفاده می‌کنند
+   ============================================================ */
+const fa = n => Math.round(n).toLocaleString('fa-IR');
+const fa1 = n => (Math.round(n * 10) / 10).toLocaleString('fa-IR');
+const pct = n => fa(Math.round(n)) + '٪';
+
+const addO2 = v => { state.oxygen = clamp(state.oxygen + v, 0, 100); };
+const addEn = v => { state.energy = clamp(state.energy + v, 0, 100); };
+const addTemp = v => { state.temperature = clamp(state.temperature + v, 0, MAX_TEMP); };
+const addKm = v => { state.distance = Math.max(0, state.distance - v); };          // v>0 → پیشروی
+const sysDmg = (c, v) => {
+  if(c === 'mech') state.damage = clamp(state.damage + v, 0, 100);
+  else if(state.sys[c] !== undefined) state.sys[c] = clamp(state.sys[c] - v, 0, 100);
+};
+const sysFix = (c, v) => {
+  if(c === 'mech') state.damage = clamp(state.damage - v, 0, 100);
+  else if(state.sys[c] !== undefined) state.sys[c] = clamp(state.sys[c] + v, 0, 100);
+};
+const fatigueAll = v => { for(const n of npcs) n.fat = clamp(n.fat + v, 0, 100); };
+const integrity = c => c === 'mech' ? 100 - state.damage : state.sys[c];
+
+const BUFFS = {
+  regen:{ fa:'بازیابی برق',   color:'#fbbf24' },
+  cool:{  fa:'خنک‌سازی کمکی', color:'#4ade80' },
+  o2:{    fa:'تولید اکسیژن',  color:'#22d3ee' },
+  speed:{ fa:'راندمان پیشرانه', color:'#e879f9' },
+  rest:{  fa:'استراحت خدمه',  color:'#4ade80' },
+  scan:{  fa:'ژنراتور کمکی',  color:'#a78bfa' }
+};
+function addBuff(k, v, t){
+  const b = state.buffs.find(x => x.k === k);
+  if(b){ if(v > b.v) b.v = v; if(t > b.t) b.t = t, b.t0 = Math.max(b.t0, t); }
+  else state.buffs.push({ k, v, t, t0: t });
 }
-function openIncident(key){
-  if(state.phase !== 'run') return;
-  if(state.incidents.some(i => i.key === key)) return;   // بحران تکراری نه
-  if(state.incidents.length >= MAX_INCIDENTS){
-    if(key === 'engineOverheat') state.pendingOverheat = true;   // در صف می‌ماند
-    return;
+function buffVal(k){ let s = 0; for(const b of state.buffs) if(b.k === k) s += b.v * (b.t / b.t0); return s; }
+function fxAdd(k, t){
+  const e = state.fxt.find(x => x.k === k);
+  if(e){ if(t > e.t){ e.t = t; e.t0 = Math.max(e.t0, t); } }
+  else state.fxt.push({ k, t, t0: t });
+  state.modsDirty = true;
+}
+
+/* اعمال یک بستهٔ اثر (declarative) */
+function applyEff(e, m){
+  if(!e) return;
+  if(e.o2) addO2(e.o2 * m);
+  if(e.en) addEn(e.en * m);
+  if(e.temp) addTemp(e.temp * m);
+  if(e.km) addKm(e.km * m);
+  if(e.fat) fatigueAll(e.fat * m);
+  if(e.dmg) for(const k in e.dmg) sysDmg(k, e.dmg[k] * m);
+  if(e.fix) for(const k in e.fix) sysFix(k, e.fix[k] * m);
+  if(e.buff) addBuff(e.buff.k, e.buff.v, e.buff.t);
+  if(e.fx) for(const k in e.fx) fxAdd(k, e.fx[k]);
+  if(e.blind) state.blindT = Math.max(state.blindT, e.blind);
+}
+function effText(e){
+  if(!e) return '';
+  const p = [];
+  if(e.o2) p.push((e.o2 > 0 ? '+' : '−') + fa(Math.abs(e.o2)) + '٪O₂');
+  if(e.en) p.push((e.en > 0 ? '+' : '−') + fa(Math.abs(e.en)) + '⚡');
+  if(e.temp) p.push('دما ' + (e.temp > 0 ? '+' : '−') + fa(Math.abs(e.temp)) + '°');
+  if(e.km) p.push('مسافت ' + (e.km > 0 ? '+' : '−') + fa(Math.abs(e.km)));
+  if(e.fat) p.push('خستگی ' + (e.fat > 0 ? '+' : '−') + fa(Math.abs(e.fat)));
+  if(e.dmg) for(const k in e.dmg) p.push((SYS[k] ? SYS[k].fa : k) + ' −' + fa(e.dmg[k]));
+  if(e.fix) for(const k in e.fix) p.push((SYS[k] ? SYS[k].fa : k) + ' +' + fa(e.fix[k]));
+  if(e.buff) p.push('«' + (BUFFS[e.buff.k] ? BUFFS[e.buff.k].fa : e.buff.k) + '»');
+  return p.join(' · ');
+}
+
+/* ============================================================
+   زبان تعریف رویدادها
+   ============================================================ */
+const EV = {}, EVORDER = [];
+function ev(def){ def.uses = 0; EV[def.key] = def; EVORDER.push(def.key); return def; }
+/* وظیفه‌ای که به خدمه سپرده می‌شود */
+function T(label, o){
+  return Object.assign({ label, style:'safe', skill:'mech', need:1, dur:34, energy:2, o2:1, fat:10,
+    risk:.10, part:.22, solve:true }, o);
+}
+/* تصمیم فوری فرمانده (بدون خدمه) — ارزان ولی با ریسک */
+function Q(label, o){
+  return Object.assign({ label, style:'risky', need:0, risk:.3, part:.2, solve:true, o2:0, energy:0, fat:0 }, o);
+}
+/* رها کردن / تاب‌آوردن */
+function X(label, o){
+  return Object.assign({ label: label || 'رها کردن', style:'ignore', need:0, abandon:true, solve:true, o2:0, energy:0, fat:0 }, o || {});
+}
+function optList(inc){
+  const d = inc.d;
+  if(d.stages){
+    const s = d.stages[Math.min(inc.stage, d.stages.length - 1)];
+    if(s && s.opts && s.opts.length) return s.opts;
   }
-  const def = INCIDENTS[key];
-  if(!def) return;
-  state.incidents.push({ key, def, assigned:false, open:true });
-  state.nextEvent = eventGap();   // بحران بعدی حتی قبل از رفع بحران فعلی
-  renderIncident();
-  const extra = state.incidents.length > 1 ? ' — ⚠️ ' + fa(state.incidents.length) + ' بحران همزمان!' : '';
-  toast(def.icon, def.title + extra + ' — پیشنهاد: ' + def.rec.join(' / '), def.color);
-  sfx.event(def.kind === 'neutral' ? 'neutral' : 'bad');
-  npcAlert(1600);
+  return d.opts || [];
 }
-function closeIncident(inc){
+function stageDesc(inc){
+  const d = inc.d;
+  if(d.stages){
+    const s = d.stages[Math.min(inc.stage, d.stages.length - 1)];
+    if(s && s.desc) return typeof s.desc === 'function' ? s.desc(inc) : s.desc;
+  }
+  return d.desc ? d.desc(inc) : '';
+}
+function stageCount(inc){ return inc.d.stages ? inc.d.stages.length : (inc.d.deep ? 2 : 1); }
+
+/* ============================================================
+  ۱) مکانیکی — MECHANICAL
+  ============================================================ */
+ev({ key:'engHeat', cat:'mech', icon:'🔥', title:'گرمای بیش از حد موتور', color:'#fb923c', kind:'bad',
+  base:1.35, deep:true, fx:['overheat'], escT:56, escDo:{ dmg:{mech:9}, temp:8 }, esc:'coolFail',
+  open:inc => { inc.m.why = pick(['گرفتگی فیلتر رادیاتور','حباب در مدار مبرد','بار غیرمتوازن توربین','سنسور دمای کالیبره‌نبوده']); },
+  stages:[
+    { desc:inc => 'دمای موتور ' + fa(Math.round(state.temperature)) + '° و هنوز بالا می‌رود. علت روشن نیست — حدس‌ها: ' + inc.m.why + '.',
+      opts:[
+        T('عیب‌یابی موتور', { style:'safe', skill:'mech', roles:['مهندس','تکنسین'], room:'eng', dur:26, energy:1, o2:0, fat:6,
+          risk:.04, part:.04, solve:false, stage:1 }),
+        T('حالت احتیاط — قدرت کمتر', { style:'safe', skill:'mech', roles:['مهندس'], room:'eng', dur:22, energy:1, o2:0, fat:5,
+          risk:.04, part:.1, eff:{ temp:-16 }, then:inc => { fxAdd('derate', 70); } }),
+        Q('شوک سرد', { style:'risky', risk:.42, part:.18, eff:{ temp:-26 }, failEff:{ temp:6, dmg:{mech:11} } }),
+        X('فعلاً دست نزن', { eff:{ temp:5, dmg:{mech:6} }, next:{ key:'coolFail', delay:9 } })
+      ] },
+    { desc:inc => 'علت پیدا شد: ' + inc.m.why + ' — مدار خنک‌کننده نیمه‌فعال است. تعمیر کامل زمان می‌برد؛ یا می‌توان با دورِ پایین‌تر ادامه داد.',
+      opts:[
+        T('تعمیر کامل مدار خنک‌کننده', { style:'fast', skill:'mech', roles:['مهندس','تکنسین'], room:'eng', dur:46, energy:5, o2:1, fat:17,
+          risk:.14, part:.18, eff:{ temp:-24, fix:{mech:12}, buff:{ k:'cool', v:.45, t:90 } } }),
+        T('شست‌وشوی فیلتر (موقت)', { style:'safe', skill:'mech', roles:['تکنسین','مهندس','خدمه'], room:'eng', dur:28, energy:2, o2:0, fat:8,
+          risk:.08, part:.28, solve:false, stab:true, eff:{ temp:-10, fix:{mech:4} } }),
+        Q('نگه‌داشتن موتور در دور پایین', { style:'safe', risk:.05, part:.1, eff:{ temp:-14 },
+          then:inc => { fxAdd('derate', 110); toast('🐢','موتور در حالت احتیاط — شتاب ضعیف‌تر تا پایان بحران', '#fbbf24'); } }),
+        X('نادیده گرفتن', { eff:{ temp:9, dmg:{mech:13}, fat:4 }, next:{ key:'bearingSeize', delay:14 } })
+      ] }
+  ] }),
+ev({ key:'coolFail', cat:'mech', icon:'❄️', title:'خرابی سیستم خنک‌کننده', color:'#7dd3fc', kind:'bad',
+  base:.95, fx:['coolFail'], escT:64, escDo:{ dmg:{mech:12}, temp:10 }, esc:'iceRadi',
+  desc:() => 'مدار بستهٔ خنک‌کننده جریان ندارد؛ هر شتاب الآن گرما دو برابر می‌آورد.',
+  opts:[
+    T('تعویض پمپ مبرد', { style:'fast', skill:'mech', roles:['مهندس'], room:'eng', dur:44, energy:5, o2:1, fat:16,
+      risk:.16, part:.2, eff:{ temp:-12, fix:{mech:10}, buff:{ k:'cool', v:.5, t:110 } } }),
+    T('مسیر جایگزین مبرد', { style:'safe', skill:'elec', roles:['تکنسین','مهندس'], room:'sys', dur:32, energy:3, o2:0, fat:10,
+      risk:.1, part:.3, eff:{ temp:-7, fix:{mech:5} } }),
+    Q('تخلیهٔ اضطراری مبرد', { style:'risky', risk:.34, eff:{ temp:-20, dmg:{mech:4} }, failEff:{ dmg:{mech:9}, temp:4 } }),
+    X('با همین ادامه بده', { eff:{ dmg:{mech:10}, temp:5 }, next:{ key:'iceRadi', delay:10 } })
+  ] }),
+ev({ key:'coolantLeak', cat:'mech', icon:'💧', title:'نشت مایع خنک‌کننده', color:'#67e8f9', kind:'bad',
+  base:.9, fx:['leakCool'], escT:58, escDo:{ dmg:{mech:8}, temp:7, o2:-1.5 }, esc:'iceRadi',
+  desc:() => 'قطرات آبیِ مبرد در راهرو دیده می‌شود؛ فشار مدار افت کرده و نقطهٔ نشت هنوز پیدا نشده است.',
+  opts:[
+    T('بیرون‌زدن و آب‌بندی (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','مهندس'], room:'lock', dur:40, energy:4, o2:2, fat:16, eva:true, injure:true,
+      risk:.2, part:.18, eff:{ temp:-6, fix:{mech:9, hull:6} } }),
+    T('چسب پلیمری از داخل', { style:'safe', skill:'mech', roles:['تکنسین','خدمه'], room:'eng', dur:30, energy:2, o2:0, fat:8,
+      risk:.08, part:.35, eff:{ temp:-3, fix:{mech:5} } }),
+    Q('جمع‌آوری نشت در مخزن', { style:'safe', risk:.05, part:.15, solve:false, stab:true, eff:{ fix:{mech:2} } }),
+    X('رها کردن', { eff:{ dmg:{mech:9}, o2:-2.0 }, next:{ key:'iceRadi', delay:8 } })
+  ] }),
+ev({ key:'fuelPump', cat:'mech', icon:'⛽', title:'نوسان پمپ سوخت', color:'#fdba74', kind:'bad',
+  base:.9, fx:['pumpFault'], escT:62, escDo:{ dmg:{mech:7}, en:-6 },
+  desc:() => 'فشار سوخت هر چند ثانیه می‌لنگد؛ شتاب‌ها پرهزینه‌تر شده‌اند و موتور نفس‌نفس می‌زند.',
+  opts:[
+    T('اورهال پمپ', { style:'fast', skill:'mech', roles:['مهندس'], room:'eng', dur:48, energy:5, o2:1, fat:18,
+      risk:.18, part:.18, eff:{ fix:{mech:11}, buff:{ k:'speed', v:.25, t:120 } } }),
+    T('رگولاتور دستی', { style:'safe', skill:'mech', roles:['تکنسین','مهندس','خدمه'], room:'eng', dur:26, energy:2, o2:0, fat:7,
+      risk:.07, part:.3, eff:{ fix:{mech:4} } }),
+    Q('مصرف را نیمه‌کن', { style:'safe', risk:.04, part:.1, stab:true, eff:{ en:4 } }),
+    X('رها کردن', { eff:{ dmg:{mech:8}, en:-8 } })
+  ] }),
+ev({ key:'nozzleClog', cat:'mech', icon:'🌀', title:'گرفتگی نازل پیشرانه', color:'#f97316', kind:'bad',
+  base:.85, escT:70, escDo:{ dmg:{mech:6}, km:-160 },
+  passive:(inc,dt,m)=>{ if(!inc.stable) addKm(-1.1*dt*m); },
+  desc:() => 'رسوب فلزی دهانهٔ نازل را تنگ کرده؛ هر شتاب کیلومتر کمتری می‌خرد.',
+  opts:[
+    T('پاک‌سازی نازل (EVA)', { style:'fast', skill:'eva', roles:['مهندس','امنیتی'], room:'lock', dur:40, energy:4, o2:1, fat:14, eva:true, injure:true,
+      risk:.16, eff:{ fix:{mech:8}, km:140, buff:{ k:'speed', v:.2, t:100 } } }),
+    T('پاک‌سازی از داخل', { style:'safe', skill:'mech', roles:['تکنسین','خدمه'], room:'eng', dur:30, energy:2, o2:0, fat:8,
+      risk:.1, part:.35, eff:{ fix:{mech:4} } }),
+    Q('پالس تخلیهٔ معکوس', { style:'risky', risk:.36, eff:{ km:200, fix:{mech:5} }, failEff:{ dmg:{mech:9}, km:-90 }, injure:true }),
+    X('رها کردن', { eff:{ dmg:{mech:4} } })
+  ] }),
+ev({ key:'gearGrind', cat:'mech', icon:'⚙️', title:'سایش در گیربکس', color:'#fdba74', kind:'neutral',
+  base:.75, escT:82, escDo:{ dmg:{mech:8} },
+  desc:() => 'صدای ساییده‌شدن از گیربکس می‌آید. فوریت ندارد — ولی هر دقیقه عمر گیربکس را می‌خورد.',
+  opts:[
+    T('روغن‌کاری و تنظیم', { style:'safe', skill:'mech', roles:['مهندس','خدمه'], room:'eng', dur:28, energy:2, o2:0, fat:8,
+      risk:.06, eff:{ fix:{mech:7} } }),
+    T('تعویض بلبرینگ', { style:'fast', skill:'mech', roles:['مهندس'], room:'eng', dur:42, energy:4, o2:1, fat:14,
+      risk:.14, part:.2, eff:{ fix:{mech:14}, buff:{ k:'speed', v:.15, t:90 } } }),
+    Q('بازرسی چشمی', { style:'safe', risk:.05, solve:false,
+      then:inc => { inc.m.bad = chance(.5); toast('👁️', inc.m.bad ? 'سایش جدی است — تعمیر لازم است' : 'سایش سطحی است؛ فعلاً بی‌خطر',
+        inc.m.bad ? '#f87171' : '#4ade80'); if(!inc.m.bad){ inc.stable = true; state.modsDirty = true; } } }),
+    X('با صدا زندگی کن', { eff:{ dmg:{mech:5} } })
+  ] }),
+ev({ key:'hullFatigue', cat:'mech', icon:'🩹', title:'خستگی فلز بدنه', color:'#fca5a5', kind:'bad',
+  base:.85, escT:76, escDo:{ dmg:{hull:10}, o2:-2.0 }, esc:'pressureDrop',
+  desc:() => 'حسگرهای strain می‌گویند درزهای قدیمی باز می‌شوند؛ بدنه ' + pct(100 - state.sys.hull) + ' آسیب دارد.',
+  opts:[
+    T('جوشکاری کامل (EVA)', { style:'fast', skill:'mech', roles:['مهندس','خدمه'], room:'lock', dur:50, energy:6, o2:2, fat:20, need:2, eva:true, injure:true,
+      risk:.16, eff:{ fix:{hull:22}, dmg:{mech:3} } }),
+    T('پچ اضطراری', { style:'safe', skill:'mech', roles:['تکنسین','خدمه','امنیتی'], room:'hull', dur:28, energy:2, o2:1, fat:8,
+      risk:.08, part:.3, eff:{ fix:{hull:9} } }),
+    Q('مهر کردن دور درز', { style:'safe', risk:.06, part:.2, solve:false, stab:true, eff:{ fix:{hull:3} } }),
+    X('رها کردن', { eff:{ dmg:{hull:8} }, next:{ key:'pressureDrop', delay:12 } })
+  ] }),
+ev({ key:'doorSeal', cat:'mech', icon:'🚪', title:'نشتی درِ فشاری', color:'#a3e635', kind:'neutral',
+  base:.7, fx:['stuckDoor'], escT:74, escDo:{ o2:-2.0, dmg:{hull:4} }, esc:'airlockJam',
+  desc:() => 'واشر درِ میانی خشک شده؛ فشار دو بخش آرام برابر می‌شود و رفت‌وآمد سخت است.',
+  opts:[
+    T('تعویض واشر', { style:'safe', skill:'mech', roles:['تکنسین','خدمه'], room:'hall', dur:26, energy:2, o2:0, fat:7,
+      risk:.07, eff:{ fix:{hull:6} } }),
+    T('روان‌کاری و کالیبره', { style:'fast', skill:'mech', roles:['مهندس'], room:'hall', dur:20, energy:1, o2:0, fat:5,
+      risk:.05, eff:{ fix:{hull:5} } }),
+    Q('مهر با چسب فضا', { style:'risky', risk:.26, eff:{ fix:{hull:9} }, failEff:{ dmg:{hull:6}, o2:-2.0 } }),
+    X('رها کردن', { eff:{ o2:-2.0 } })
+  ] }),
+ev({ key:'airlockJam', cat:'mech', icon:'🔒', title:'گیر کردن قفل هوا‌لاک', color:'#f87171', kind:'bad',
+  base:.6, fx:['stuckDoor'], escT:46, escDo:{ dmg:{hull:9}, o2:-2.2, fat:8 },
+  requires:()=>!state.incidents.some(i => i.key === 'doorSeal'),
+  open:inc => { inc.m.trap = chance(.4); },
+  desc:inc => inc.m.trap
+    ? 'چیزی در ریل قفل گیر کرده — هر تلاش برای باز کردن، فشار را بدتر می‌کند.'
+    : 'موتور قفل سوخته؛ در را باید دستی باز کرد.',
+  opts:[
+    T('باز کردن دستی', { style:'fast', skill:'eva', roles:['امنیتی','مهندس'], room:'lock', dur:34, energy:4, o2:1, fat:14, eva:true, injure:true,
+      risk:.18, eff:{ fix:{hull:8} } }),
+    T('برداشتن پنل و ریست', { style:'safe', skill:'elec', roles:['تکنسین','مهندس'], room:'lock', dur:28, energy:2, o2:0, fat:8,
+      risk:.1, part:.24, eff:{ fix:{hull:5} } }),
+    Q('مهر کردن چارچوب', { style:'safe', risk:.12, part:.2, eff:{ fix:{hull:3} },
+      then:inc => { inc.m.jammed = true; } }),
+    X('رها کردن', { eff:{ o2:-2.2, dmg:{hull:6} } })
+  ] }),
+ev({ key:'bearingSeize', cat:'mech', icon:'🔩', title:'قفل یاتاقان توربین', color:'#ef4444', kind:'bad',
+  base:.5, rare:true, fx:['overheat','coolFail'], escT:40, escDo:{ dmg:{mech:18}, temp:12, km:-200 },
+  requires:()=>integrity('mech') < 80,
+  desc:() => 'توربین اصلی دارد قفل می‌کند. تا پیش از جام شدن کامل باید باز شود — زمان کم است.',
+  opts:[
+    T('باز کردن و روغن‌کاری فوری', { style:'fast', skill:'mech', roles:['مهندس'], room:'eng', dur:50, energy:6, o2:2, fat:22,
+      risk:.24, part:.2, injure:true, eff:{ fix:{mech:16}, temp:-10, km:120 } }),
+    T('دو نفره: سرد کردن + باز کردن', { style:'fast', skill:'mech', roles:['مهندس','تکنسین'], room:'eng', dur:54, energy:8, o2:2, fat:16, need:2,
+      risk:.1, part:.16, eff:{ fix:{mech:22}, temp:-18 } }),
+    Q('راه‌اندازی معکوس', { style:'risky', risk:.45, eff:{ fix:{mech:12}, temp:-14, km:180 }, failEff:{ dmg:{mech:16}, temp:14, fat:6 } }),
+    X('رها کردن', { eff:{ dmg:{mech:14} } })
+  ] }),
+ev({ key:'iceRadi', cat:'mech', icon:'🧊', title:'یخ‌زدگی رادیاتور', color:'#93c5fd', kind:'bad',
+  base:.72, fx:['iceRadi'], escT:78, escDo:{ dmg:{mech:6}, temp:9 },
+  passive:(inc,dt,m)=>{ if(!inc.stable) addTemp(.16*dt*m); },
+  desc:() => 'پنل‌های تابش‌کنندهٔ پشت سفینه سفید شده‌اند؛ گرما جایی برای رفتن ندارد.',
+  opts:[
+    T('کندن یخ (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','خدمه'], room:'lock', dur:36, energy:4, o2:2, fat:14, eva:true, injure:true,
+      risk:.14, eff:{ temp:-9, fix:{mech:7}, buff:{ k:'cool', v:.35, t:90 } } }),
+    T('بخار گرم روی پنل', { style:'safe', skill:'mech', roles:['مهندس','تکنسین'], room:'eng', dur:32, energy:3, o2:0, fat:9,
+      risk:.08, part:.26, eff:{ temp:-5, fix:{mech:4} } }),
+    Q('چرخش اضطراری سفینه', { style:'risky', risk:.3, eff:{ temp:-7 }, failEff:{ dmg:{hull:5}, km:-120 } }),
+    X('رها کردن', { eff:{ temp:6 } })
+  ] })
+;
+
+/* ============================================================
+  ۲) برقی — ELECTRICAL
+  ============================================================ */
+ev({ key:'powerOut', cat:'elec', icon:'⚡', title:'قطعی شبکهٔ برق', color:'#fbbf24', kind:'bad',
+  base:1.3, deep:true, fx:['powerDown'], escT:52, escDo:{ dmg:{elec:12}, o2:-1.6 },
+  /* اثر متقاطع: برق که برود، اکسیژن‌سازی ضعیف می‌شود (powerDown → o2) و اسکربرها از مدار می‌روند */
+  open:inc => { inc.m.bus = pick(['A','B','C']); inc.m.where = pick(['رلهٔ باس','فیوز اصلی','کلید transfer','کانکتور اسکربر']); },
+  stages:[
+    { desc:inc => 'نیمهٔ پشتی کابین بی‌برق است؛ بازیابی انرژی تقریباً متوقف شده و اسکربرهای اکسیژن ولتاژ کافی نمی‌گیرند. علت: نامعلوم.',
+      opts:[
+        T('ردگیری مدار روی تابلو', { style:'safe', skill:'elec', roles:['تکنسین','مهندس','دانشمند'], room:'sys', dur:22, energy:1, o2:0, fat:6,
+          risk:.03, part:.1, solve:false, stage:1 }),
+        T('تعمیر کورژانهٔ ژنراتور', { style:'fast', skill:'elec', roles:['تکنسین'], room:'sys', dur:40, energy:4, o2:1, fat:15,
+          risk:.26, part:.2, eff:{ en:6, fix:{elec:9}, buff:{ k:'regen', v:.35, t:90 } }, failEff:{ dmg:{elec:6}, en:-4 } }),
+        Q('انتقال بار به باس پشتیبان', { style:'safe', risk:.1, part:.2, solve:false, stab:true, eff:{ en:3, o2:1 } }),
+        X('در تاریکی بمان', { eff:{ en:-12, dmg:{elec:8}, o2:-2 }, next:{ key:'scrubFail', delay:8 } })
+      ] },
+    { desc:inc => 'علت پیدا شد: ' + inc.m.where + ' سوخته است. تعمیر دقیق حالا ممکن است — اما اگر عجله کنی، باس ' + inc.m.bus + ' هم می‌پرد.',
+      opts:[
+        T('تعویض قطعهٔ سوخته', { style:'fast', skill:'elec', roles:['تکنسین','مهندس'], room:'sys', dur:36, energy:4, o2:1, fat:13,
+          risk:.1, part:.18, eff:{ en:10, fix:{elec:14}, buff:{ k:'regen', v:.5, t:110 } } }),
+        T('پل‌زدن موقت روی مدار', { style:'safe', skill:'elec', roles:['تکنسین','خدمه','مهندس','دانشمند','ناوبر','امنیتی','پزشک'], room:'sys', dur:20, energy:1, o2:0, fat:6,
+          risk:.06, part:.3, eff:{ en:4, fix:{elec:5} } }),
+        Q('ریست کامل هسته', { style:'risky', risk:.3, eff:{ en:12, fix:{elec:8}, buff:{ k:'regen', v:.3, t:70 } }, failEff:{ dmg:{elec:9}, o2:-2, fat:5 } }),
+        X('بگذار برود', { eff:{ dmg:{elec:7}, o2:-2 } })
+      ] }
+  ] }),
+ev({ key:'batteryFault', cat:'elec', icon:'🔋', title:'خرابی باتری کوانتومی', color:'#a78bfa', kind:'bad',
+  base:1.0, fx:['brownOut'], passive:(inc,dt,m)=>{ if(!inc.stable) addEn(-.5*dt*m); }, escT:60, escDo:{ en:-14, dmg:{elec:8} },
+  desc:() => 'یک سلول باتری شارژ را نگه نمی‌دارد؛ انرژی به‌آرامی تخلیه می‌شود.',
+  opts:[
+    T('تعویض سلول', { style:'fast', skill:'elec', roles:['تکنسین'], room:'battery', dur:38, energy:4, o2:1, fat:13,
+      risk:.14, part:.2, eff:{ en:14, fix:{elec:9} } }),
+    T('ایزوله کردن سلول معیوب', { style:'safe', skill:'elec', roles:['تکنسین','مهندس','خدمه'], room:'battery', dur:22, energy:1, o2:0, fat:6,
+      risk:.06, part:.3, eff:{ en:5, fix:{elec:4} } }),
+    Q('شارژ سریعِ اجباری', { style:'risky', risk:.34, eff:{ en:22, dmg:{elec:5} }, failEff:{ en:-6, dmg:{elec:9} },
+      note:'انرژی فوری — ولی عمر باتری را کم می‌کند' }),
+    X('رها کردن', { eff:{ en:-11 } })
+  ] }),
+ev({ key:'shortCircuit', cat:'elec', icon:'🔌', title:'اتصالی در سیم‌کشی', color:'#facc15', kind:'bad',
+  base:1.0, fx:['brownOut'], escT:44, escDo:{ dmg:{elec:9, hull:4} }, esc:'conduitFire',
+  passive:(inc,dt,m)=>{ if(!inc.stable) sysDmg('hull', .05*dt*m); },
+  desc:() => 'بوی عایق سوخته می‌آید؛ جرقه‌ها از پنل توزیعِ بخش جلو می‌زنند.',
+  opts:[
+    T('پیدا کردن و تعویض کابل', { style:'fast', skill:'elec', roles:['تکنسین','مهندس'], room:'sys', dur:36, energy:3, o2:1, fat:12,
+      risk:.12, part:.2, eff:{ fix:{elec:11}, en:4 } }),
+    T('قطع فیوز آن بخش', { style:'safe', skill:'elec', roles:['تکنسین','خدمه'], room:'sys', dur:18, energy:0, o2:0, fat:5,
+      risk:.05, part:.2, eff:{ fix:{elec:4}, dmg:{nav:3} }, note:'بی‌خطرتر — ولی یک بخش بی‌برق می‌ماند' }),
+    Q('بازجوش با قوس کنترل‌شده', { style:'risky', risk:.4, eff:{ fix:{elec:14}, en:5 }, failEff:{ dmg:{elec:8}, o2:-2.0 },
+      next:{ key:'conduitFire', delay:10, onlyFail:true } }),
+    X('رها کردن', { eff:{ dmg:{elec:7} }, next:{ key:'conduitFire', delay:8 } })
+  ] }),
+ev({ key:'conduitFire', cat:'elec', icon:'🧯', title:'حریق در کابل‌کشی', color:'#ef4444', kind:'bad',
+  base:.55, rare:true, fx:['fire'], escT:30, escDo:{ dmg:{elec:12, hull:6}, o2:-2.2, fat:10 },
+  requires:()=>!state.incidents.some(i => i.key === 'conduitFire'),
+  desc:() => 'آتش کوچک در داکت کابل‌ها روشن شده — دود وارد سیستم تهویه می‌شود. چند ده ثانیه وقت داری.',
+  opts:[
+    T('خاموش‌کاری (دو نفره)', { style:'fast', skill:'eva', roles:['امنیتی','تکنسین'], room:'sys', dur:30, energy:4, o2:2, fat:14, need:2,
+      risk:.1, part:.18, eff:{ fix:{elec:12}, dmg:{mech:2}, fat:-6 } }),
+    T('خفه‌کردن با فوم', { style:'safe', skill:'elec', roles:['تکنسین','خدمه','امنیتی'], room:'sys', dur:24, energy:2, o2:1, fat:9,
+      risk:.14, part:.26, eff:{ fix:{elec:6} } }),
+    Q('دپرسورایز بخش', { style:'risky', risk:.26, part:.2, eff:{ fix:{elec:9}, o2:-2.2, dmg:{hull:4} },
+      note:'اکسیژن بخش را خالی کن — آتش می‌میرد، بدنه ضعیف می‌شود' }),
+    X('رها کردن', { eff:{ dmg:{elec:10}, o2:-2.2 } })
+  ] }),
+ev({ key:'voltSurge', cat:'elec', icon:'🌩️', title:'نوسان ولتاژ', color:'#fde047', kind:'bad',
+  base:.9, fx:['brownOut'], escT:66, escDo:{ dmg:{elec:9}, blind:12 },
+  /* این بحران تا وقتی باز است، occasionally رویدادهای دیگر را قلقلک می‌دهد */
+  passive:(inc,dt)=>{
+    inc.m.t2 = (inc.m.t2 || 0) + dt;
+    if(inc.m.t2 > 16){
+      inc.m.t2 = 0;
+      if(!inc.stable && chance(.3)){
+        const k = pick(['batteryFault','sensorGhost','thermoGlitch','scrubFail']);
+        if(!state.incidents.some(i => i.key === k) && EV[k]) queueFollow(k, 2, 1, 'نوسان ولتاژ');
+      }
+    }
+  },
+  desc:() => 'نوسان‌ها به‌صورت موج به زیرسیستم‌ها می‌رسند؛ ممکن است سیستم‌های دیگر را هم از کار بیندازند.',
+  opts:[
+    T('نصب موقتِ محدودکننده', { style:'safe', skill:'elec', roles:['تکنسین'], room:'sys', dur:26, energy:2, o2:0, fat:7,
+      risk:.07, part:.3, stab:true, eff:{ fix:{elec:5} } }),
+    T('کالیبراسیون کامل شبکه', { style:'fast', skill:'elec', roles:['تکنسین','مهندس'], room:'sys', dur:44, energy:5, o2:1, fat:16,
+      risk:.14, eff:{ fix:{elec:13}, buff:{ k:'regen', v:.25, t:90 } } }),
+    Q('انتشار بار به بدنه', { style:'risky', risk:.34, eff:{ en:8, dmg:{hull:5} }, failEff:{ dmg:{elec:9}, blind:14 } }),
+    X('رها کردن', { eff:{ dmg:{elec:6} } })
+  ] }),
+ev({ key:'arrayMicrometeor', cat:'elec', icon:'🛰️', title:'آسیب ریزشهابی به آرایهٔ انرژی', color:'#fde68a', kind:'bad',
+  base:.72, fx:['brownOut'], escT:72, escDo:{ dmg:{elec:8}, en:-6 },
+  desc:() => 'دو پنل از پنج پنلِ شارژ از مدار خارج شده‌اند؛ تا تعمیر، بازیابی انرژی کم است.',
+  opts:[
+    T('تعویض پنل (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','تکنسین'], room:'lock', dur:46, energy:5, o2:2, fat:17, eva:true, injure:true,
+      risk:.16, eff:{ fix:{elec:15}, buff:{ k:'regen', v:.3, t:120 } } }),
+    T('بازتوزیع پنل‌های سالم', { style:'safe', skill:'elec', roles:['تکنسین','دانشمند'], room:'sys', dur:28, energy:2, o2:0, fat:8,
+      risk:.08, part:.3, eff:{ fix:{elec:6} } }),
+    Q('چرخش به سمت پنل‌های آفتابی', { style:'risky', need:1, skill:'nav', roles:['ناوبر'], room:'nav', dur:24, energy:3, o2:0, fat:8,
+      risk:.28, part:.2, eff:{ en:12, km:120 }, failEff:{ dmg:{nav:6}, km:-100 } }),
+    X('رها کردن', { eff:{ en:-8, dmg:{elec:5} } })
+  ] }),
+ev({ key:'reactorTrip', cat:'elec', icon:'☢️', title:'تریپ هستهٔ راکتور', color:'#c084fc', kind:'bad',
+  base:.42, rare:true, fx:['powerDown','overheat'], deep:true, escT:48, escDo:{ dmg:{elec:16}, temp:10, en:-10 },
+  requires:()=>state.time > 240 && integrity('elec') < 92,
+  stages:[
+    { desc:() => 'هسته خودش را خاموش کرده — حالت ایمنی. تا ریست، نصف سیستم‌ها بی‌برق‌اند و دمای موتور هم بالا می‌رود.',
+      opts:[
+        T('ریست ایمن هسته', { style:'safe', skill:'elec', roles:['تکنسین','مهندس'], room:'sys', dur:34, energy:3, o2:1, fat:12,
+          risk:.1, part:.2, solve:false, stage:1, eff:{ en:6 } }),
+        Q('ریست دستی (بدون بررسی)', { style:'risky', risk:.42, eff:{ en:10, buff:{ k:'regen', v:.4, t:90 } }, failEff:{ dmg:{elec:14}, temp:12, fat:8 } }),
+        X('در حالت ایمنی بمان', { eff:{ dmg:{elec:6}, en:-8 }, next:{ key:'navDrift', delay:10 } })
+      ] },
+    { desc:() => 'هسته برگشته ولی علت تریپ هنوز روشن نیست: سنسور، سوخت، یا خنک‌کاری؟',
+      opts:[
+        T('عیب‌یابی کامل هسته', { style:'fast', skill:'elec', roles:['تکنسین','دانشمند'], room:'sys', dur:48, energy:6, o2:1, fat:18,
+          risk:.16, eff:{ fix:{elec:16}, en:10, buff:{ k:'regen', v:.4, t:140 } } }),
+        T('محدودهٔ بار را پایین بیاور', { style:'safe', skill:'mech', roles:['مهندس','تکنسین','خدمه'], room:'sys', dur:24, energy:1, o2:0, fat:7,
+          risk:.06, part:.24, eff:{ fix:{elec:6}, dmg:{mech:3} } }),
+        X('همین‌طور برقص', { eff:{ dmg:{elec:5} }, next:{ key:'voltSurge', delay:6 } })
+      ] }
+  ] }),
+ev({ key:'navLightFail', cat:'elec', icon:'💡', title:'سوختن چراغ‌های پیکربندی', color:'#fcd34d', kind:'neutral',
+  base:.6, escT:86, escDo:{ dmg:{nav:6}, fat:6 },
+  desc:() => 'نیمهٔ عقبی کابین در تاریکی است؛ کارهای دقیق آنجا تقریباً غیرممکن شده و خدمه کُندتر کار می‌کنند.',
+  opts:[
+    T('تعویض درایور نوری', { style:'safe', skill:'elec', roles:['تکنسین','خدمه'], room:'hall', dur:24, energy:2, o2:0, fat:6,
+      risk:.06, eff:{ fix:{nav:5}, fat:-4 } }),
+    Q('کار با چراغ قوه', { style:'risky', risk:.2, solve:false, stab:true, eff:{ fat:4 }, note:'سرعت کار برمی‌گردد ولی خدمه خسته‌تر می‌شوند' }),
+    X('در تاریکی بمان', { eff:{ fat:9, dmg:{life:4} } })
+  ] })
+;
+
+/* ============================================================
+  ۳) پشتیبانی حیات — LIFE SUPPORT
+  ============================================================ */
+ev({ key:'o2Leak', cat:'life', icon:'💨', title:'نشت اکسیژن', color:'#f87171', kind:'bad',
+  base:1.25, fx:['o2Leak'], deep:true, escT:58, escDo:{ dmg:{life:10}, o2:-2.2 }, esc:'pressureDrop',
+  open:inc => { inc.m.sect = pick(['بخش خواب','دهلیز بار','زیر کفِ بخش برق','دیوارهٔ موتور']); },
+  stages:[
+    { desc:inc => 'افت فشار در ' + inc.m.sect + ' — مصرف اکسیژن بالا رفته ولی منبع نشت هنوز پیدا نشده است.',
+      opts:[
+        T('جست‌وجوی نقطهٔ نشت', { style:'safe', skill:'life', roles:['تکنسین','خدمه','امنیتی'], room:'life', dur:30, energy:2, o2:1, fat:10,
+          risk:.08, part:.26, solve:false, stage:1 }),
+        T('تعمیر مستقیم (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','مهندس'], room:'lock', dur:38, energy:5, o2:2, fat:15, eva:true, injure:true,
+          risk:.18, part:.2, eff:{ o2:3, fix:{life:14} } }),
+        Q('بستن دریچهٔ آن بخش', { style:'safe', risk:.06, part:.2, stab:true, eff:{ o2:1, dmg:{life:3} } }),
+        X('رها کردن', { eff:{ o2:-2.2 }, next:{ key:'pressureDrop', delay:14 } })
+      ] },
+    { desc:inc => 'نقطهٔ نشت پیدا شد: درز ' + fa(rndi(3,9)) + ' سانتی‌متری روی خط لولهٔ ' + inc.m.sect + '. تعمیر سریع ممکن است.',
+      opts:[
+        T('تعمیر نقطهٔ نشت', { style:'fast', skill:'life', roles:['تکنسین','مهندس'], room:'life', dur:28, energy:3, o2:1, fat:9,
+          risk:.08, part:.16, eff:{ o2:5, fix:{life:17} } }),
+        T('پچ موقت (سریع‌ترین راه بی‌خطر)', { style:'safe', skill:'life', roles:['خدمه','تکنسین','امنیتی','مهندس','دانشمند','ناوبر','پزشک'], room:'life', dur:20, energy:1, o2:0, fat:6,
+          risk:.05, part:.3, eff:{ o2:2, fix:{life:8} } }),
+        Q('پمپاژ پشتیبان به آن بخش', { style:'risky', risk:.3, eff:{ o2:4, dmg:{life:3} }, failEff:{ o2:-2.2, dmg:{life:7} } }),
+        X('همین‌طور بگذارد نشت کند', { eff:{ o2:-2.2 }, next:{ key:'pressureDrop', delay:10 } })
+      ] }
+  ] }),
+ev({ key:'scrubFail', cat:'life', icon:'🌫️', title:'خرابی اسکربر CO₂', color:'#a5b4fc', kind:'bad',
+  base:1.05, fx:['scrubOff'], escT:54, escDo:{ dmg:{life:11}, fat:12, o2:-2.0 },
+  desc:() => 'لایهٔ آهکی سرامیک پر شده؛ CO₂ در کابین بالا می‌رود و خدمه زودتر خسته می‌شوند.',
+  opts:[
+    T('تعویض کارتریج', { style:'fast', skill:'life', roles:['تکنسین','مهندس'], room:'life', dur:34, energy:4, o2:1, fat:12,
+      risk:.12, part:.2, eff:{ fix:{life:13}, o2:2, fat:-6 } }),
+    T('بازسازی شیمیایی کارتریج', { style:'safe', skill:'life', roles:['دانشمند','تکنسین'], room:'lab', dur:40, energy:2, o2:0, fat:10,
+      risk:.1, part:.3, eff:{ fix:{life:8}, o2:1 } }),
+    Q('هوادهی اضطراری (درها باز)', { style:'risky', risk:.24, eff:{ o2:3, fat:-8, dmg:{hull:3} }, failEff:{ o2:-2.2 } }),
+    X('رها کردن', { eff:{ o2:-2.2, fat:10 } })
+  ] }),
+ev({ key:'waterLoop', cat:'life', icon:'🚰', title:'توقف بازچرخان آب', color:'#38bdf8', kind:'bad',
+  base:.85, fx:[], escT:70, escDo:{ dmg:{life:8}, fat:14 },
+  passive:(inc,dt,m)=>{ if(!inc.stable) for(const n of npcs) n.fat = clamp(n.fat + .09*dt*m, 0, 100); },
+  desc:() => 'مقطر آب خشک شده؛ خدمه بدون آب کافی کار می‌کنند و خستگی‌شان سریع‌تر بالا می‌رود.',
+  opts:[
+    T('شست‌وشوی مسیر تقطیر', { style:'safe', skill:'life', roles:['تکنسین','خدمه'], room:'life', dur:30, energy:3, o2:0, fat:9,
+      risk:.08, part:.28, eff:{ fix:{life:9}, fat:-10 } }),
+    T('ریختن مخزن پشتیبان', { style:'fast', skill:'life', roles:['مهندس','خدمه'], room:'life', dur:18, energy:1, o2:0, fat:5,
+      risk:.04, eff:{ fix:{life:5}, fat:-16, dmg:{life:2} }, note:'مخزن اضطراری را خالی می‌کند' }),
+    Q('جیره‌بندی آب', { style:'safe', risk:.05, part:.15, solve:false, stab:true, eff:{ fat:6 } }),
+    X('رها کردن', { eff:{ fat:12 } })
+  ] }),
+ev({ key:'thermoGlitch', cat:'life', icon:'🌡️', title:'اختلال ترموستات کابین', color:'#fb7185', kind:'neutral',
+  base:.95, deep:true, escT:64, escDo:{ dmg:{life:7}, fat:8 },
+  open:inc => { inc.m.mode = chance(.5) ? 'hot' : 'cold'; inc.fxIds = [inc.m.mode === 'hot' ? 'cabinHot' : 'cabinCold']; },
+  desc:inc => inc.m.mode === 'hot'
+    ? 'کابین دارد گرم می‌شود (' + fa(Math.round(20 + inc.age * .12)) + '°)؛ خدمه کُند کار می‌کنند و بار حرارتی موتور هم بالا رفته.'
+    : 'کابین سرد شده؛ لایه‌های یخ روی شیرآلات نشسته‌اند و کار مکانیکی سخت است.',
+  opts:[
+    T('تنظیم مجدد ترموستات', { style:'safe', skill:'life', roles:['تکنسین'], room:'life', dur:24, energy:2, o2:0, fat:7,
+      risk:.07, part:.3, eff:{ fix:{life:7} } }),
+    T('بازکردن پنل تهویه', { style:'fast', skill:'mech', roles:['مهندس','تکنسین'], room:'life', dur:36, energy:4, o2:1, fat:12,
+      risk:.12, eff:{ fix:{life:12}, temp:-4, fat:-5 } }),
+    Q('کلیک روی برد کنترل', { style:'risky', need:0, risk:.38, eff:{ fix:{life:10} }, failEff:{ dmg:{life:8}, fat:6 } }),
+    X('رها کردن', { eff:{ dmg:{life:6}, fat:7 } })
+  ] }),
+ev({ key:'filterGerm', cat:'life', icon:'🦠', title:'آلودگی فیلتر هوا', color:'#86efac', kind:'bad',
+  base:.8, fx:['bioHazard'], escT:56, escDo:{ dmg:{life:8}, o2:-2.0, fat:12 }, esc:'medEmerg',
+  open:inc => { inc.m.spread = 1; },
+  passive:(inc,dt,m)=>{ if(!inc.stable) inc.m.spread = Math.min(3, inc.m.spread + dt * .012 * m); },
+  desc:inc => 'کلونی میکروبی در فیلترِ رطوبت رشد کرده (' + fa1(inc.m.spread) + '×). هوا بوی فلز می‌دهد و تنگی نفس گزارش شده.',
+  opts:[
+    T('استریل کردن فیلتر', { style:'safe', skill:'life', roles:['پزشک','تکنسین'], room:'med', dur:32, energy:3, o2:1, fat:10,
+      risk:.1, part:.26, eff:{ fix:{life:11}, o2:2, fat:-8 } }),
+    T('تعویض کامل فیلتر (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','تکنسین'], room:'lock', dur:40, energy:5, o2:2, fat:15, eva:true, injure:true,
+      risk:.14, eff:{ fix:{life:17}, o2:2 } }),
+    Q('فیلتر اضطراریِ دستی', { style:'risky', skill:'life', need:1, roles:['خدمه'], room:'life', dur:16, energy:1, o2:0, fat:8, risk:.3, part:.25,
+      eff:{ fix:{life:6} }, failEff:{ dmg:{life:6}, fat:6 } }),
+    X('رها کردن', { eff:{ o2:-2.0, fat:10 }, next:{ key:'medEmerg', delay:12 } })
+  ] }),
+ev({ key:'pressureDrop', cat:'life', icon:'🚨', title:'افت فشار ناگهانی', color:'#f87171', kind:'bad',
+  base:.7, fx:['hullBreach'], escT:30, escDo:{ dmg:{hull:12}, o2:-2.2, fat:8 },
+  requires:()=>integrity('hull') < 97 || state.incidents.some(i => i.d.cat === 'env'),
+  desc:() => 'آلارم فشار: یک پنل بیرونی ول کرده. چند ده ثانیه فرصت است وگرنه تخلیهٔ سریع شروع می‌شود.',
+  opts:[
+    T('مهر اضطراری (دو نفره)', { style:'fast', skill:'eva', roles:['امنیتی','مهندس'], room:'lock', dur:28, energy:5, o2:2, fat:14, need:2, eva:true, injure:true,
+      risk:.12, part:.18, eff:{ fix:{hull:16}, o2:2 } }),
+    T('بستن بخش و معادل‌سازی', { style:'safe', skill:'life', roles:['تکنسین','خدمه','مهندس','دانشمند','پزشک','ناوبر','امنیتی'], room:'life', dur:20, energy:2, o2:1, fat:7,
+      risk:.08, part:.26, eff:{ fix:{hull:7} } }),
+    Q('فعال کردن بالنِ کمکی', { style:'risky', need:0, risk:.28, eff:{ o2:6, dmg:{hull:4} }, failEff:{ o2:-2.2, dmg:{hull:7} } }),
+    X('رها کردن', { eff:{ o2:-2.2, dmg:{hull:9} } })
+  ] }),
+ev({ key:'medBayFail', cat:'life', icon:'🏥', title:'خرابی بلوک پزشکی', color:'#f9a8d4', kind:'bad',
+  base:.7, fx:[], escT:80, escDo:{ dmg:{life:5}, fat:10 },
+  desc:() => 'اتوکلاو و ست تشخیص خراب‌اند؛ تا تعمیر، درمان خدمه سخت‌تر و پرریسک‌تر است.',
+  requires:()=>true,
+  opts:[
+    T('تعمیر اتوکلاو', { style:'safe', skill:'life', roles:['پزشک','تکنسین'], room:'med', dur:30, energy:3, o2:0, fat:9,
+      risk:.08, part:.28, eff:{ fix:{life:6} } }),
+    T('ست یدکی را فعال کن', { style:'fast', skill:'life', roles:['پزشک'], room:'med', dur:18, energy:2, o2:0, fat:5,
+      risk:.05, eff:{ fat:-8, buff:{ k:'o2', v:.15, t:70 } } }),
+    Q('بازسازی با قطعات یدکی', { style:'risky', skill:'elec', need:1, roles:['تکنسین','خدمه'], room:'med', dur:22, energy:1, o2:0, fat:8, risk:.32,
+      eff:{ fix:{life:9} }, failEff:{ dmg:{life:6} } }),
+    X('رها کردن', { eff:{ dmg:{life:5}, fat:8 } })
+  ] }),
+ev({ key:'algaeDie', cat:'life', icon:'🌿', title:'مرگ کلونی جلبک', color:'#4ade80', kind:'bad',
+  base:.68, fx:['algae'], escT:74, escDo:{ dmg:{life:9}, o2:-2.2 },
+  desc:() => 'باغ جلبکِ اکسیژن‌ساز رنگش پریده؛ نور یا مواد مغزی مشکل دارد و تولید اکسیژن افت کرده.',
+
+  opts:[
+    T('تنظیم نور و مواد مغزی', { style:'safe', skill:'life', roles:['دانشمند','تکنسین'], room:'lab', dur:30, energy:2, o2:0, fat:8,
+      risk:.1, part:.26, eff:{ o2:3, fix:{life:8}, buff:{ k:'o2', v:.14, t:120 } } }),
+    T('جدا کردن لکه و کشت مجدد', { style:'fast', skill:'life', roles:['دانشمند'], room:'lab', dur:44, energy:4, o2:1, fat:14,
+      risk:.16, part:.2, eff:{ o2:5, fix:{life:12}, buff:{ k:'o2', v:.22, t:180 } } }),
+    Q('تزریق محرک رشد', { style:'risky', need:0, risk:.32, eff:{ o2:6, dmg:{life:4} }, failEff:{ o2:-2.0, dmg:{life:8} } }),
+    X('رها کردن', { eff:{ o2:-2.2 } })
+  ] })
+;
+
+/* ============================================================
+  ۴) ناوبری — NAVIGATION
+  ============================================================ */
+ev({ key:'navDrift', cat:'nav', icon:'🧭', title:'خطای ناوبری و انحراف مسیر', color:'#22d3ee', kind:'bad',
+  base:1.1, fx:['navDrift'], deep:true, escT:60, escDo:{ dmg:{nav:10}, km:-260 },
+  open:inc => { inc.m.deg = rndi(2,9); },
+  stages:[
+    { desc:inc => 'مسیر ' + inc.m.deg + ' درجه از هدف منحرف شده؛ سفینه دارد آرام کیلومتر پس می‌دهد. هنوز معلوم نیست علت سنسور است یا موتور.',
+      opts:[
+        T('مثلث‌بندی ستاره‌ها', { style:'safe', skill:'nav', roles:['ناوبر','دانشمند'], room:'nav', dur:26, energy:2, o2:0, fat:8,
+          risk:.07, part:.12, solve:false, stage:1, eff:{ km:80 } }),
+        T('اصلاح دستی با سوخت', { style:'fast', skill:'nav', roles:['ناوبر'], room:'nav', dur:34, energy:5, o2:1, fat:12,
+          risk:.12, part:.22, eff:{ km:260, fix:{nav:8} } }),
+        Q('تکیه بر ژایروسکوپ', { style:'risky', risk:.3, part:.2, eff:{ km:150 }, failEff:{ dmg:{nav:8}, km:-140 } }),
+        X('رها کردن', { eff:{ dmg:{nav:6}, km:-180 }, next:{ key:'gyroSlip', delay:10 } })
+      ] },
+    { desc:inc => 'خطا از ' + pick(['کالیبراسیون سنسور','جدول ستاره‌ای قدیمی','تأثیر میدان مغناطیسی']) + ' است — اصلاح دقیق حالا ممکن است.',
+      opts:[
+        T('کالیبراسیون کامل', { style:'safe', skill:'nav', roles:['ناوبر','تکنسین'], room:'nav', dur:30, energy:2, o2:0, fat:9,
+          risk:.07, part:.2, eff:{ km:220, fix:{nav:14}, buff:{ k:'speed', v:.12, t:90 } } }),
+        T('بازنوشتن جدول مسیر', { style:'fast', skill:'nav', roles:['دانشمند','ناوبر'], room:'nav', dur:40, energy:4, o2:1, fat:13,
+          risk:.12, eff:{ km:340, fix:{nav:10} } }),
+        X('همین مسیر را برو', { eff:{ dmg:{nav:5}, km:-140 } })
+      ] }
+  ] }),
+ev({ key:'gyroSlip', cat:'nav', icon:'🌀', title:'لغزش ژیروسکوپ', color:'#a78bfa', kind:'bad',
+  base:.9, fx:['spin'], escT:66, escDo:{ dmg:{nav:9}, temp:6, km:-140 },
+  passive:(inc,dt,m)=>{ if(!inc.stable) addTemp(.1*dt*m); },
+  desc:() => 'روتور ژیروسکوپ لغزیده؛ سفینه آرام می‌چرخد و پرتو شتاب کمی کج شده است.',
+  opts:[
+    T('کالیبرهٔ مجدد روتور', { style:'safe', skill:'nav', roles:['ناوبر','تکنسین'], room:'nav', dur:32, energy:3, o2:0, fat:10,
+      risk:.1, part:.28, eff:{ fix:{nav:10} } }),
+    T('خاموش/روشن کردن روتور', { style:'fast', skill:'nav', roles:['ناوبر'], room:'nav', dur:16, energy:1, o2:0, fat:4,
+      risk:.16, part:.3, eff:{ fix:{nav:6} } }),
+    Q('تصحیح با رانشگرهای جانبی', { style:'risky', need:0, risk:.3, part:.2, eff:{ fix:{nav:8}, km:120, en:-3 }, failEff:{ dmg:{mech:5} } }),
+    X('رها کردن', { eff:{ dmg:{nav:7} } })
+  ] }),
+ev({ key:'sensorGhost', cat:'nav', icon:'👁️', title:'شبح سنسور (اطلاعات نادرست)', color:'#94a3b8', kind:'weird',
+  base:.8, escT:72, escDo:{ dmg:{nav:6}, km:-120 },
+  desc:() => 'حسگرها مقادیری نشان می‌دهند که وجود ندارند؛ تا کالیبره مجدد، شدت بحران‌ها قابل اعتماد نیست.',
+  open:inc => { state.blindT = 45; },
+  opts:[
+    T('کالیبرهٔ حسگرها', { style:'safe', skill:'nav', roles:['ناوبر','تکنسین','دانشمند'], room:'nav', dur:30, energy:2, o2:0, fat:9,
+      risk:.08, part:.26, eff:{ fix:{nav:7} }, then:inc => { state.blindT = 0; } }),
+    T('فیلتر کردن داده‌های خام', { style:'fast', skill:'unk', roles:['دانشمند'], room:'lab', dur:38, energy:3, o2:0, fat:11,
+      risk:.12, eff:{ fix:{nav:11}, km:80 }, then:inc => { state.blindT = 0; } }),
+    Q('خاموش کردن حسگرهای بیرونی', { style:'risky', risk:.24, part:.2, eff:{ dmg:{nav:4} }, then:inc => { state.blindT = 0; } }),
+    X('با داده‌های غلط برو', { eff:{ dmg:{nav:6} }, then:inc => { state.blindT = 60; } })
+  ] }),
+ev({ key:'autoLock', cat:'nav', icon:'🔐', title:'قفل自动驾驶 (اتوپایلوت)', color:'#fbbf24', kind:'bad',
+  base:.8, escT:56, escDo:{ dmg:{nav:8}, km:-200 },
+  passive:(inc,dt,m)=>{ if(!inc.stable) addKm(-1.4*dt*m); },
+  desc:() => 'اتوپایلوت روی حالت محافظ قفل شده؛ بخشی از رانش شتاب درگیر نمی‌شود.',
+  opts:[
+    T('ریست نرم اتوپایلوت', { style:'safe', skill:'nav', roles:['ناوبر','تکنسین'], room:'nav', dur:22, energy:1, o2:0, fat:6,
+      risk:.1, part:.24, eff:{ fix:{nav:6} } }),
+    T('دور زدن نرم‌افزار (بازنویسی)', { style:'fast', skill:'nav', roles:['دانشمند','ناوبر'], room:'nav', dur:40, energy:4, o2:1, fat:13,
+      risk:.16, part:.16, eff:{ fix:{nav:11}, buff:{ k:'speed', v:.18, t:110 } } }),
+    Q('کلید دستیِ اضطراری', { style:'risky', need:0, risk:.34, eff:{ fix:{nav:9}, dmg:{mech:4} } }),
+    X('رها کردن', { eff:{ dmg:{nav:6}, km:-120 } })
+  ] }),
+ev({ key:'dishJam', cat:'nav', icon:'📡', title:'گیر کردن دیش مخابرات', color:'#cbd5e1', kind:'bad',
+  base:.72, fx:['commsDown'], escT:88, escDo:{ dmg:{nav:6} },
+  desc:() => 'دیش روی قفل گیر کرده و نمی‌چرخد؛ هیچ سیگنال کمکی یا هشدار هوایی دریافت نمی‌شود.',
+  opts:[
+    T('آزاد کردن مکانیزم (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','مهندس'], room:'lock', dur:34, energy:4, o2:2, fat:13, eva:true, injure:true,
+      risk:.14, eff:{ fix:{nav:10} } }),
+    T('چرخش با موتور کمکی', { style:'safe', skill:'elec', roles:['تکنسین'], room:'sys', dur:24, energy:2, o2:0, fat:7,
+      risk:.09, part:.3, eff:{ fix:{nav:6} } }),
+    Q('بازتعیین آرایهٔ داخلی', { style:'risky', need:0, risk:.3, eff:{ fix:{nav:5}, en:-4 }, critEff:{ fix:{nav:9}, buff:{ k:'scan', v:.2, t:100 } } }),
+    X('بدون رادار برو', { eff:{ dmg:{nav:5} } })
+  ] }),
+ev({ key:'starMap', cat:'nav', icon:'🗺️', title:'نقشهٔ ستاره‌ای رهاشده', color:'#4ade80', kind:'good',
+  base:.6, mood:'good', requires:()=>state.distance > 1400,
+  desc:() => 'یک کپسول دادهٔ قدیمی در مسیر شناور است: مسیر کوتاه‌تر به سمت ایستگاه آلفا، اگر کسی بتواند باز کند.',
+  opts:[
+    T('رمزگشایی نقشه', { style:'safe', skill:'nav', roles:['ناوبر','دانشمند'], room:'nav', dur:34, energy:3, o2:0, fat:10,
+      risk:.14, part:.24, eff:{ km:420, buff:{ k:'speed', v:.14, t:130 }, fix:{nav:5} },
+      failEff:{ km:60 } }),
+    T('گرفتن فقط مختصات (سریع)', { style:'fast', skill:'nav', roles:['ناوبر','تکنسین','خدمه'], room:'nav', dur:18, energy:1, o2:0, fat:5,
+      risk:.08, part:.2, eff:{ km:190 } }),
+    Q('بدون بررسی باز کن', { style:'risky', risk:.4, eff:{ km:520 }, failEff:{ dmg:{nav:8}, km:-140 } }),
+    X('ولش کن', { eff:{} })
+  ] }),
+ev({ key:'courseOpt', cat:'nav', icon:'🪄', title:'پنجرهٔ هم‌زمانی باز شده', color:'#67e8f9', kind:'good',
+  base:.5, mood:'good', requires:()=>state.time > 180,
+  desc:() => 'محاسبات نشان می‌دهد یک پیچش کوچک، ده دقیقه زمان می‌خرد — ولی سوخت و توجه لازم دارد.',
+  opts:[
+    T('انجام پیچش بهینه', { style:'safe', skill:'nav', roles:['ناوبر','مهندس'], room:'nav', dur:36, energy:5, o2:1, fat:12,
+      risk:.1, part:.2, eff:{ km:520, dmg:{mech:3} } }),
+    Q('پیچش سریع و کثیف', { style:'risky', risk:.34, eff:{ km:700 }, failEff:{ dmg:{nav:7}, km:-200, temp:8 } }),
+    X('از دستش بده', { eff:{} })
+  ] })
+;
+
+/* ============================================================
+  ۵) خدمه — CREW
+  ============================================================ */
+ev({ key:'medEmerg', cat:'crew', icon:'⚕️', title:'اورژانس پزشکی', color:'#f472b6', kind:'bad',
+  base:1.0, fx:['moraleLow'], deep:true, escT:48, escDo:{ fat:14, o2:-1.4 },
+  open:inc => { inc.m.id = pickFreeCrewId(); inc.m.cause = pick(['افت قند و کم‌آبی','تنفس هوای بازیافتی','سقوط روی پنل باز','استنشاق بخار مبرد']); },
+  passive:(inc,dt,m)=>{ const n = crewById(inc.m.id); if(n && !inc.stable) n.fat = clamp(n.fat + .3*dt*m, 0, 100); },
+  stages:[
+    { desc:inc => 'نفر ' + fa((inc.m.id||0)+1) + ' روی زمین افتاده؛ تنگی نفس و درد قفسهٔ سینه. تا معاینه نمی‌شود فهمید جدی است یا نه.',
+      opts:[
+        T('معاینهٔ سریع', { style:'safe', skill:'crew', roles:['پزشک','دانشمند','تکنسین','خدمه'], room:'med', dur:18, energy:1, o2:0, fat:4,
+          risk:.03, part:.1, solve:false, stage:1 }),
+        T('درمان بدون تشخیص', { style:'fast', skill:'crew', roles:['پزشک'], room:'med', dur:24, energy:2, o2:1, fat:8,
+          risk:.3, part:.24, eff:{ o2:2, fat:-12 }, failEff:{ fat:10 }, injure:true }),
+        Q('آب‌قند و استراحت اجباری', { style:'safe', risk:.06, part:.16, solve:false, stab:true, eff:{ fat:-14 },
+          then:inc => { const n = crewById(inc.m.id); if(n) lockCrew(n, 34, 'استراحت'); } }),
+        X('بگذار خودش بلند شود', { eff:{ o2:-1.4, fat:12 }, then:inc => { const n = crewById(inc.m.id); if(n) injure(n, 'اورژانس درمان‌نشده'); } })
+      ] },
+    { desc:inc => 'تشخیص: ' + inc.m.cause + '. با یک درمان کوتاه برمی‌گردد؛ اگر رهایش کنی، همین نفر تا آخر مسیر از دست می‌رود.',
+      opts:[
+        T('درمان کامل', { style:'safe', skill:'crew', roles:['پزشک'], room:'med', dur:26, energy:2, o2:1, fat:7,
+          risk:.05, part:.18, eff:{ o2:3, fat:-16 }, then:inc => { const n = crewById(inc.m.id); if(n) n.fat = clamp(n.fat - 22, 0, 100); } }),
+        T('مسکّن و بازگرداندن به کار', { style:'fast', skill:'crew', roles:['پزشک','دانشمند','خدمه'], room:'med', dur:14, energy:1, o2:0, fat:4,
+          risk:.14, part:.28, eff:{ fat:-6 }, then:inc => { const n = crewById(inc.m.id); if(n) n.fat = clamp(n.fat + 10, 0, 100); } }),
+        X('ریسک کن و برو سر بحران بعدی', { eff:{ fat:8 }, then:inc => { const n = crewById(inc.m.id); if(n && chance(.55)) injure(n, 'درمان‌نشده ماند'); } })
+      ] }
+  ] }),
+ev({ key:'crewInjury', cat:'crew', icon:'🩺', title:'خدمهٔ مصدوم', color:'#fb7185', kind:'bad',
+  base:0, noRoll:true, noAutoOpen:true, fx:[], escT:64, escDo:{ fat:16, o2:-2.0 },
+  open:inc => { inc.m.id = inc.reqId; },
+  passive:(inc,dt,m)=>{ const n = crewById(inc.m.id); if(n && !inc.stable) n.fat = clamp(n.fat + .3*dt*m, 0, 100); },
+  desc:inc => { const n = crewById(inc.m.id); return (n ? 'نفر ' + fa(n.i+1) + ' (' + n.role + ') ' : 'یک خدمه ') +
+    'مصدوم است و تا درمان، روی هیچ مأموریتی نمی‌رود.'; },
+  opts:[
+    T('درمان و بخیهٔ چسبی', { style:'safe', skill:'crew', roles:['پزشک'], room:'med', dur:26, energy:2, o2:1, fat:7,
+      risk:.06, part:.2, then:inc => { const n = crewById(inc.m.id); if(n){ n.injured = false; n.fat = clamp(n.fat - 18, 0, 100); } } }),
+    T('کمک‌اولی توسط هم‌تیمی', { style:'fast', skill:'crew', roles:['خدمه','امنیتی','تکنسین','مهندس','دانشمند','ناوبر'], room:'med', dur:16, energy:1, o2:0, fat:5,
+      risk:.22, part:.3, solve:false, stab:true, then:inc => { const n = crewById(inc.m.id); if(n && chance(.4)) n.injured = false; } }),
+    Q('استراحت بده تا خوب شود', { style:'safe', need:0, risk:.02, eff:{ o2:-1.0 },
+      then:inc => { const n = crewById(inc.m.id); if(n){ n.injured = false; n.fat = clamp(n.fat + 10, 0, 100); } } })
+  ] }),
+ev({ key:'fatigueBreak', cat:'crew', icon:'😵', title:'فرسودگی خدمه', color:'#fda4af', kind:'bad',
+  base:.9, fx:['moraleLow'], escT:70, escDo:{ fat:18, dmg:{life:4} },
+  requires:()=>avgFatigue() > 34,
+  desc:() => 'میانگین خستگی خدمه ' + fa(avgFatigue()) + '٪ است؛ تمرکز پایین آمده و احتمال خطا بالا.',
+  opts:[
+    T('چرخش شیفت و استراحت', { style:'safe', skill:'crew', roles:['پزشک','خدمه'], room:'med', dur:30, energy:2, o2:0, fat:0,
+      risk:.06, part:.16, eff:{ fat:-26 }, then:inc => { addBuff('rest', .5, 60); } }),
+    T('محرک‌های شیمیایی', { style:'fast', skill:'crew', roles:['پزشک','دانشمند'], room:'med', dur:16, energy:1, o2:0, fat:0,
+      risk:.14, part:.24, eff:{ fat:-34 }, crit:{ eff:{ fat:-46, buff:{ k:'speed', v:.12, t:90 } } },
+      then:inc => fatigueAll(6) }),
+    Q('کاهش نصفهٔ شیفت', { style:'risky', need:0, risk:.2, stab:true, eff:{ fat:-12, dmg:{nav:3} } }),
+    X('همین‌طور ادامه بده', { eff:{ fat:14 } })
+  ] }),
+ev({ key:'crewFight', cat:'crew', icon:'🗯️', title:'درگیری بین دو خدمه', color:'#f87171', kind:'bad',
+  base:.72, fx:['moraleLow'], escT:58, escDo:{ fat:14, o2:-1.0 },
+  open:inc => {
+    const a = pickFreeCrewId(), b = pickFreeCrewId(a);
+    inc.m.ids = [a, b].filter(x => x !== null);
+    inc.m.ids.forEach(i => { const n = crewById(i); if(n) lockCrew(n, 9999, 'درگیری'); });
+  },
+  close:inc => { (inc.m.ids||[]).forEach(i => { const n = crewById(i); if(n && n.lockBy === inc.uid) unlockCrew(n); }); },
+  desc:inc => 'دو نفر سر مسئولیت بحران با هم درگیر شده‌اند و تا داوری، کار نمی‌کنند. (' + inc.m.ids.map(i => '#' + fa(i+1)).join(' و ') + ')',
+  opts:[
+    T('داوری و آشتی (فرمانده)', { style:'safe', skill:'crew', roles:['پزشک','دانشمند','تکنسین','مهندس','ناوبر','خدمه','امنیتی'], room:'med', dur:20, energy:1, o2:0, fat:4,
+      risk:.1, part:.2, eff:{ fat:-8 } }),
+    T('تحریم کاری هر دو', { style:'fast', skill:'crew', roles:['امنیتی'], room:'med', dur:14, energy:1, o2:0, fat:0,
+      risk:.06, part:.3, eff:{ fat:6, o2:-1.0 }, note:'سریع تمام می‌شود ولی هر دو خسته‌تر برمی‌گردند' }),
+    Q('بگذار خودشان حل کنند', { style:'risky', risk:.42, eff:{ fat:-12 }, failEff:{ fat:16 } }),
+    X('رها کردن', { eff:{ fat:10 } })
+  ] }),
+ev({ key:'cryoAlarm', cat:'crew', icon:'🧊', title:'آلارم کایو‌پاد', color:'#7dd3fc', kind:'bad',
+  base:.6, fx:['cryoAlarmFx'], escT:52, escDo:{ fat:16, dmg:{life:6} },
+  requires:()=>state.crew >= 4,
+  open:inc => {
+    const id = pickFreeCrewId();
+    inc.m.id = id;
+    if(id !== null){ const n = crewById(id); if(n) lockCrew(n, 9999, 'کایو‌پاد'); }
+  },
+  close:inc => { const n = crewById(inc.m.id); if(n && n.lockBy === inc.uid) unlockCrew(n); },
+  desc:inc => 'کایو‌پاد نفر ' + fa((inc.m.id||0)+1) + ' از خواب بیدار نشده و قفل ایمنی، او را داخل نگه داشته است.',
+  opts:[
+    T('باز کردن دستی کایو‌پاد', { style:'fast', skill:'mech', roles:['مهندس','تکنسین'], room:'med', dur:30, energy:4, o2:1, fat:11,
+      risk:.14, part:.22, eff:{ fix:{life:5}, fat:-6 } }),
+    T('ریست نرم از بلوک پزشکی', { style:'safe', skill:'crew', roles:['پزشک','تکنسین'], room:'med', dur:22, energy:2, o2:0, fat:7,
+      risk:.1, part:.26, eff:{ fat:-4 } }),
+    Q('قطع برق کایو‌پاد', { style:'risky', need:0, risk:.4, eff:{ fat:-10 }, failEff:{ fat:14, dmg:{life:8} } }),
+    X('رها کردن', { eff:{ fat:12 } })
+  ] }),
+ev({ key:'galleyFail', cat:'crew', icon:'🍲', title:'خرابی سنتز غذا', color:'#fcd34d', kind:'neutral',
+  base:.62, fx:['moraleLow'], escT:82, escDo:{ fat:14 },
+  passive:(inc,dt,m)=>{ if(!inc.stable) for(const n of npcs) n.fat = clamp(n.fat + .055*dt*m, 0, 100); },
+  desc:() => 'سنتز غذا فقط آب نمک می‌دهد؛ خدمه با معدهٔ خالی کار می‌کنند و خستگی‌شان تندتر می‌شود.',
+  opts:[
+    T('تعمیر نازل‌های سنتز', { style:'safe', skill:'elec', roles:['تکنسین','خدمه'], room:'galley', dur:26, energy:2, o2:0, fat:7,
+      risk:.08, part:.28, eff:{ fat:-12 } }),
+    T('پخت با جیرهٔ خشک', { style:'fast', skill:'crew', roles:['خدمه','پزشک','امنیتی','مهندس','دانشمند','ناوبر','تکنسین'], room:'galley', dur:14, energy:1, o2:0, fat:3,
+      risk:.05, part:.2, eff:{ fat:-18, dmg:{life:2} } }),
+    X('گرسنگی را تحمل کن', { eff:{ fat:10 } })
+  ] }),
+ev({ key:'stowaway', cat:'crew', icon:'🐀', title:'همسفر غیرمجاز', color:'#c4b5fd', kind:'weird', rare:true,
+  base:.5, fx:['bioHazard'], escT:66, escDo:{ o2:-2.2, dmg:{life:6}, fat:6 },
+  desc:() => 'در دهلیز بار، موجودی کوچک در لابه‌لای جعبه‌ها لانه کرده. مصرف اکسیژن بالا رفته — و معلوم نیست چه چیز دیگری.',
+  opts:[
+    T('گرفتن و قرنطینه', { style:'safe', skill:'eva', roles:['امنیتی','خدمه'], room:'hall', dur:28, energy:3, o2:1, fat:10,
+      risk:.14, part:.24, eff:{ o2:2, fix:{life:6} } }),
+    T('بررسی علمی', { style:'fast', skill:'unk', roles:['دانشمند','پزشک'], room:'lab', dur:36, energy:3, o2:0, fat:11,
+      risk:.16, part:.2, eff:{ o2:1, fix:{life:5} },
+      crit:{ eff:{ o2:6, buff:{ k:'o2', v:.2, t:150 } }, note:'موجود، فیلتر بیولوژیکی طبیعی است — اکسیژن‌سازی بهتر شد!' } }),
+    Q('ولش کن', { style:'risky', risk:.3, eff:{}, failEff:{ o2:-2.2, dmg:{life:5} } }),
+    X('دست نزن', { eff:{ o2:-2.0, fat:5 } })
+  ] }),
+ev({ key:'panic', cat:'crew', icon:'😱', title:'حملهٔ وحشت', color:'#fda4af', kind:'bad', rare:true,
+  base:.45, fx:['moraleLow'], escT:44, escDo:{ fat:20 },
+  requires:()=>state.escalated >= 2,
+  open:inc => { inc.m.id = pickFreeCrewId(); if(inc.m.id !== null){ const n = crewById(inc.m.id); if(n) lockCrew(n, 30, 'وحشت'); } },
+  close:inc => { const n = crewById(inc.m.id); if(n && n.lockBy === inc.uid) unlockCrew(n); },
+  desc:inc => 'نفر ' + fa((inc.m.id||0)+1) + ' از کنترل خارج شده؛ تا آرام شدن، روی هیچ بحرانی نمی‌رود.',
+  opts:[
+    T('گفت‌وگوی آرام‌سازی', { style:'safe', skill:'crew', roles:['پزشک','دانشمند','تکنسین','مهندس','ناوبر','خدمه','امنیتی'], room:'med', dur:18, energy:1, o2:0, fat:3,
+      risk:.08, part:.2, eff:{ fat:-10 } }),
+    T('تزریق آرام‌بخش', { style:'fast', skill:'crew', roles:['پزشک'], room:'med', dur:10, energy:2, o2:0, fat:0,
+      risk:.1, eff:{ fat:-24 } }),
+    X('خودش درست می‌شود', { eff:{ fat:14 } })
+  ] })
+;
+
+/* ============================================================
+  ۶) محیطی — ENVIRONMENTAL (بیشتر دوره‌ای/آب‌وهوا)
+  ============================================================ */
+ev({ key:'debrisField', cat:'env', icon:'🪨', title:'میدان تراشه', color:'#94a3b8', kind:'bad',
+  base:.95, period:true, dur:86, fx:['debris'],
+  desc:() => 'سفینه وارد ابری از سنگ و فلز شده؛ هر چند ثانیه یک برخورد به بدنه. تا خروج از میدان، بدنه ساییده می‌شود.',
+  opts:[
+    T('هم‌راستا کردن سپر', { style:'safe', skill:'nav', roles:['ناوبر','مهندس'], room:'nav', dur:24, energy:3, o2:0, fat:8,
+      risk:.1, part:.2, eff:{ fix:{hull:4} }, then:inc => { inc.dur = Math.max(12, inc.dur - 34); toast('🛡️','سپر هم‌راستا شد — طول میدان کوتاه‌تر','#4ade80'); } }),
+    T('پنهان‌شدن پشت دهلیز بار', { style:'safe', skill:'crew', roles:['امنیتی','خدمه'], room:'hall', dur:18, energy:1, o2:0, fat:6,
+      risk:.06, solve:false, stab:true, eff:{ fat:4 } }),
+    Q('شتاب برای خروج', { style:'risky', need:0, risk:.34, eff:{ km:320, dmg:{hull:6} }, failEff:{ dmg:{hull:11}, km:80 } }),
+    X('از میان میدان برو', { eff:{ dmg:{hull:4} } })
+  ],
+  expire:{ note:'از میدان تراشه خارج شدی', next:{ key:'meteorHit', delay:2, chance:.35 } } }),
+ev({ key:'solarStorm', cat:'env', icon:'🌞', title:'طوفان خورشیدی', color:'#fbbf24', kind:'bad',
+  base:.72, period:true, dur:96, fx:['storm'],
+  open:inc => { inc.m.nextT = 22; },
+  passive:(inc,dt)=>{
+    inc.m.nextT -= dt;
+    if(inc.m.nextT <= 0){
+      inc.m.nextT = rf(24, 40);
+      if(!inc.stable && chance(.4)){
+        const k = pick(['voltSurge','powerOut','sensorGhost']);
+        if(!state.incidents.some(i => i.key === k)) queueFollow(k, 1, 2, 'طوفان خورشیدی');
+      }
+    }
+  },
+  desc:() => 'جریان ذره‌ای سنگین؛ شبکهٔ برق تحت فشار است و احتمال جرقه و خرابی زیاد شده.',
+  opts:[
+    T('سپر مغناطیسی را بالا بیاور', { style:'safe', skill:'elec', roles:['تکنسین','مهندس'], room:'sys', dur:26, energy:5, o2:0, fat:9,
+      risk:.1, part:.2, eff:{ fix:{elec:5} }, then:inc => { inc.dur = Math.max(10, inc.dur - 40); } }),
+    T('قطب‌نمای ذره‌ای (فرار)', { style:'fast', skill:'nav', roles:['ناوبر','دانشمند'], room:'nav', dur:32, energy:4, o2:1, fat:11,
+      risk:.18, part:.2, eff:{ km:220, fix:{nav:4} }, then:inc => { inc.dur = 8; } }),
+    Q('خاموش کردن سیستم‌های حساس', { style:'safe', need:0, risk:.1, stab:true, eff:{ en:-4, dmg:{nav:4} } }),
+    X('توفان را تحمل کن', { eff:{ dmg:{elec:5} } })
+  ],
+  expire:{ note:'طوفان گذشت', next:{ key:'arrayMicrometeor', delay:4, chance:.3 } } }),
+ev({ key:'stormWarn', cat:'env', icon:'📶', title:'هشدار هوایی: طوفان در راه است', color:'#fde68a', kind:'neutral',
+  base:.5, period:true, dur:22, mood:'warn',
+  desc:() => 'پیش‌بینی میدان: حدود بیست ثانیه دیگر به لبهٔ طوفان خورشیدی می‌رسی. حالا می‌توانی آماده شوی.',
+  opts:[
+    T('آماده‌سازی شبکه (پیش‌دستی)', { style:'safe', skill:'elec', roles:['تکنسین','مهندس'], room:'sys', dur:18, energy:2, o2:0, fat:6,
+      risk:.06, eff:{ fix:{elec:4}, buff:{ k:'regen', v:.2, t:60 } } }),
+    T('شارژ کامل مخازن', { style:'fast', skill:'elec', roles:['تکنسین','خدمه','دانشمند','مهندس','ناوبر','امنیتی','پزشک'], room:'battery', dur:16, energy:0, o2:0, fat:5,
+      risk:.05, eff:{ en:12 } }),
+    X('بی‌مقدمه برو توی آن', {})
+  ],
+  expire:{ note:'لبهٔ طوفان رسید', next:{ key:'solarStorm', delay:0 } } }),
+ev({ key:'meteorHit', cat:'env', icon:'☄️', title:'برخورد ریزشهاب', color:'#f87171', kind:'bad',
+  base:.8, escT:40, escDo:{ dmg:{hull:12}, o2:-2.2 }, esc:'pressureDrop',
+  open:inc => { applyEff({ dmg:{hull:rndi(4,9)}, o2:-rndi(1,3) }, inc.mag); },
+  desc:() => 'یک قطعهٔ فلزی با سرعت مداري بدنه را سوراخ کرد؛ آلارم برخورد هنوز روشن است.',
+  opts:[
+    T('مهر فوری (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','مهندس'], room:'lock', dur:30, energy:5, o2:2, fat:14, eva:true, injure:true,
+      risk:.16, eff:{ fix:{hull:14}, o2:2 } }),
+    T('قطع و جداسازی بخش', { style:'safe', skill:'life', roles:['تکنسین','خدمه','مهندس','دانشمند','پزشک','ناوبر','امنیتی'], room:'life', dur:18, energy:1, o2:0, fat:6,
+      risk:.06, part:.28, eff:{ fix:{hull:6} } }),
+    Q('پُر کردن با کف فشرده', { style:'risky', need:0, risk:.3, eff:{ fix:{hull:9}, dmg:{life:3} }, failEff:{ o2:-2.2, dmg:{hull:6} } }),
+    X('رها کردن', { eff:{ o2:-2.2, dmg:{hull:7} } })
+  ] }),
+ev({ key:'radBelt', cat:'env', icon:'☢️', title:'کمربند تشعشع', color:'#a3e635', kind:'bad',
+  base:.62, period:true, dur:78, fx:['radiation'],
+  desc:() => 'سطح تشعشع بالاست: تا خروج از این ناحیه، هیچ بیرون‌زدنی (EVA) انجام‌شدنی نیست و خدمه زودتر خسته می‌شوند.',
+  opts:[
+    T('سپر سربی دور کابین', { style:'safe', skill:'mech', roles:['مهندس','خدمه'], room:'hull', dur:28, energy:4, o2:0, fat:10,
+      risk:.1, part:.2, eff:{ fat:-6 }, then:inc => { inc.dur = Math.max(10, inc.dur - 30); } }),
+    T('تغییر مدار برای خروج', { style:'fast', skill:'nav', roles:['ناوبر','مهندس'], room:'nav', dur:30, energy:5, o2:1, fat:11,
+      risk:.16, eff:{ km:150 }, then:inc => { inc.dur = 6; } }),
+    X('از میانش رد شو', { eff:{ fat:8 } })
+  ],
+  expire:{ note:'ناحیهٔ تشعشع پشت سر ماند' } }),
+ev({ key:'dustCloud', cat:'env', icon:'🌫️', title:'ابر کیهانی متراکم', color:'#c4b5fd', kind:'bad',
+  base:.7, period:true, dur:80, fx:['drag'],
+  passive:(inc,dt,m)=>{ if(!inc.stable) addTemp(.08*dt*m); },
+  desc:() => 'گرد و غبار بین‌ستاره‌ای مثل ترمز عمل می‌کند: شتاب کم‌بازده‌تر است و بدنه گرم می‌شود.',
+  opts:[
+    T('صاف کردن سپر پیشرو', { style:'safe', skill:'mech', roles:['مهندس','تکنسین'], room:'hull', dur:26, energy:3, o2:0, fat:9,
+      risk:.08, part:.26, eff:{ fix:{hull:4}, temp:-4 }, then:inc => { inc.stable = true; state.modsDirty = true; } }),
+    T('گذر در ارتفاع بالا', { style:'fast', skill:'nav', roles:['ناوبر','دانشمند'], room:'nav', dur:32, energy:4, o2:0, fat:10,
+      risk:.16, eff:{ km:200, temp:-3 }, then:inc => { inc.dur = 8; } }),
+    X('ادامه بده', { eff:{ temp:5 } })
+  ],
+  expire:{ note:'ابر پشت سر ماند' } }),
+ev({ key:'cargoDrift', cat:'env', icon:'📦', title:'بارِ مهارنشده در فضا', color:'#fdba74', kind:'neutral',
+  base:.78, escT:76, escDo:{ dmg:{hull:7}, fat:6 },
+  passive:(inc,dt,m)=>{ if(!inc.stable) addTemp(.05*dt*m); },
+  desc:() => 'یک کانتینر از مهار درآمده و کنار پنل خورشیدی می‌چرخد؛ اگر رها شود، برخوردش تصادفی نیست.',
+  opts:[
+    T('بازگرفتن با بازوی رباتیک (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','خدمه'], room:'lock', dur:30, energy:4, o2:1, fat:13, eva:true, injure:true,
+      risk:.16, eff:{ en:6, o2:1, fix:{hull:4}, km:80 } }),
+    T('مهار از داخل با کابل', { style:'safe', skill:'mech', roles:['تکنسین','مهندس','خدمه'], room:'hall', dur:22, energy:1, o2:0, fat:7,
+      risk:.08, part:.3, eff:{ fix:{hull:3} } }),
+    Q('ول کردنش (رها سازی)', { style:'risky', risk:.22, eff:{ dmg:{hull:2}, en:2 }, failEff:{ dmg:{hull:8} } }),
+    X('رها کردن', { eff:{ dmg:{hull:5} } })
+  ] }),
+ev({ key:'gravityWake', cat:'env', icon:'🕳️', title:'بازگشت گرانشی', color:'#818cf8', kind:'weird', rare:true,
+  base:.4, escT:60, escDo:{ dmg:{nav:6} },
+  desc:() => 'یک جسم سنگین نامعلوم، مسیر را کمی به عقب کشیده — مقداری از مسافت را از دست داده‌ای و می‌توان از آن استفاده کرد.',
+  open:inc => { applyEff({ km:-rndi(160,320) }, inc.mag); },
+  opts:[
+    T('استفادهٔ تاب‌سواری گرانشی', { style:'risky', skill:'nav', roles:['ناوبر','دانشمند'], room:'nav', dur:34, energy:4, o2:1, fat:13,
+      risk:.26, part:.2, eff:{ km:640, dmg:{hull:5} }, failEff:{ km:-180, dmg:{hull:8}, temp:8 } }),
+    T('تلاش برای خروج آرام', { style:'safe', skill:'nav', roles:['ناوبر','مهندس','تکنسین'], room:'nav', dur:26, energy:2, o2:0, fat:8,
+      risk:.07, eff:{ km:200 } }),
+    X('در چرخش بمان', { eff:{ km:-200, fat:6 } })
+  ] })
+;
+
+/* ============================================================
+  ۷) ناشناس / ویژه — UNKNOWN & SPECIAL (نادر، غیرقابل پیش‌بینی)
+  ============================================================ */
+ev({ key:'sigUnknown', cat:'unk', icon:'🌌', title:'سیگنال ناشناس', color:'#c084fc', kind:'weird',
+  base:.95, mood:'neutral', escT:120, escDo:{ dmg:{nav:3} },
+  open:inc => { inc.m.truth = rnd(); },
+  desc:inc => 'یک الگوی تکرارشونده در باند محافظ received شده؛ نه کد ایستگاه است نه مزاحمت معمولی.',
+  opts:[
+    T('رمزگشایی کامل', { style:'safe', skill:'unk', roles:['دانشمند','ناوبر'], room:'lab', dur:32, energy:3, o2:0, fat:10,
+      risk:.1, part:.2, solve:false, note:'قبل از هر تصمیمی بفهم واقعاً چیست',
+      then:inc => {
+        const t = inc.m.truth;
+        inc.m.what = t < .3 ? 'beacon' : t < .5 ? 'derelict' : t < .66 ? 'noise' : t < .84 ? 'bio' : 'help';
+        inc.stage = 1; state.modsDirty = true; renderDirty = true;
+        toast('📡', { beacon:'یک منارهٔ راهنمای قدیمی است — مسیر را روشن می‌کند', derelict:'یک سفینهٔ رهاشده در ' + fa(rndi(30,90)) + ' کیلومتری',
+          noise:'فقط انعکاس نویزِ خودِ سفینه است', bio:'الگو دارای ساختار زیستی است — مایهٔ نگرانی',
+          help:'یک درخواست کمک است؛ فرستنده‌اش ضعیف می‌شود' }[inc.m.what], '#a78bfa');
+      } }),
+    T('اسکن سریع', { style:'fast', skill:'nav', roles:['ناوبر','تکنسین'], room:'nav', dur:16, energy:1, o2:0, fat:5,
+      risk:.14, part:.3, eff:{ km:60 } }),
+    Q('پاسخ رادیویی بده', { style:'risky', risk:.32, eff:{ km:120, dmg:{elec:3} }, failEff:{ dmg:{elec:6}, fat:5 } }),
+    X('ول کن', { eff:{} })
+  ],
+  stages:[
+    { },
+    { desc:inc => ({ beacon:'منارهٔ راهنما: با هم‌راستایی، مسافت کم می‌شود.', derelict:'سفینهٔ رهاشده — ارزش بالا رفتن دارد، ولی وضعیتش نامعلوم است.',
+        noise:'نویز بی‌محتوا — وقتت را گرفته، ولی دیر نشده.', bio:'نشانهٔ زیستی. نزدیک شدن ریسک آلودگی دارد.',
+        help:'درخواست کمک؛ اگر بی‌پاسخ بمانی، احتمال بدی وجود دارد که آن منبع دیگر باشد.' }[inc.m.what] || 'وضعیت روشن شد.'),
+      opts:[
+        T('اقدام بر اساس شناسایی', { style:'safe', skill:'unk', roles:['دانشمند','ناوبر','تکنسین','مهندس','خدمه','امنیتی','پزشک'], room:'lab', dur:26, energy:2, o2:0, fat:8,
+          risk:.1, part:.22,
+          then:inc => {
+            const w = inc.m.what;
+            if(w === 'beacon') { applyEff({ km:260, fix:{nav:6} }, inc.mag); toast('🗼','هم‌راستایی با مناره — ۲۶۰ کیلومتر جلو افتادی','#4ade80'); }
+            else if(w === 'derelict') queueFollow('derelict', 2, 1, 'سیگنال');
+            else if(w === 'bio') queueFollow('filterGerm', 3, 1, 'سیگنال');
+            else if(w === 'help') queueFollow('podCache', 2, 1, 'سیگنال');
+            else { addBuff('scan', .12, 60); toast('🌫️','فقط نویز بود — اما حسگرها را تمیز کردی','#94a3b8'); }
+          } }),
+        Q('بی‌خیال رد شو', { risk:.1, eff:{ km:40 } }),
+        X('ببند و تمام', {})
+      ] }
+  ] }),
+ev({ key:'derelict', cat:'unk', icon:'🛸', title:'سفینهٔ رهاشده', color:'#a78bfa', kind:'weird', rare:true,
+  base:.5, mood:'neutral', escT:96, escDo:{ dmg:{nav:5} },
+  open:inc => { inc.m.loot = rndi(1,3); inc.m.trap = chance(.34); },
+  desc:inc => 'بدنه‌ای سرد در ' + fa(rndi(20,60)) + ' کیلومتری، بدون سیگنال. احتمالا محموله و قطعات یدکی دارد — و شاید یک تله.',
+  opts:[
+    T('برد و غارت (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','مهندس'], room:'lock', dur:46, energy:6, o2:3, fat:20, eva:true, injure:true,
+      risk:.24, part:.22,
+      then:inc => {
+        if(inc.m.trap){ applyEff({ dmg:{hull:6}, o2:-2.2, fat:8 }, inc.mag); toast('⚠️','تلهٔ فشاری فعال شد — ضرر','#f87171'); }
+        else { applyEff({ en:14, o2:4, fix:{mech:8, elec:6}, km:120 }, inc.mag); state.salvaged++; toast('🎁','غنیمة خوب: قطعه، انرژی و بخشیدهٔ مسیر','#4ade80'); }
+      } }),
+    T('فقط اسکن و قطه بیرونی', { style:'safe', skill:'unk', roles:['دانشمند','تکنسین','ناوبر'], room:'nav', dur:26, energy:2, o2:0, fat:8,
+      risk:.08, part:.3, eff:{ en:8, fix:{elec:4} } }),
+    T('یدک‌کشی (سنگین و کند)', { style:'safe', skill:'mech', roles:['مهندس','ناوبر'], room:'lock', dur:52, energy:7, o2:1, fat:18, need:2,
+      risk:.14, part:.2, eff:{ fix:{hull:6}, en:6 }, then:inc => { fxAdd('towHaul', 130); } }),
+    X('رد شو', { eff:{} })
+  ] }),
+ev({ key:'artifact', cat:'unk', icon:'🗿', title:'شیء ناشناخته', color:'#f0abfc', kind:'weird', rare:true,
+  base:.42, mood:'neutral', escT:74, escDo:{ dmg:{life:6}, fat:8 },
+  open:inc => { inc.m.good = chance(.5); },
+  desc:() => 'یک منشور فلزیِ گرم، آرام در مدار سفینه می‌چرخد؛ سنسورها مقدار نامعقولی از انرژی در آن می‌بینند.',
+  opts:[
+    T('بردن به آزمایشگاه', { style:'risky', skill:'unk', roles:['دانشمند','تکنسین'], room:'lab', dur:38, energy:4, o2:1, fat:13,
+      risk:.24, part:.2,
+      then:inc => {
+        if(inc.m.good){ applyEff({ en:24, o2:4, buff:{ k:'regen', v:.4, t:180 } }, inc.mag); toast('🗿','منشور، بار را بازیابی می‌کند!','#4ade80'); sfx.crit(); }
+        else { applyEff({ dmg:{elec:8, life:6}, fat:10, o2:-2.0 }, inc.mag); queueFollow('containment', 4, 2, 'شیء'); toast('🗿','شیء واکنش داد — سیستم‌ها پریدند','#f87171'); }
+      } }),
+    T('از دور مطالعه کن', { style:'safe', skill:'unk', roles:['دانشمند','ناوبر'], room:'nav', dur:24, energy:2, o2:0, fat:7,
+      risk:.08, part:.28, eff:{ km:150, buff:{ k:'speed', v:.1, t:100 } } }),
+    Q('پرتش کن بیرون', { style:'safe', risk:.06, eff:{} }),
+    X('ولش کن', { eff:{} })
+  ] }),
+ev({ key:'containment', cat:'unk', icon:'🧪', title:'نشت از محفظهٔ قرنطینه', color:'#f87171', kind:'bad',
+  base:0, noAutoOpen:true, fx:['bioHazard'], escT:38, escDo:{ dmg:{life:10}, o2:-2.2, fat:14 },
+  desc:inc => 'آن چیزی که داخل بردی، از محفظه بیرون زده. هوا آلوده است و زمان کم است.',
+  opts:[
+    T('پاک‌سازی کامل', { style:'fast', skill:'life', roles:['پزشک','تکنسین'], room:'lab', dur:36, energy:5, o2:2, fat:15,
+      risk:.14, part:.2, eff:{ fix:{life:12}, o2:2 } }),
+    T('قرنطینهٔ مجدد', { style:'safe', skill:'life', roles:['دانشمند','امنیتی','تکنسین','خدمه'], room:'lab', dur:22, energy:2, o2:0, fat:8,
+      risk:.08, part:.3, solve:false, stab:true, eff:{ fix:{life:4} } }),
+    X('رها کن به حال خودش', { eff:{ o2:-2.2, fat:12 }, then:inc => { for(const n of npcs) if(chance(.22)) injure(n, 'آلودگی'); } })
+  ] }),
+ev({ key:'anomalyField', cat:'unk', icon:'🌠', title:'ناحیهٔ عجیب', color:'#22d3ee', kind:'weird', rare:true,
+  base:.4, mood:'neutral', escT:100, escDo:{ dmg:{nav:4} },
+  open:inc => { inc.m.kind = pick(['light','time','mass']); },
+  desc:inc => ({ light:'نور از راستای درست نمی‌آید؛ سنسورها مسیر را «بهتر» نشان می‌دهند تا چیزی که هست.',
+    time:'کرونومترهای سفینه با هم ۹ ثانیه اختلاف دارند؛ یکی از آنها دروغ می‌گوید.',
+    mass:'حسگر جرم، چیزی سنگین را دقیقاً جلوی دماغ سفینه نشان می‌دهد — ولی پنجره خالی است.' }[inc.m.kind]),
+  opts:[
+    T('عبور از میانش ', { style:'risky', skill:'nav', roles:['ناوبر','دانشمند'], room:'nav', dur:30, energy:5, o2:1, fat:12,
+      risk:.34, part:.2,
+      then:inc => {
+        const r = rnd();
+        if(r < .45){ applyEff({ km:760, buff:{ k:'speed', v:.2, t:150 } }, inc.mag); toast('🌠','عبور موفق — سفینه جلو پرتاب شد','#4ade80'); sfx.crit(); }
+        else if(r < .75){ applyEff({ km:180, dmg:{hull:4} }, inc.mag); toast('🌠','عبور با تلنگر — کمی جلو و کمی آسیب','#fbbf24'); }
+        else { applyEff({ km:-260, dmg:{nav:8}, fat:8 }, inc.mag); toast('🌠','ناحیه سفینه را پس زد','#f87171'); }
+      } }),
+    T('دور زدن (امن و کند)', { style:'safe', skill:'nav', roles:['ناوبر','مهندس'], room:'nav', dur:34, energy:3, o2:0, fat:9,
+      risk:.03, eff:{ km:-160, fix:{nav:6}, buff:{ k:'cool', v:.2, t:90 } } }),
+    Q('فقط ثبت کن و رد شو', { style:'safe', need:0, risk:.06, eff:{ km:120 } }),
+    X('بی‌توجه بگذر', { eff:{} })
+  ] }),
+ev({ key:'podCache', cat:'unk', icon:'📦', title:'مخزن رهاشده', color:'#4ade80', kind:'good',
+  base:.72, mood:'good',
+  requires:()=>state.oxygen < 74 || state.energy < 48,
+  desc:() => 'یک کپسول تدارکاتی متروک، تقریباً در مسیر: آب، باتری و کارتریج اکسیژن — اگر کسی برود بیاورد.',
+  opts:[
+    T('بازگرداندن کامل (EVA)', { style:'fast', skill:'eva', roles:['امنیتی','خدمه'], room:'lock', dur:34, energy:4, o2:2, fat:14, eva:true, injure:true,
+      risk:.12, part:.2, eff:{ en:24, o2:9, fat:-8 } }),
+    T('فقط کارتریج‌ها', { style:'safe', skill:'crew', roles:['خدمه','تکنسین','مهندس','دانشمند','ناوبر','پزشک','امنیتی'], room:'hall', dur:20, energy:1, o2:0, fat:6,
+      risk:.05, part:.25, eff:{ o2:5, en:8 } }),
+    Q('باز کردن بدون بررسی', { style:'risky', risk:.3, eff:{ en:30, o2:8 }, failEff:{ o2:-2.2, dmg:{life:5}, fat:8 } }),
+    X('نرو پشتش', { eff:{} })
+  ] }),
+ev({ key:'auroraCalm', cat:'unk', icon:'🌈', title:'شفق آرامش‌بخش', color:'#a5f3fc', kind:'good', rare:false,
+  base:.5, mood:'good', requires:()=>avgFatigue() > 26,
+  desc:() => 'سفینه از کنار پرده‌ای از یون‌های درخشان رد می‌شود. یک فرصت کوتاه برای نفس کشیدن.',
+  opts:[
+    T('توقف کوتاه و تماشا', { style:'safe', skill:'crew', roles:['پزشک','خدمه','تکنسین','مهندس','دانشمند','ناوبر','امنیتی'], room:'window', dur:22, energy:1, o2:0, fat:0,
+      risk:.03, eff:{ fat:-30, km:-90 }, then:inc => { addBuff('rest', .5, 70); } }),
+    Q('همه سر کار بمانند', { style:'safe', need:0, risk:.02, eff:{ km:100 } }),
+    X('بی‌تفاوت رد شو', { eff:{ fat:4 } })
+  ] }),
+ev({ key:'timeEcho', cat:'unk', icon:'⏳', title:'پژواک زمان (هشدار زودهنگام)', color:'#facc15', kind:'weird', rare:true,
+  base:.34, mood:'neutral', escT:120,
+  desc:() => 'برای یک لحظه، حسگرها رویداد بعدی را «یاد» می‌آورند. حالا می‌دانی چه در راه است و می‌توانی پیش‌دستی کنی.',
+  opts:[
+    T('آماده‌سازی بر اساس پیش‌گویی', { style:'safe', skill:'unk', roles:['دانشمند','ناوبر','تکنسین','مهندس'], room:'lab', dur:22, energy:2, o2:0, fat:6,
+      risk:.05, eff:{ buff:{ k:'scan', v:.3, t:120 } }, then:inc => { state.hintT = 150; toast('⏳','بحران بعدی را می‌شناسی — ملایم‌تر خواهد بود','#facc15'); } }),
+    Q('شارژ را برای طوفان نگه دار', { style:'safe', need:0, risk:.04, eff:{ buff:{ k:'regen', v:.5, t:130 } } }),
+    X('بی‌اعتنا', { eff:{} })
+  ] }),
+ev({ key:'quantumEcho', cat:'unk', icon:'🔁', title:'اکوی کوانتومی', color:'#e879f9', kind:'weird', rare:true,
+  base:.3, mood:'neutral', escT:110,
+  desc:() => 'سفینه برای یک لحظه خودش را تکرار می‌کند؛ هر بحرانِ باز، سبک‌تر می‌شود. چنین فرصتی دوباره نمی‌آید.',
+  opts:[
+    T('همه‌راستا کردن اکوها', { style:'safe', skill:'unk', roles:['دانشمند','ناوبر'], room:'nav', dur:26, energy:3, o2:0, fat:9,
+      risk:.1, part:.2, then:inc => { for(const i of state.incidents){ i.stable = true; i.sev = Math.max(1, i.sev - 1); i.escAt += 30; } state.modsDirty = true; toast('🔁','اکوها هم‌راستا شدند — همهٔ بحران‌ها سبک‌تر','#4ade80'); } }),
+    Q('ولشان کن', { style:'risky', risk:.28, eff:{ o2:-2.0, dmg:{elec:5} }, critEff:{ en:16, o2:4 } }),
+    X('بی‌توجه بگذر', { eff:{} })
+  ] }),
+ev({ key:'wormhole', cat:'unk', icon:'🕳️', title:'دهلیز کیهانی', color:'#c084fc', kind:'weird', rare:true,
+  base:.2, mood:'neutral', escT:100,
+  requires:()=>state.distance > 2500,
+  open:inc => { inc.m.km = rndi(900, 1800); },
+  desc:inc => 'یک شکاف پایدار در ' + fa(rndi(10,30)) + ' کیلومتری؛ می‌تواند ' + fa(inc.m.km) + ' کیلومتر از مسیر را حذف کند — یا سفینه را له کند.',
+  opts:[
+    T('عبور محاسبه‌شده', { style:'risky', skill:'nav', roles:['ناوبر','مهندس','دانشمند'], room:'nav', dur:44, energy:8, o2:2, fat:22,
+      risk:.34, part:.2,
+      then:inc => {
+        const r = rnd();
+        if(r < .42){ applyEff({ km:inc.m.km }, inc.mag); toast('🕳️','عبور!' + ' ' + fa(inc.m.km) + ' کیلومتر جلو','#4ade80'); sfx.crit(); }
+        else if(r < .7){ applyEff({ km:Math.round(inc.m.km*.4), dmg:{hull:8, mech:6} }, inc.mag); toast('🕳️','نیمه‌عبور — کمی جلو، کمی آسیب','#fbbf24'); }
+        else { applyEff({ dmg:{hull:14, mech:12}, o2:-2.2, temp:14, km:-260 }, inc.mag); toast('🕳️','دهلیز تو را پس زد','#f87171'); sfx.escalate(); }
+      } }),
+    T('از کنارش اسکن کن', { style:'safe', skill:'unk', roles:['دانشمند','ناوبر'], room:'nav', dur:24, energy:2, o2:0, fat:8,
+      risk:.06, eff:{ km:220, fix:{nav:5} } }),
+    X('نزدیکش نشو', { eff:{} })
+  ] }),
+ev({ key:'firstContact', cat:'unk', icon:'👽', title:'تماس اول', color:'#34d399', kind:'weird', rare:true, once:1,
+  base:.18, mood:'rare', escT:90,
+  desc:() => 'یک صدای ساختارمند، دقیقاً روی فرکانس تو. چیزی می‌داند که کجا هستی.',
+  opts:[
+    T('پاسخ دیپلماتیک', { style:'risky', skill:'unk', roles:['دانشمند','ناوبر'], room:'nav', dur:34, energy:5, o2:1, fat:14,
+      risk:.32, part:.18,
+      then:inc => {
+        const r = rnd();
+        state.contact = r < .5 ? 1 : r < .8 ? 0 : -1;
+        if(state.contact === 1){ applyEff({ km:400, buff:{ k:'regen', v:.3, t:200 } }, inc.mag); toast('👽','پاسخ دوستانه بود — یک «مهر» کیهانی گرفتی','#4ade80'); sfx.crit(); }
+        else if(state.contact === -1){ applyEff({ dmg:{elec:8}, blind:40, fat:6 }, inc.mag); toast('👽','اشتباه فهمیدند — درها را می‌کاوند','#f87171'); }
+        else { applyEff({ km:120 }, inc.mag); toast('👽','سکوت. فقط سکوت.','#94a3b8'); }
+      } }),
+    T('بی‌صداشدن کامل', { style:'safe', skill:'elec', roles:['تکنسین','ناوبر'], room:'sys', dur:22, energy:3, o2:0, fat:7,
+      risk:.06, eff:{ fix:{elec:4} }, note:'هیچ‌کس پیدایت نمی‌کند — و هیچ‌کس کمکت نمی‌کند' }),
+    Q('فقط گوش بده', { style:'safe', need:0, risk:.1, eff:{ km:80, fat:4 } }),
+    X('قطع کن', { eff:{} })
+  ] })
+;
+
+/* ============================================================
+   کارگردان رویداد: تطبیقی، ضدتکرار، با صف و موج و مرحله
+   ============================================================ */
+const CAT2SYS = { mech:'mech', elec:'elec', life:'life', nav:'nav', env:'hull', crew:null, unk:null };
+/* هر دسته رویداد، زیرسیستم حساس خودش را دارد: آسیب = احتمال بیشتر (بدون حذف بقیه) */
+function progress01(){ return clamp(1 - state.distance / TOTAL, 0, 1); }
+
+const QUEUE_MAX = 3, QUEUE_TTL = 50;
+function queueFollow(key, delay, sev, note, reqId){
+  if(!EV[key] || state.phase !== 'run') return;
+  if(state.queue.some(q => q.key === key)) return;         // دو نسخهٔ یک رویداد نه
+  state.queue.push({ key, t: Math.max(.5, delay || 0), age: 0, sev: sev || 0, note: note || '', reqId: reqId == null ? -1 : reqId });
+  if(state.queue.length > QUEUE_MAX) state.queue.shift();  // قدیمی‌ترین می‌سوزد
+}
+function freeCount(){
+  let c = 0;
+  for(const n of npcs) if(crewFree(n)) c++;
+  return c;
+}
+function avgFatigue(){
+  if(!npcs.length) return 0;
+  let s = 0; for(const n of npcs) s += n.fat;
+  return s / npcs.length;
+}
+function weightOf(d){
+  if(d.noAutoOpen || d.noRoll) return 0;
+  if(state.incidents.some(i => i.key === d.key)) return 0;
+  if(d.once && d.uses >= d.once) return 0;
+  if(state.activeKeys && state.activeKeys[d.key]) return 0;
+  if(d.requires && !safe(d.requires)) return 0;
+  const mods = state.mods || { w:{} };
+  let w = d.base * (mods.w[d.cat] || 1);
+  const sys = CAT2SYS[d.cat];
+  if(sys) w *= 1 + (100 - integrity(sys)) / 100 * 1.15;          // آسیب‌دیده → محتمل‌تر، ولی بقیه هم می‌آیند
+  if(d.cat === 'crew') w *= 1 + avgFatigue() / 130 + state.injuries * .18;
+  if(d.cat === 'unk') w *= 1 + (state.blindT > 0 ? .35 : 0) + (hasFx('commsDown') ? .5 : 0);
+  if(d.cat === 'env') w *= 1 + (100 - state.sys.hull) / 220;
+  /* --- ضدتکرار: تاریخچهٔ رویدادها --- */
+  const h = state.hist.indexOf(d.key);
+  if(h === 0) return 0;                        // هرگز بلافاصله تکرار نشود (قاعدهٔ سخت)
+  else if(h !== -1) w *= .16 + h * .13;
+  const hc = state.histCat.indexOf(d.cat);
+  if(hc !== -1 && hc < 2) w *= .5;             // دو رویداد پشت‌سرهم از یک دسته → کمتر
+  if(d.uses) w *= 1 / (1 + d.uses * .1);
+  if(d.rare) w *= state.rareT <= 0 ? .95 : .06;   // نادرها: با فاصله
+  if(d.kind === 'good' && state.time < 70) w *= .55;
+  if(d.kind === 'good' && state.contact === 1) w *= 1.7;      // تماس دوستانه → فرصت‌های بیشتر
+  if(d.cat === 'unk' && state.contact === -1) w *= 1.6;        // تماس بد → ناشناخته‌های بیشتر
+  if(d.kind === 'good'){
+    const needy = (state.oxygen < 62 || state.energy < 40 || avgFatigue() > 45) ? 1.9 : 1;
+    w *= needy;                                  // رویدادهای مفید وقتی لازم‌ترند
+  }
+  if(d.kind === 'bad' && state.oxygen < 22) w *= .55;   // رحمِ پایانی: بدون بحرانِ مرگبار
+  w *= .78 + rnd() * .48;                          // نویز: هر Run فرق کند
+  return w > 0 ? w : 0;
+}
+function safe(f){ try{ return !!f(); }catch(e){ return false; } }
+
+function sevFor(d){
+  const pr = progress01();
+  const r = rnd();
+  let s = 1;
+  if(r > 1 - (.14 + pr * .2)) s = 3;
+  else if(r > .58 - pr * .16) s = 2;
+  if(s > 3) s = 3;
+  if((state.neglect || 0) >= 5 && s < 3 && chance(.25)) s = 3;   // غفلت مداوم → بحران‌های جدی‌تر
+  if(d.sevMax) s = Math.min(s, d.sevMax);
+  if(d.kind === 'good') s = 1;
+  if(d.kind === 'neutral' || d.kind === 'weird') s = Math.min(s, 2);
+  if(state.hintT > 0){ s = 1; state.hintT = 0; toast('⏳','پیش‌گویی درست بود — این رویداد ملایم‌تر است','#facc15'); }
+  return s;
+}
+function pickEventKey(){
+  let total = 0;
+  const pool = [];
+  state.activeKeys = {};
+  for(const i of state.incidents) state.activeKeys[i.key] = 1;
+  for(const k of EVORDER){
+    const d = EV[k];
+    const w = weightOf(d);
+    if(w > 0){ pool.push([k, w]); total += w; }
+  }
+  state.activeKeys = null;
+  if(!pool.length) return null;
+  let r = rnd() * total;
+  for(const p of pool){ r -= p[1]; if(r <= 0) return p[0]; }
+  return pool[pool.length - 1][0];
+}
+const CAT_POOL = {};
+for(const k of EVORDER){ const c = EV[k].cat; (CAT_POOL[c] || (CAT_POOL[c] = [])).push(k); }
+function relatedKey(cat){
+  const pool = (CAT_POOL[cat] || []).filter(k => {
+    const d = EV[k];
+    if(d.noAutoOpen || d.noRoll || d.rare) return false;
+    if(state.incidents.some(i => i.key === k) || state.queue.some(q => q.key === k)) return false;
+    if(d.requires && !safe(d.requires)) return false;
+    return true;
+  });
+  return pool.length ? pick(pool) : null;
+}
+function gapFor(){
+  const pr = progress01();
+  const busy = state.incidents.length;
+  let g = 31 - pr * 9 + rf(-4, 8);
+  if(busy) g *= 1 + busy * .42;               // وقتی درگیریت، کمی فاصله — ولی بحران‌ها از صف می‌آیند
+  else g = Math.min(g, rf(17, 27));          // آرامش بعد از پاکسازی
+  if(state.oxygen < 25) g += 6;
+  return clamp(g, 9, 62);
+}
+function trySpawn(){
+  const free = MAX_INCIDENTS - state.incidents.length;
+  if(free <= 0){ state.nextEvent = rf(4, 8); return; }
+  const pr = progress01();
+  let count = 1;
+  /* موج: بحرانی که هنوز تمام نشده، دومی می‌آید تا مجبور به اولویت‌بندی شوی */
+  const waveP = (pr > .16 ? .06 + pr * .3 : 0) + (busy() === 0 ? .14 : 0) + (freeCrewRatio() > .55 ? .12 : 0)
+              + Math.min(.28, (state.neglect || 0) * .035);
+  if(free >= 2 && chance(waveP)) count = 2;
+  if(free >= 3 && pr > .62 && chance(.18)) count = 3;
+  let opened = 0;
+  for(let i = 0; i < count; i++){
+    const key = pickEventKey();
+    if(!key) break;
+    if(openIncident(key)) opened++;
+  }
+  state.nextEvent = gapFor();
+  return opened;
+}
+const busy = () => state.incidents.filter(i => !i.assigned).length;
+function freeCrewRatio(){ return npcs.length ? freeCount() / npcs.length : 0; }
+
+function directorTick(dt){
+  if(state.queue.length){
+    for(let i = state.queue.length - 1; i >= 0; i--){
+      const q = state.queue[i];
+      q.t -= dt; q.age += dt;
+      if(q.age > QUEUE_TTL){ state.queue.splice(i, 1); continue; }   // کهنگی: فرصت از دست می‌رود
+      if(q.t <= 0){
+        if(state.incidents.length < MAX_INCIDENTS){
+          state.queue.splice(i, 1);
+          openIncident(q.key, { sev: q.sev, note: q.note, reqId: q.reqId });
+        } else q.t = rf(6, 11);
+      }
+    }
+  }
+  state.nextEvent -= dt;
+  if(state.nextEvent <= 0){
+    if(state.incidents.length >= MAX_INCIDENTS) state.nextEvent = rf(5, 9);
+    else trySpawn();
+  }
+}
+
+/* ---------- اثرهای انباشته (mods) ---------- */
+function incFxList(inc){ return inc.fxIds || inc.d.fx || []; }
+function computeMods(){
+  const m = { o2:0, regen:0, heat:0, cool:0, costMul:0, thrust:0, drift:0, hullDmg:0, fatigue:0, eva:0, w:{} };
+  for(const k of CATKEYS) m.w[k] = 1;
+  const push = (f, mul, tag) => {
+    for(const k in f){
+      if(k === 'fa') continue;
+      if(k === 'w'){ for(const c in f.w) m.w[c] = Math.max(.2, (m.w[c] || 1) + f.w[c] * mul); }
+      else m[k] = (m[k] || 0) + (f[k] || 0) * mul;
+    }
+  };
+  state.fxNotes = [];
+  for(const inc of state.incidents){
+    const mul = (inc.stable ? .45 : 1) * (1 + inc.stage * .45) * inc.mag;
+    for(const fk of incFxList(inc)){
+      const f = FX[fk]; if(!f) continue;
+      push(f, mul, inc.d.title);
+      if(!inc.stable && state.fxNotes.length < 6) state.fxNotes.push(FX[fk].fa);
+    }
+  }
+  for(const e of state.fxt){
+    const f = FX[e.k]; if(!f) continue;
+    push(f, .85 * (e.t / e.t0));
+    if(state.fxNotes.length < 6) state.fxNotes.push(f.fa);
+  }
+  /* --- وضعیت سفینه هم روی همان عدد اثر می‌گذارد (تدریجی و ملایم) --- */
+  m.regen += (state.sys.elec - 100) / 100 * .17;
+  m.o2 += (100 - state.sys.life) / 100 * .08 + (100 - state.sys.hull) / 100 * .07;
+  m.drift += (100 - state.sys.nav) / 100 * .9;
+  m.heat += state.damage / 100 * .3;
+  m.cool += (state.sys.mech - 100) / 100 * .22;
+  /* بافرها */
+  m.regen += buffVal('regen');
+  m.o2 -= buffVal('o2');
+  m.cool += buffVal('cool');
+  m.thrust += buffVal('speed');
+  state.mods = m;
+  state.modsDirty = false;
+}
+function modOf(k){ const m = state.mods; return m ? (m[k] || 0) : 0; }
+
+/* ============================================================
+   چرخهٔ عمر بحران
+   ============================================================ */
+function openIncident(key, o){
+  o = o || {};
+  if(state.phase !== 'run') return null;
+  const d = EV[key];
+  if(!d) return null;
+  if(state.incidents.some(i => i.key === key)) return null;
+  if(state.incidents.length >= MAX_INCIDENTS){
+    // ظرفیت پر: فقط زنجیره‌ها و بحران‌های جدی در صف می‌مانند
+    if(o.sev >= 2 || o.note || o.reqId != null){
+      if(!state.queue.some(q => q.key === key))
+        state.queue.push({ key, t: rf(4, 9), age: 0, sev: o.sev || 0, note: o.note || '', reqId: o.reqId == null ? -1 : o.reqId });
+      if(state.queue.length > QUEUE_MAX) state.queue.shift();
+    }
+    return null;
+  }
+  const sev = o.sev || sevFor(d);
+  const inc = {
+    uid: state.uid++, key, d, sev, stage:0, age:0, open:true, pinned:false, assigned:false,
+    stable:false, task:null, mag: (0.84 + rnd() * .2) * (1 + (sev - 1) * .17),
+    m: {}, fxIds: d.fx, reqId: o.reqId, dur: d.period ? (d.dur || 70) : 0, born: state.time
+  };
+  inc.escAt = state.time + (d.escT || 62) * (1.22 - sev * .16);
+  if(o.note) inc.srcNote = o.note;
+  for(const i of state.incidents) i.open = false;   // بحران تازه اولویت دید است
+  if(d.open) safe2(() => d.open(inc));
+  if(d.kind === 'rare' || d.rare) state.rareT = 105 + rnd() * 90;
+  d.uses++;
+  state.incidents.push(inc);
+  state.hist.unshift(d.key); if(state.hist.length > 9) state.hist.pop();
+  state.histCat.unshift(d.cat); if(state.histCat.length > 5) state.histCat.pop();
+  state.events++;
+  state.modsDirty = true; renderDirty = true;
+  if(state.auto) logEv('open', inc);
+  const nUrg = state.incidents.filter(i => !i.assigned).length;
+  const extra = nUrg > 1 ? ' — ⚠️ ' + fa(nUrg) + ' اولویت همزمان' : (inc.srcNote ? ' ← ' + inc.srcNote : '');
+  toast(d.icon, '[' + CATS[d.cat].fa + '] ' + d.title + extra, d.color || CATS[d.cat].color);
+  sfx.event(d.kind === 'good' ? 'good' : d.kind === 'weird' ? 'rare' : d.kind === 'neutral' ? 'neutral' : 'bad');
+  if(d.rare || d.kind === 'rare') bigToast((d.icon || '🌌') + ' رویداد نادر: ' + d.title, 17);
+  npcAlert(1600);
+  return inc;
+}
+function safe2(f){ try{ f(); }catch(e){ try{ console.warn('event error', e); }catch(_){} } }
+
+function logEv(a, inc){
+  (state.log || (state.log = [])).push({ t:+state.time.toFixed(1), k:inc.key, a:a, sev:inc.sev, cat:inc.d.cat, st:inc.stage, src:inc.srcNote || '', rare:!!(inc.d.rare || inc.d.kind === 'rare') });
+}
+function closeIncident(inc, how){
   const idx = state.incidents.indexOf(inc);
   if(idx === -1) return;
   state.incidents.splice(idx, 1);
-  renderIncident();
-  if(state.pendingOverheat){ state.pendingOverheat = false; openIncident('engineOverheat'); }
-  else if(!state.incidents.length) state.nextEvent = calmGap();
+  if(inc.d.close) safe2(() => inc.d.close(inc));
+  releaseLocks(inc);
+  if(inc.task) abortTask(inc.task, how === 'recall');
+  inc.task = null;
+  if(how === 'solve') state.resolved++;
+  if(state.auto) logEv('close:' + how, inc);
+  state.modsDirty = true; renderDirty = true;
+  if(!state.incidents.length && !state.queue.length) state.nextEvent = Math.max(state.nextEvent, rf(13, 20));
 }
-function findCrew(roles){
-  for(const r of roles) for(const n of npcs)
-    if(n.role === r && n.state !== 'busy' && n.state !== 'working') return n;
-  for(const n of npcs)
-    if(n.state !== 'busy' && n.state !== 'working') return n;
-  return null;
+function expireIncident(inc){
+  const ex = inc.d.expire;
+  const note = (ex && ex.note) || (inc.d.title + ' تمام شد');
+  toast(inc.d.icon || '🌤️', note, '#94a3b8');
+  if(ex && ex.next){
+    if(ex.next.chance == null || chance(ex.next.chance))
+      queueFollow(ex.next.key, ex.next.delay || 3, ex.next.sev || 0, inc.d.title);
+  }
+  closeIncident(inc, 'expire');
 }
-function startOption(inc, opt){
-  if(!inc || inc.assigned) return;
-  if(!opt.roles){                       // IGNORE: تصمیمِ رها کردن — پیامد فوری
-    opt.done();
-    closeIncident(inc);
+function escalate(inc){
+  const d = inc.d;
+  if(state.auto) logEv('esc', inc);
+  applyEff(d.escDo, inc.mag * (1 + inc.stage * .5));
+  inc.stable = false;
+  inc.stage++;
+  inc.escAt = state.time + (d.escT || 62) * .72;
+  state.escalated++;
+  const max = (d.escMax != null ? d.escMax : 2);
+  shakeHard();
+  if(inc.stage > max){
+    applyEff(d.burnDo, 1);
+    toast(d.icon, d.title + ' — از کنترل خارج شد و تمام شد (خسارت باقی می‌ماند)', '#f87171');
+    sfx.overheat();
+    closeIncident(inc, 'burnout');
     return;
   }
-  if(state.energy < (opt.energy||0)){ toast('⚠️','انرژی کافی برای این کار نیست!','#f87171'); sfx.fail(); return; }
-  const n = findCrew(opt.roles);
-  if(!n){ toast('⚠️','هیچ خدمهٔ آزادی در دسترس نیست!','#f87171'); sfx.fail(); return; }
-  assignTask(inc, n, opt, false);
+  toast(d.icon, d.title + ' — وخیم‌تر شد' + (d.escNote ? ': ' + d.escNote : ''), '#f87171');
+  sfx.escalate();
+  if(d.esc && chance(.5)) queueFollow(d.esc, rf(4, 12), Math.min(3, inc.sev + 1), d.title);
+  state.modsDirty = true; renderDirty = true;
 }
-function assignTask(inc, n, opt, direct){
-  if(!inc || inc.assigned) return;
-  state.energy = Math.max(0, state.energy - (opt.energy||0));
-  state.oxygen = Math.max(0, state.oxygen - (opt.o2||0));
-  inc.assigned = true;
-  const fit = opt.roles.includes(n.role);
-  n.task = { inc, opt, t:0, dur: direct && !fit ? Math.round(opt.dur*1.5) : opt.dur, phase:'walk' };
-  n.state = 'busy';
-  npcWalk(n, ST[opt.room], 4.5 + Math.random()*2);   // رسیدن خدمه به محل بحران کند است — فعال‌شدن دیرتر
-  n.state = 'busy';   // npcWalk حالت را 'walk' کرد — برای شروع کار باید 'busy' بماند
-  n.el.classList.add('fix');
-  toast('👥','خدمهٔ #' + fa(n.i+1) + ' — ' + n.role + ' ← ' + ROOM_LABEL[opt.room], '#67e8f9');
-  renderIncident();
+function shakeSoft(){ state.shakeT = .16; viewport.classList.add('shake'); }
+function shakeHard(){ state.shakeT = .34; viewport.classList.add('shake'); }
+
+/* ---------- حل کردن: رول نتیجه ---------- */
+function rollOpt(o, inc, npc){
+  let failP = o.risk != null ? o.risk : .1;
+  const fit = npc ? skillOf(npc, o.skill) : -1;
+  failP += (inc.sev - 1) * .055 + inc.stage * .03;
+  failP += fit < 0 ? .14 : (1 - fit) * .09;
+  if(npc) failP += npc.fat / 560;
+  if(npc && npc.injured) failP += .1;
+  failP -= buffVal('rest') * .05;
+  if(o.style === 'safe') failP *= .7;
+  if(o.style === 'risky') failP *= 1.25;
+  failP = clamp(failP, .015, .8);
+  const partP = clamp((o.part != null ? o.part : .2) * (fit < 0 ? 1.3 : 1), 0, .85);
+  const q = rnd();
+  if(q < failP) return 'fail';
+  if(q < failP + partP) return 'part';
+  const win = 1 - failP - partP;
+  if(win > 0 && (q - failP - partP) / win > .86) return 'crit';
+  return 'ok';
 }
-function renderIncident(){
+function finishOption(inc, o, npc){
+  const d = inc.d, mag = inc.mag;
+  const tier = o.abandon ? 'ok' : rollOpt(o, inc, npc);
+  if(o.abandon) applyAbandonScar(inc, o);
+  if(tier === 'fail'){
+    if(o.failEff) applyEff(o.failEff, mag);
+    else applyEff({ dmg:{ [SYS[d.cat] ? d.cat : 'mech'] : 4 + inc.sev * 2 } }, mag);
+    if(npc){ npc.fat = clamp(npc.fat + 9, 0, 100); if(o.injure && chance(.4)) injure(npc, d.title); }
+    if(o.failNext) queueFollow(o.failNext.key, o.failNext.delay || 6, o.failNext.sev || 2, d.title);
+    if(o.career) applyEff(o.career, mag);
+    toast('💥', (o.label) + ' بی‌نتیجه ماند — اوضاع بدتر شد' + (npc ? ' (نفر ' + fa(npc.i + 1) + ')' : ''), '#f87171');
+    sfx.escalate();
+    if(!o.staysOpen) inc.escAt = Math.min(inc.escAt, state.time + 6);
+    renderDirty = true;
+    return;
+  }
+  const scale = tier === 'crit' ? mag * 1.45 : tier === 'part' ? mag * .42 : mag;
+  applyEff(o.eff, scale);
+  if(tier === 'crit' && o.crit && o.crit.eff) applyEff(o.crit.eff, mag);
+  if(o.then) safe2(() => o.then(inc, { tier, npc, mag }));
+  if(o.next && (tier === 'ok' || tier === 'crit' || o.next.always))
+    queueFollow(o.next.key, o.next.delay || 4, o.next.sev || inc.sev, d.title);
+  if(o.failNext && tier === 'part' && chance(.25)) queueFollow(o.failNext.key, 8, 1, d.title);
+  if(o.stage && tier !== 'fail'){            // عیب‌یابی حتی اگر ناقص باشد، اطلاعات می‌دهد
+    inc.stage = Math.min(o.stage, (d.stages ? d.stages.length - 1 : o.stage));
+    if(tier === 'part'){ inc.stable = true; inc.escAt = state.time + (d.escT || 62) * 1.2; state.modsDirty = true; }
+    renderDirty = true; return;
+  }
+  if(tier === 'part'){
+    inc.stable = true;
+    inc.escAt = state.time + (d.escT || 62) * 1.35;
+    toast('🟡', o.label + ' — فقط تا حدی جواب داد (موقت)' + (o.crit && o.crit.note ? '' : ''), '#fbbf24');
+    state.modsDirty = true; renderDirty = true;
+    if(o.partSolves) closeIncident(inc, 'solve');
+    return;
+  }
+  if(tier === 'crit'){
+    toast('✨', o.label + ' — عالی انجام شد' + (o.crit && o.crit.note ? ': ' + o.crit.note : ''), '#4ade80');
+    sfx.crit();
+  } else if(o.note || d.doneNote) toast('✅', o.note || d.doneNote, '#4ade80');
+  if(o.solve !== false) closeIncident(inc, o.abandon ? 'abandon' : 'solve');
+  state.modsDirty = true; renderDirty = true;
+}
+/* رها کردن یک بحران، بحران را پاک نمی‌کند: جای آن زخم و یک درد تازه می‌آید */
+function applyAbandonScar(inc, o){
+  const d = inc.d;
+  state.ignored++;
+  state.neglect = (state.neglect || 0) + 1;
+  state.modsDirty = true;
+  if(d.period){
+    // هوای فضا را نمی‌توان لغو کرد؛ فقط می‌توان تحملش کرد
+    inc.stable = true; inc.braced = true;
+    applyEff(o.eff, inc.mag * .6);
+    toast('🌫️', 'رها کردی — ' + d.title + ' تمام نمی‌شود، فقط اشدانش را کم کردی', '#94a3b8');
+    renderDirty = true;
+    return;
+  }
+  const sys = CAT2SYS[d.cat] || 'mech';
+  sysDmg(sys, (5 + inc.sev * 2.5) * inc.mag);
+  fatigueAll(3 + inc.sev * 1.8);
+  if(state.neglect % 3 === 0) state.oxygen = Math.max(0, state.oxygen - 1.5 * inc.sev);
+  const risk = .34 + Math.min(.3, state.neglect * .02);
+  if(chance(risk)){
+    const rk = relatedKey(d.cat);
+    if(rk){ queueFollow(rk, rf(8, 20), Math.min(3, inc.sev + 1), 'رها کردنِ ' + d.title); }
+  }
+}
+function injure(n, why){
+  if(!n || n.injured) return;
+  n.injured = true;
+  state.injuries++;
+  if(n.task) abortTask(n.task, true);
+  n.state = 'idle'; n.stateT = 1; n.el.classList.remove('work', 'fix');
+  toast('🚑', 'نفر ' + fa(n.i + 1) + ' (' + n.role + ') مصدوم شد — ' + why, '#f87171');
+  openIncident('crewInjury', { reqId: n.i, sev: 1 });
+  renderDirty = true;
+}
+function lockCrew(n, t, why){
+  if(!n) return;
+  if(n.task) abortTask(n.task, true);
+  n.locked = t; n.lockWhy = why || 'درگیر';
+  n.state = 'idle'; n.stateT = .5;
+  n.el.classList.add('lock');
+  renderDirty = true;
+}
+function unlockCrew(n){
+  if(!n) return;
+  n.locked = 0; n.lockWhy = '';
+  n.el.classList.remove('lock');
+  renderDirty = true;
+}
+function releaseLocks(inc){
+  const ids = inc.m && inc.m.ids ? inc.m.ids : (inc.reqId != null && inc.reqId >= 0 ? [inc.reqId] : null);
+  if(inc.m && inc.m.id != null && inc.m.id >= 0) crewTickUnlock(inc.m.id, inc);
+  if(ids) for(const i of ids){ const n = crewById(i); if(n && n.lockBy === inc.uid) unlockCrew(n); }
+}
+function crewTickUnlock(id, inc){ const n = crewById(id); if(n && n.lockBy === inc.uid) unlockCrew(n); }
+
+/* ============================================================
+   رندر کارت بحران‌ها (ساختار فقط وقتی لازم است + تیک زندهٔ سبک)
+   ============================================================ */
+let renderDirty = true, sigCache = '', incBarEl = null;
+const STYLE_ICON = { safe:'🛡', fast:'⚡', risky:'🎲', ignore:'🕳' };
+const STYLE_FA = { safe:'امن', fast:'سریع', risky:'ریسکی', ignore:'رها کردن' };
+const SK_FA = { mech:'مکانیک', elec:'برق', life:'حیات', nav:'ناوبری', crew:'خدمه', eva:'EVA', unk:'پژوهش' };
+
+function urgency(inc){
+  if(inc.d.period) return 40 - inc.dur;
+  return 60 - Math.max(0, inc.escAt - state.time) + inc.sev * 6 + inc.stage * 8 + (inc.stable ? -18 : 0) + (inc.assigned ? -22 : 0);
+}
+function sortedIncs(){
+  // ترتیب پایدار است (وگرنه کارت‌ها زیر انگشت بازیکن جابه‌جا می‌شوند)
+  return state.incidents.slice().sort((a, b) =>
+    ((b.pinned?1:0) - (a.pinned?1:0)) || ((a.assigned?1:0) - (b.assigned?1:0)) || (a.uid - b.uid));
+}
+function evaBlocked(o){ return !!o.eva && modOf('eva') > 0; }
+function evaBlockedFlag(){ return modOf('eva') > 0; }
+function optBlockMsg(o){
+  if(evaBlocked(o)) return '🚫 تشعشع — EVA ممنوع';
+  if(o.need > freeCount()) return '👤 به ' + fa(o.need) + ' خدمه نیاز دارد';
+  if(state.energy < (o.energy || 0)) return '⚡ انرژی کافی نیست';
+  return '';
+}
+function bestCrewFor(o){
+  let best = null, bs = -1e9;
+  for(const n of npcs){
+    if(!crewFree(n)) continue;
+    const s = skillOf(n, o.skill) * 12 - n.fat * .12 + (n.role && o.roles && o.roles.indexOf(n.role) !== -1 ? 5 : 0);
+    if(s > bs){ bs = s; best = n; }
+  }
+  return best;
+}
+function optChance(o){
+  if(o.abandon) return -1;
+  const inc = o._inc;
+  const n = o.need > 0 ? bestCrewFor(o) : null;
+  if(o.need > 0 && !n) return 0;
+  const fake = { sev: inc ? inc.sev : 1, stage: inc ? inc.stage : 0 };
+  let failP = o.risk != null ? o.risk : .1;
+  const fit = n ? skillOf(n, o.skill) : -1;
+  failP += (fake.sev - 1) * .055 + fake.stage * .03 + (fit < 0 ? .14 : (1 - fit) * .09);
+  if(n) failP += n.fat / 340;
+  failP -= buffVal('rest') * .05;
+  if(o.style === 'safe') failP *= .7;
+  if(o.style === 'risky') failP *= 1.25;
+  return Math.round((1 - clamp(failP, .015, .8)) * 100);
+}
+function durOf(o, n){
+  let d = o.dur || 30;
+  const fit = n ? skillOf(n, o.skill) : -1;
+  if(fit < 0) d *= 1.5; else if(fit === 1) d *= 1.16; else if(fit >= 3) d *= .8;
+  if(n) d *= 1 + n.fat / 420;
+  if(n && o.need > 1) d *= .62;
+  return Math.round(d * (1 + (o._inc ? (o._inc.sev - 1) * .06 : 0)));
+}
+function renderIncBar(){
   const p = get('incBar');
-  const incs = state.incidents;
-  if(!incs.length){ p.innerHTML = ''; p.classList.remove('show'); return; }
+  if(!incBarEl){ incBarEl = p; bindIncBar(p); }
+  const list = sortedIncs();
+  if(!list.length){
+    if(sigCache !== ''){ sigCache = ''; p.innerHTML = ''; p.classList.remove('show'); }
+    renderDirty = false; return;
+  }
+  let sig = list.map(i => i.uid + ':' + i.stage + ':' + (i.assigned ? 1 : 0) + ':' + (i.stable ? 1 : 0) +
+      ':' + (i.pinned ? 1 : 0) + ':' + (i.open ? 1 : 0) + ':' + i.sev + ':' + (state.blindT > 0 ? 'B' : '') +
+      ':' + npcs.map(n => (crewFree(n) ? '1' : '0') + (n.injured ? 'x' : '')).join('') +
+      ':' + (i.swap ? 'S' : '') + ':' + (state.energy > 12 ? 'E' : 'e') + (evaBlockedFlag() ? 'R' : '')).join('|');
+  if(sig === sigCache && !renderDirty){ renderDirty = false; return; }
+  sigCache = sig; renderDirty = false;
   let html = '';
-  if(incs.length > 1)
-    html += '<div class="inc-count">⚠️ ' + fa(incs.length) + ' بحران همزمان فعال است!</div>';
-  for(const inc of incs){
-    const d = inc.def;
-    const recs = d.rec.map(r => {
-      const avail = npcs.some(n => n.role === r && n.state !== 'busy' && n.state !== 'working');
-      return r + ' <b class="' + (avail ? 'ok' : 'off') + '">' + (avail ? '✓' : '✗') + '</b>';
-    }).join(' · ');
-    html += '<div class="inc-card" data-key="' + inc.key + '">';
-    html += '<div class="inc-headrow" style="border-color:' + d.color + '">'
-      + '<span class="inc-title" style="color:' + d.color + '">' + d.icon + ' ' + d.title + '</span>'
-      + '<span class="inc-toggle">' + (inc.assigned ? 'در حال انجام…' : '▾ گزینه‌ها') + '</span></div>';
+  const un = state.incidents.filter(i => !i.assigned).length;
+  if(un > 1) html += '<div class="inc-count">⚠️ ' + fa(un) + ' بحران بی‌پاسخ — ' + fa(freeCount()) + ' خدمهٔ آزاد</div>';
+  else if(state.queue.length) html += '<div class="inc-count q">📋 ' + fa(state.queue.length) + ' رویداد در صف انتظار</div>';
+  for(const inc of list){
+    const d = inc.d, cat = CATS[d.cat] || CATS.mech;
+    const color = d.color || cat.color;
+    const opts = optList(inc);
+    const blind = state.blindT > 0;
+    html += '<div class="inc-card' + (inc.pinned ? ' pinned' : '') + '" data-uid="' + inc.uid + '">';
+    html += '<div class="inc-headrow' + (inc.assigned ? '' : (urgency(inc) > 42 ? ' urgent' : '')) + '" style="border-color:' + color + '">';
+    html += '<span class="inc-pin" data-pin title="اولویت">' + (inc.pinned ? '⚑' : '⚐') + '</span>';
+    html += '<span class="inc-title" style="color:' + color + '">' + (d.icon || cat.icon) + ' ' + d.title +
+            (stageCount(inc) > 1 ? ' <b class="inc-stage">' + fa(Math.min(inc.stage + 1, stageCount(inc))) + '/' + fa(stageCount(inc)) + '</b>' : '') + '</span>';
+    html += '<span class="inc-sev">' + (blind ? '؟' : new Array(inc.sev + 1).join('▮')) + '</span>';
+    html += '<span class="inc-cd" data-cd>…</span>';
+    html += '<span class="inc-toggle">' + (inc.open ? '▾' : '▸') + '</span>';
+    html += '</div>';
     html += '<div class="inc-body' + (inc.open ? ' open' : '') + '">';
-    html += '<div class="inc-desc">' + d.desc() + '</div>';
-    html += '<div class="inc-rec">پیشنهاد: ' + recs + '</div>';
-    html += '<div class="inc-opts">';
-    for(const o of d.options){
-      const cost = o.roles ? (o.energy||0) + '⚡·' + (o.o2||0) + '٪O₂·' + o.dur + 's' : '';
-      html += '<button data-opt="' + o.id + '"' + (inc.assigned ? ' disabled' : '') + '>' + o.label
-           + (cost ? '<i>' + cost + '</i>' : '') + '</button>';
+    html += '<div class="inc-tagline"><span class="inc-tag" style="color:' + color + ';border-color:' + color + '">' + cat.icon + ' ' + cat.fa + '</span>' +
+            (inc.stable ? '<span class="inc-chip ok">' + (inc.braced ? 'تحمل می‌شود' : 'موقت') + '</span>' : '') +
+            (d.period ? '<span class="inc-chip">دوره‌ای</span>' : '') +
+            (inc.stage > 0 && !d.stages ? '<span class="inc-chip bad">وخیم ×' + fa(inc.stage) + '</span>' : '') +
+            (inc.assigned ? '' : '<span class="inc-chip">بی‌پاسخ</span>') +
+            (inc.m && inc.m.ids && inc.m.ids.length ? '<span class="inc-chip bad">' + inc.m.ids.map(i => '#' + fa(i + 1)).join('·') + ' قفل</span>' : '') +
+            '</div>';
+    html += '<div class="inc-desc">' + (stageDesc(inc) || (d.desc ? d.desc(inc) : '')) + '</div>';
+    if(!blind){
+      const fx = incFxList(inc).map(k => FX[k] ? FX[k].fa : null).filter(Boolean);
+      if(fx.length) html += '<div class="inc-imp">اثر: ' + fx.join(' + ') + '</div>';
     }
-    html += '</div></div></div>';
+    /* --- نوار خدمهٔ اعزام‌شده --- */
+    if(inc.assigned && inc.task){
+      const names = inc.task.crew.map(n => '#' + fa(n.i + 1) + ' ' + n.role).join(' + ');
+      html += '<div class="inc-crew"><span>' + names + '</span><span class="inc-prog"><i data-bar></i></span><span data-pct>۰٪</span>' +
+              '<button class="tiny" data-recall>فراخوانی</button><button class="tiny" data-swap>تعویض</button></div>';
+      if(inc.swap){
+        html += '<div class="inc-swap">';
+        for(const n of npcs){
+          if(!crewFree(n)) continue;
+          const sk = skillOf(n, (inc.task.o.skill || 'mech'));
+          html += '<button class="tiny pick" data-pick="' + n.i + '">#' + fa(n.i + 1) + ' ' + n.role +
+                  ' <i>' + (SK_FA[inc.task.o.skill] || '') + ' ' + fa(sk) + ' · ' + fa(durOf(inc.task.o, n)) + 's</i></button>';
+        }
+        html += '</div>';
+      }
+    } else {
+      /* --- گزینه‌ها --- */
+      html += '<div class="inc-opts">';
+      for(let i = 0; i < opts.length; i++){
+        const o = opts[i];
+        if(!o || !o.label) continue;
+        o._inc = inc;
+        const bl = optBlockMsg(o);
+        const dis = !!bl;
+        const ch = optChance(o);
+        const dur = o.need > 0 ? durOf(o, bestCrewFor(o)) : 0;
+        const who = o.need > 0 ? bestCrewFor(o) : null;
+        const info = o.eff || o.note || o.stage || o.then ? (effText(o.eff) + (o.stage ? (effText(o.eff) ? ' · ' : '') + 'افشای علت ← مرحلهٔ ' + fa(o.stage + 1) : '') + (o.note ? (effText(o.eff) || o.stage ? ' · ' : '') + o.note : '')) : '';
+        const cost = o.need > 0
+          ? (o.energy ? fa(o.energy) + '⚡' : '') + (o.energy && o.o2 ? ' ' : '') + (o.o2 ? fa(o.o2) + '٪O₂' : '') + (dur ? ' ' + fa(dur) + 's' : '') + (o.need > 1 ? ' 👤' + fa(o.need) : '') +
+            (who ? ' · → #' + fa(who.i + 1) + ' ' + who.role : '')
+          : 'فوری';
+        html += '<button class="opt ' + (o.style || 'safe') + '"' + (dis ? ' disabled' : '') + ' data-opt="' + i + '">' +
+          '<span class="ol"><em class="st">' + (STYLE_ICON[o.style] || '•') + '</em>' + STYLE_FA[o.style] + (ch >= 0 ? ' · ' + fa(ch) + '٪' : '') + ' — ' + o.label + '</span>' +
+          '<i class="oc">' + cost + (o.roles && o.roles.length ? ' · ' + o.roles.map(r => (ROLE_TOOL[r] || '') ).join('') : '') + '</i>' +
+          (bl ? '<i class="ob">' + bl + '</i>' : (info ? '<i class="oe">' + info + '</i>' : '')) +
+          '</button>';
+      }
+      html += '</div>';
+      if(opts.length && opts.every(o => o && o.label && optBlockMsg(o)))
+        html += '<div class="inc-lock">⛔ همهٔ گزینه‌ها قفل‌اند — یک خدمهٔ مشغول را فراخوانی کن یا صبر کن تا بحران عوض شود.</div>';
+      /* --- پیشنهاد نقش --- */
+      if(d.rec !== false){
+        const want = {};
+        for(const o of opts) if(o && o.roles) for(const r of o.roles) want[r] = 1;
+        const keys = Object.keys(want);
+        if(keys.length){
+          html += '<div class="inc-rec">' + keys.map(r => {
+            const av = npcs.some(n => n.role === r && crewFree(n));
+            return r + ' <b class="' + (av ? 'ok' : 'off') + '">' + (av ? '✓' : '✗') + '</b>';
+          }).join(' · ') + '</div>';
+        }
+      }
+    }
+    html += '</div></div>';
   }
   p.innerHTML = html;
   p.classList.add('show');
-  p.querySelectorAll('.inc-card').forEach(card => {
-    const inc = incs.find(x => x.key === card.dataset.key);
+  for(const inc of state.incidents){
+    const card = p.querySelector('.inc-card[data-uid="' + inc.uid + '"]');
+    inc.refs = card ? {
+      cd: card.querySelector('[data-cd]'), bar: card.querySelector('[data-bar]'), pct: card.querySelector('[data-pct]')
+    } : null;
+  }
+}
+function tickIncBar(){
+  for(const inc of state.incidents){
+    const r = inc.refs;
+    if(!r || !r.cd) continue;
+    let txt = '', cls = '';
+    if(inc.d.period){
+      txt = '⏳ ' + fa(Math.ceil(inc.dur)) + 's'; cls = 'warn';
+    } else if(inc.assigned && inc.task){
+      const p = clamp(inc.task.t / inc.task.dur, 0, 1);
+      txt = '🔧 ' + fa(Math.round(p * 100)) + '٪'; cls = 'work';
+      if(r.bar) r.bar.style.width = (p * 100).toFixed(0) + '%';
+      if(r.pct) r.pct.textContent = fa(Math.round(p * 100)) + '٪';
+    } else {
+      const left = Math.max(0, inc.escAt - state.time);
+      txt = (inc.stable ? '🟡 ' : '⏱ ') + fa(Math.ceil(left)) + 's';
+      cls = left < 12 ? 'bad' : (left < 28 ? 'warn' : 'idle');
+      if(r.bar) r.bar.style.width = '0%';
+    }
+    if(r.cd._t !== txt + cls){ r.cd._t = txt + cls; r.cd.textContent = txt; r.cd.className = 'inc-cd ' + cls; }
+  }
+}
+let incBarBound = false;
+function bindIncBar(p){
+  if(incBarBound) return;
+  incBarBound = true;
+  p.addEventListener('click', e => {
+    const card = e.target.closest ? e.target.closest('.inc-card') : null;
+    if(!card) return;
+    const inc = state.incidents.find(x => String(x.uid) === card.dataset.uid);
     if(!inc) return;
-    card.querySelector('.inc-headrow').addEventListener('click', () => {
-      inc.open = !inc.open;
-      card.querySelector('.inc-body').classList.toggle('open', inc.open);
-    });
-    card.querySelectorAll('.inc-opts button').forEach(b => b.addEventListener('click', () => {
-      const opt = inc.def.options.find(o => o.id === b.dataset.opt);
-      if(opt) startOption(inc, opt);
-    }));
+    const t = e.target;
+    const hit = sel => t.closest ? t.closest(sel) : null;
+    const ob = hit('[data-opt]');
+    if(ob && !ob.disabled){ startOption(inc, (optList(inc) || [])[+ob.dataset.opt]); return; }
+    if(hit('[data-pin]')){ inc.pinned = !inc.pinned; renderDirty = true; return; }
+    if(hit('[data-recall]')){ recallIncident(inc); return; }
+    if(hit('[data-swap]')){ inc.swap = !inc.swap; renderDirty = true; return; }
+    const pk = hit('[data-pick]');
+    if(pk){ swapCrew(inc, npcs[+pk.dataset.pick]); return; }
+    if(hit('.inc-headrow')){ inc.open = !inc.open; renderDirty = true; return; }
   });
 }
 
-/* ---------- NPC خدمه + نمای داخل سفینه (فقط transform — بسیار سبک) ---------- */
+/* ---------- نوار زیرسیستم‌ها + بافرها ---------- */
+let sysSig = '';
+function renderSysStrip(){
+  const el = get('sysStrip');
+  if(!el) return;
+  const buffs = state.buffs.map(b => b.k + Math.ceil(b.t)).join('');
+  const sig = SYSKEYS.map(k => Math.round(integrity(k) / 4)).join('') + '|' + buffs + '|' + Math.round(state.temperature / 8) +
+              '|' + state.incidents.length + '|' + Math.round(avgFatigue() / 6);
+  if(sig === sysSig) return;
+  sysSig = sig;
+  let h = '';
+  for(const k of SYSKEYS){
+    const v = integrity(k);
+    const cls = v > 78 ? 'ok' : v > 48 ? 'mid' : 'bad';
+    h += '<span class="syschip ' + cls + '"><b style="color:' + SYS[k].color + '">' + SYS[k].fa + '</b>' +
+         '<i><u style="width:' + Math.max(0, Math.min(100, v)) + '%;background:' + SYS[k].color + '"></u></i>' +
+         '<em>' + fa(Math.round(v)) + '</em></span>';
+  }
+  for(const b of state.buffs){
+    const i = BUFFS[b.k];
+    if(i) h += '<span class="buffchip" style="border-color:' + i.color + ';color:' + i.color + '">' + i.fa + ' ' + fa(Math.ceil(b.t)) + 's</span>';
+  }
+  for(const inc of sortedIncs().slice(0, 3)){
+    if(inc.d.period) h += '<span class="buffchip warn">🌪 ' + inc.d.title + '</span>';
+  }
+  if(state.blindT > 0) h += '<span class="buffchip bad">👁 داده نامطمئن ' + fa(Math.ceil(state.blindT)) + 's</span>';
+  el.innerHTML = h;
+}
+
+/* ---------- کارت خدمه ---------- */
+let ccUid = -1;
+function openCrewCard(n){
+  ccUid = n.i;
+  renderCrewCard(n);
+  get('crewCard').classList.add('show');
+}
+function closeCrewCard(){ ccUid = -1; get('crewCard').classList.remove('show'); }
+function renderCrewCard(n){
+  const c = get('crewCard');
+  if(!c) return;
+  const open = state.incidents.filter(i => !i.assigned);
+  const busyN = n.state === 'busy' || n.state === 'working';
+  let h = '<div class="cc-head">نفر #' + fa(n.i + 1) + ' — ' + n.role + '</div>';
+  const stat = n.injured ? 'مصدوم 🚑' : n.locked ? 'قفل: ' + n.lockWhy : busyN ? 'در حال مأموریت' : 'آزاد';
+  h += '<div class="cc-status">' + stat + ' · خستگی ' + fa(n.fat) + '٪</div>';
+  h += '<div class="cc-skills">' + Object.keys(SKILLS).map(k =>
+      '<span class="' + (skillOf(n, k) >= 2 ? 'hi' : skillOf(n, k) >= 1 ? 'mid' : 'lo') + '">' + SKILLS[k].fa + ' ' + fa(skillOf(n, k)) + '</span>').join('') + '</div>';
+  if(busyN && n.task){
+    const p = Math.round(n.task.t / n.task.dur * 100);
+    h += '<div class="cc-task">' + n.task.inc.d.icon + ' ' + n.task.inc.d.title + ' · <b data-ccp>' + fa(p) + '٪</b></div>';
+    h += '<button id="ccRecall">فراخوانی (پیشرفت از دست می‌رود)</button>';
+  } else if(n.injured){
+    h += '<div class="cc-note">فقط پزشک می‌تواند درمانش کند — یک بحران «خدمهٔ مصدوم» باز شده است.</div>';
+  } else if(n.locked){
+    h += '<div class="cc-note">' + n.lockWhy + ' — تا رفعِ بحرانِ مربوطه در دسترس نیست.</div>';
+  } else {
+    if(!open.length) h += '<div class="cc-note">بحران بی‌پاسخی نیست.</div>';
+    for(const inc of open.slice(0, 4)){
+      const o = bestOptFor(inc, n);
+      const ch = o ? Math.round(clamp((1 - clamp((o.risk != null ? o.risk : .1) + (1 - skillOf(n, o.skill)) * .09 + n.fat / 340, .015, .8)) * 100, 0, 100)) : 0;
+      h += '<button class="cc-send" data-uid="' + inc.uid + '">' + inc.d.icon + ' ' + inc.d.title +
+           '<i>' + (o ? (o.label + ' · ' + fa(durOf(o, n)) + 's · ' + fa(ch) + '٪') : '—') + '</i></button>';
+    }
+    if(n.fat > 14) h += '<button id="ccRest">😴 استراحت ' + fa(24) + 's (خستگی −' + fa(26) + ')</button>';
+  }
+  h += '<button id="ccClose" class="cc-x">بستن ✕</button>';
+  c.innerHTML = h;
+  c.querySelectorAll('.cc-send').forEach(b => b.addEventListener('click', () => {
+    const inc = state.incidents.find(x => String(x.uid) === b.dataset.uid);
+    if(!inc) return;
+    const o = bestOptFor(inc, n);
+    closeCrewCard();
+    if(o) startOption(inc, o, n);
+  }));
+  const rc = $('ccRecall');
+  if(rc) rc.addEventListener('click', () => { closeCrewCard(); if(n.task) recallIncident(n.task.inc); });
+  const rs = $('ccRest');
+  if(rs) rs.addEventListener('click', () => { closeCrewCard(); restCrew(n); });
+  $('ccClose').addEventListener('click', closeCrewCard);
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function ccLiveUpdate(){
+  const c = get('crewCard');
+  if(!c || ccUid < 0) return;
+  const n = npcs[ccUid];
+  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
+  if(n && n.task && el){
+    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
+    if(el.textContent !== txt) el.textContent = txt;
+  }
+}
+function bestOptFor(inc, n){
+  const opts = (optList(inc) || []).filter(o => o && o.label && o.need > 0 && !optBlockMsg(Object.assign({}, o)));
+  if(!opts.length) return (optList(inc) || [])[0] || null;
+  let best = opts[0], bs = -1e9;
+  for(const o of opts){
+    const s = skillOf(n, o.skill) * 10 - (o.dur || 30) * .06 - (o.energy || 0) * .8 + (o.roles && o.roles.indexOf(n.role) !== -1 ? 4 : 0);
+    if(s > bs){ bs = s; best = o; }
+  }
+  return best;
+}
+function restCrew(n){
+  if(!crewFree(n)) return;
+  n.restT = 24;
+  n.state = 'rest'; n.stateT = 24;
+  npcTo(n, ST.med, 2.2);
+  toast('😴', 'نفر ' + fa(n.i + 1) + ' به استراحت رفت', '#4ade80');
+  renderDirty = true;
+}
+
+/* ============================================================
+   خدمه: نقش، مهارت، خستگی، مصدومیت، قفل — و مأموریت‌ها
+   ============================================================ */
+const SKILLS = {
+  mech:{ fa:'مکانیک' }, elec:{ fa:'برق' }, life:{ fa:'حیات' }, nav:{ fa:'ناوبری' },
+  crew:{ fa:'خدمه' }, eva:{ fa:'EVA' }, unk:{ fa:'پژوهش' }
+};
+const ROLE_DEF = {
+  'مهندس':   { tool:'🔧', sk:{ mech:3, elec:1, life:1, nav:0, crew:0, eva:1, unk:0 } },
+  'تکنسین':  { tool:'🛠️', sk:{ elec:3, life:2, mech:1, nav:0, crew:0, eva:1, unk:0 } },
+  'ناوبر':    { tool:'🧭', sk:{ nav:3, elec:0, life:0, mech:0, crew:0, eva:0, unk:1 } },
+  'دانشمند':  { tool:'🔬', sk:{ unk:3, life:2, nav:1, elec:1, mech:0, crew:0, eva:0 } },
+  'امنیتی':  { tool:'🛡️', sk:{ eva:3, crew:1, mech:1, life:0, nav:0, elec:0, unk:0 } },
+  'پزشک':     { tool:'⚕️', sk:{ crew:3, life:2, unk:1, eva:1, mech:0, elec:0, nav:0 } },
+  'خدمه':     { tool:'📋', sk:{ eva:2, crew:2, mech:1, life:1, elec:1, nav:0, unk:0 } },
+  'خلبان':    { tool:'🚀', sk:{ nav:2, mech:1, elec:1, crew:1, eva:1, life:0, unk:0 } }
+};
+const ROLES = Object.keys(ROLE_DEF);
+const ROLE_TOOL = {}; for(const r of ROLES) ROLE_TOOL[r] = ROLE_DEF[r].tool;
+const NPC_COLORS = ['#22d3ee','#e879f9','#facc15','#4ade80','#f87171','#60a5fa','#fb923c','#a78bfa'];
 const ST = {
   life:{x:9,y:33}, sys:{x:26,y:26}, nav:{x:44,y:29}, eng:{x:70,y:36},
   window:{x:57,y:19}, hall:{x:50,y:58}, battery:{x:60,y:48}, med:{x:18,y:56},
-  hull:{x:66,y:52}
+  hull:{x:66,y:52}, lock:{x:86,y:44}, lab:{x:33,y:44}, galley:{x:14,y:70}
 };
 const STKEYS = Object.keys(ST);
-const ROLES = ['مهندس','تکنسین','ناوبر','دانشمند','امنیتی','پزشک','خدمه'];
-const ROLE_TOOL = {'مهندس':'🔧','تکنسین':'🛠️','ناوبر':'🧭','دانشمند':'🔬','امنیتی':'🛡️','پزشک':'⚕️','خدمه':'📋'};
-const NPC_COLORS = ['#22d3ee','#e879f9','#facc15','#4ade80','#f87171','#60a5fa','#fb923c','#a78bfa'];
 const SPAWN_SLOTS = [
   {x:12,y:30},{x:30,y:24},{x:44,y:27},{x:70,y:33},
   {x:55,y:16},{x:50,y:58},{x:62,y:45},{x:22,y:54}
@@ -839,35 +2837,53 @@ const GATHER_WINDOW = [
   {x:52,y:15},{x:63,y:15},{x:57,y:22},{x:50,y:22},
   {x:66,y:21},{x:46,y:20},{x:60,y:27},{x:53,y:27}
 ];
-let npcs = [], claims = {};   // claims: ایستگاه -> ایندکس NPC (مقصد یکتا)
+let npcs = [], claims = {};
 
-/* ساخت خدمه: تعداد دقیقاً برابر CREW — هر نفر نقش و جایگاه اسپاون یکتا دارد */
+const skillOf = (n, k) => (n && n.sk && n.sk[k]) || 0;
+const crewById = i => (i == null || i < 0 || !npcs.length) ? null : (npcs[i] || null);
+function crewFree(n){ return !!n && !n.injured && !n.locked && n.state !== 'busy' && n.state !== 'working'; }
+function pickFreeCrewId(exclude){
+  const pool = [];
+  for(const n of npcs) if(crewFree(n) && n.i !== exclude) pool.push(n.i);
+  if(!pool.length) return null;
+  return pool[Math.floor(rnd() * pool.length)];
+}
+function hasFx(id){
+  for(const inc of state.incidents) if(incFxList(inc).indexOf(id) !== -1 && !inc.stable) return true;
+  for(const e of state.fxt) if(e.k === id) return true;
+  return false;
+}
+
 function buildCrew(count){
   const host = $('iNpcs');
   host.innerHTML = '';
   npcs = []; claims = {};
-  const roles = ROLES.slice(0, count);
-  for(let i=0;i<count;i++){
+  for(let i = 0; i < count; i++){
+    const role = ROLES[i % ROLES.length];
+    const def = ROLE_DEF[role];
     const el = document.createElement('div');
     el.className = 'npc';
-    el.innerHTML = '<i></i><b></b><span class="tool">' + ROLE_TOOL[roles[i]] + '</span>';
+    el.innerHTML = '<i></i><b></b><span class="tool">' + def.tool + '</span><u class="fatbar"></u>';
     el.querySelector('b').style.background = NPC_COLORS[i % NPC_COLORS.length];
     host.appendChild(el);
     npcs.push({
-      el, i, role: roles[i],
-      pos: { ...SPAWN_SLOTS[i] },         // اسپاون بدون هم‌پوشانی
-      state: 'idle', stateT: 1 + Math.random()*2,
-      path: null, claimKey: null, task: null
+      el, i, role, sk: def.sk,
+      pos: { ...(SPAWN_SLOTS[i % SPAWN_SLOTS.length]) },
+      state:'idle', stateT: 1 + rnd() * 2,
+      path:null, claimKey:null, task:null,
+      fat: rndi(0, 12), injured:false, locked:0, lockWhy:'', lockBy:0, restT:0
     });
   }
-  npcs.forEach(n => n.el.addEventListener('click', () => openCrewCard(n)));
+  npcs.forEach(n => n.el.addEventListener('click', ev2 => { ev2.stopPropagation(); openCrewCard(n); }));
   npcs.forEach(place);
 }
 function place(n){
-  const r = $('iNpcs').getBoundingClientRect();
+  const box = $('iNpcs');
+  if(!box) return;
+  const r = box.getBoundingClientRect();
   if(r.width < 10) return;
-  const ox = (n.i % 2 === 0 ? -7 : 7);    // آفست اختصاصی هر نفر — عبور از داخل هم ممنوع
-  n.el.style.transform = 'translate(' + ((n.pos.x/100*r.width) + ox) + 'px,' + (n.pos.y/100*r.height) + 'px)';
+  const ox = (n.i % 2 === 0 ? -7 : 7);
+  n.el.style.transform = 'translate(' + ((n.pos.x / 100 * r.width) + ox) + 'px,' + (n.pos.y / 100 * r.height) + 'px)';
 }
 function npcWalk(n, st, dur){
   if(n.claimKey){ delete claims[n.claimKey]; n.claimKey = null; }
@@ -876,195 +2892,308 @@ function npcWalk(n, st, dur){
   n.el.classList.remove('work');
 }
 function claimStation(n, key){ claims[key] = n.i; n.claimKey = key; }
-
-/* تصمیم روتین: کار با کنسول یا رفتن به یک ایستگاهِ آزاد (مقصد هرگز تکراری نیست) */
 function decide(n){
   const opts = STKEYS.filter(k => claims[k] === undefined || claims[k] === n.i);
   if(!opts.length){ n.stateT = 1.5; return; }
-  if(Math.random() < .45){
-    n.state = 'work';                 // پشت کنسول مشغول کار
-    n.stateT = 2 + Math.random()*3;
+  if(rnd() < .45){
+    n.state = 'work'; n.stateT = 2 + rnd() * 3;
     n.el.classList.add('work');
   } else {
-    const k = opts[Math.floor(Math.random()*opts.length)];
+    const k = opts[Math.floor(rnd() * opts.length)];
     const st = ST[k];
     if(Math.abs(st.x - n.pos.x) < 4 && Math.abs(st.y - n.pos.y) < 4){ n.stateT = .8; return; }
-    npcWalk(n, st, 1.4 + Math.random()*.8);
+    npcWalk(n, st, 1.4 + rnd() * .8);
     claimStation(n, k);
   }
 }
 function npcTick(dt){
   for(const n of npcs){
-    if(n.path){                       // در حال حرکت: روتین یا اعزام مأموریت
+    if(n.locked > 0){
+      n.locked -= dt;
+      const heldByInc = n.lockBy && state.incidents.some(i => i.uid === n.lockBy);
+      if(n.locked <= 0 && !heldByInc) unlockCrew(n);
+    }
+    if(n.path){
       n.path.t += dt;
       const k = Math.min(1, n.path.t / n.path.dur);
-      n.pos.x = n.path.sx + (n.path.ex - n.path.sx)*k;
-      n.pos.y = n.path.sy + (n.path.ey - n.path.sy)*k;
+      n.pos.x = n.path.sx + (n.path.ex - n.path.sx) * k;
+      n.pos.y = n.path.sy + (n.path.ey - n.path.sy) * k;
       place(n);
       if(k >= 1){
         n.path = null;
-        if(n.state === 'walk'){ n.state = 'idle'; n.stateT = 1 + Math.random()*3; }
-        else if(n.state === 'busy'){
-          n.state = 'working'; n.task.phase = 'working';
+        if(n.state === 'busy' && n.task){
+          n.state = 'working';
+          n.task.arrived++;
           n.el.classList.add('work');
+          if(n.task.arrived === n.task.crew.length && !n.task.go){
+            n.task.go = true;
+            renderDirty = true;
+          }
+        } else {
+          n.state = n.restT > 0 ? 'rest' : 'idle';
+          n.stateT = 1 + rnd() * 3;
         }
       }
       continue;
     }
+    if(n.locked > 0){
+      if(n.state !== 'idle'){ n.state = 'idle'; n.el.classList.remove('work'); }
+      n.fat = Math.max(0, n.fat - .12 * dt);
+      continue;
+    }
     if(n.state === 'idle'){
+      n.fat = Math.max(0, n.fat - .46 * dt);
       n.stateT -= dt;
       if(n.stateT <= 0) decide(n);
-    } else if(n.state === 'work'){
-      n.stateT -= dt;
-      if(n.stateT <= 0){ n.state = 'idle'; n.stateT = 1 + Math.random()*2.5; n.el.classList.remove('work'); }
-    } else if(n.state === 'working' && n.task){
-      const task = n.task;
-      task.t += dt;
-      if(task.opt.during) task.opt.during(dt);   // خنک‌کاری تدریجی و...
-      if(task.t >= task.dur){
-        task.opt.done();
-        n.task = null;
-        n.state = 'idle'; n.stateT = 1 + Math.random()*2;
-        n.el.classList.remove('work','fix');
-        closeIncident(task.inc);
+    } else if(n.state === 'rest'){
+      n.fat = Math.max(0, n.fat - 1.9 * dt);
+      n.restT -= dt;
+      if(n.restT <= 0){
+        n.state = 'idle'; n.stateT = 1 + rnd() * 2;
+        toast('🙂', 'نفر ' + fa(n.i + 1) + ' سرحال‌تر برگشت', '#4ade80');
+        renderDirty = true;
       }
+    } else if(n.state === 'work'){
+      n.fat = Math.max(0, n.fat - .18 * dt);
+      n.stateT -= dt;
+      if(n.stateT <= 0){ n.state = 'idle'; n.stateT = 1 + rnd() * 2.5; n.el.classList.remove('work'); }
+    }
+    if(n.state === 'working' && !n.task) n.state = 'idle';
+    if(n.fat > 80 && n.state === 'idle' && chance(dt * .004)) openIncident('panic', { sev:1 });
+    if(n.el._fat !== Math.round(n.fat / 8)){
+      n.el._fat = Math.round(n.fat / 8);
+      const b = n.el.querySelector('.fatbar');
+      if(b) b.style.width = Math.min(100, n.fat) + '%';
     }
   }
 }
+/* ---------- اعزام و انجام مأموریت ---------- */
+function startOption(inc, o, forced){
+  if(!inc || inc.assigned || !o || !o.label) return;
+  if(o.need === 0){
+    if(state.energy < (o.energy || 0)){ toast('⚠️','انرژی کافی نیست','#f87171'); sfx.deny(); return; }
+    if(evaBlocked(o)){ toast('🚫','تشعشع بالاست — بیرون‌زدن ممنوع','#f87171'); sfx.deny(); return; }
+    state.energy = Math.max(0, state.energy - (o.energy || 0));
+    state.oxygen = Math.max(0, state.oxygen - (o.o2 || 0));
+    o._inc = inc;
+    finishOption(inc, o, null);
+    renderDirty = true;
+    return;
+  }
+  if(evaBlocked(o)){ toast('🚫','تشعشع بالاست — بیرون‌زدن ممنوع','#f87171'); sfx.deny(); return; }
+  if(state.energy < (o.energy || 0)){ toast('⚠️','انرژی کافی برای این کار نیست!','#f87171'); sfx.fail(); return; }
+  const team = [];
+  if(forced && crewFree(forced)) team.push(forced);
+  else { const b = bestCrewFor(o); if(b) team.push(b); }
+  if(o.need > 1){
+    while(team.length < o.need){
+      let extra = null, bs = -1e9;
+      for(const n of npcs){
+        if(!crewFree(n) || team.indexOf(n) !== -1) continue;
+        const s = skillOf(n, o.skill) * 12 - n.fat * .12;
+        if(s > bs){ bs = s; extra = n; }
+      }
+      if(!extra) break;
+      team.push(extra);
+    }
+  }
+  if(!team.length){
+    toast('⚠️','هیچ خدمهٔ آزادی نیست — اولویت‌ها را دوباره انتخاب کن','#f87171'); sfx.deny();
+    state.blocked++;
+    return;
+  }
+  if(team.length < o.need){ toast('⚠️','این کار به ' + fa(o.need) + ' نفر نیاز دارد','#f87171'); sfx.deny(); return; }
+  assignTask(inc, team, o);
+}
+function assignTask(inc, team, o){
+  if(!inc || inc.assigned) return;
+  o._inc = inc;
+  state.energy = Math.max(0, state.energy - (o.energy || 0));
+  state.oxygen = Math.max(0, state.oxygen - (o.o2 || 0));
+  const lead = team[0];
+  const dur = durOf(o, lead);
+  inc.assigned = true; inc.swap = false;
+  inc.task = { inc, o, t:0, dur, crew:team.slice(), arrived:0, go:false };
+  const st = ST[o.room] || ST.hall;
+  for(const n of team){
+    n.task = inc.task;
+    npcWalk(n, st, (4.2 + rnd() * 2.4) * (skillOf(n, o.skill) >= 2 ? .85 : 1));
+    n.state = 'busy';   // npcWalk حالت را 'walk' کرد — تا پایان مأموریت غیرقابل‌استفاده بماند
+    n.el.classList.add('fix');
+  }
+  const fit = skillOf(lead, o.skill);
+  toast('👥', 'نفر ' + fa(lead.i + 1) + ' (' + lead.role + (fit >= 2 ? ' · متخصص' : fit === 1 ? ' · وارد' : ' · بی‌تجربه') + ')' +
+    (team.length > 1 ? ' +' + fa(team.length - 1) + ' نفر' : '') + ' ← ' + (ROOM_LABEL[o.room] || o.room) + ' · ' + fa(dur) + 's',
+    fit >= 2 ? '#67e8f9' : fit === 1 ? '#fbbf24' : '#f87171');
+  for(const n of team) n.fat = clamp(n.fat + (o.fat || 8) * (fit >= 2 ? .42 : .62), 0, 100);
+  renderDirty = true;
+}
+function taskTick(dt){
+  for(const inc of state.incidents){
+    const task = inc.task;
+    if(!task) continue;
+    if(!task.go) continue;
+    task.t += dt;
+    if(task.o.during) safe2(() => task.o.during(inc, dt));
+    if(task.t >= task.dur) completeTask(inc, task);
+  }
+}
+function completeTask(inc, task){
+  task.crew.forEach(n => {
+    n.task = null; n.state = 'idle'; n.stateT = 1 + rnd() * 2;
+    n.el.classList.remove('work', 'fix');
+  });
+  inc.task = null; inc.assigned = false; inc.swap = false;
+  finishOption(inc, task.o, task.crew[0]);
+  if(state.incidents.indexOf(inc) !== -1){   // هنوز باز است (نتیجهٔ ناقص/شکست)
+    inc.assigned = false;
+    toast('↩️', inc.d.title + ' هنوز باز است — نفرات آزاد شدند', '#fbbf24');
+  }
+  renderDirty = true;
+}
+function abortTask(task, soft){
+  if(!task || !task.crew) return;
+  task.crew.forEach(n => {
+    n.task = null;
+    n.state = 'idle'; n.stateT = 1 + rnd() * 2;
+    n.el.classList.remove('work', 'fix');
+    if(soft) n.fat = clamp(n.fat + 5, 0, 100);
+  });
+}
+function recallIncident(inc){
+  if(!inc) return;
+  if(inc.task) abortTask(inc.task, true);
+  inc.task = null; inc.assigned = false; inc.swap = false;
+  inc.escAt = Math.min(inc.escAt, state.time + 12);
+  toast('↩️', 'فراخوانی — ' + (inc.d.title) + ' بی‌پاسخ ماند (پیشرفت پاک شد)', '#fbbf24');
+  sfx.deny();
+  renderDirty = true;
+}
+function swapCrew(inc, n){
+  if(!inc || !inc.task || !crewFree(n)) return;
+  abortTask(inc.task, true);
+  const o = inc.task.o;
+  inc.task = null; inc.assigned = false;
+  assignTask(inc, [n], o);
+  toast('🔄', 'مأموریت به نفر #' + fa(n.i + 1) + ' منتقل شد — کار از اول', '#a78bfa');
+}
 function npcTo(n, st, dur){ npcWalk(n, st, dur); n.stateT = 0; }
-function npcOne(st, dur){ if(npcs.length) npcTo(npcs[Math.floor(Math.random()*npcs.length)], st, dur); }
+function npcReact(mode){
+  if(mode === 'window') npcs.forEach((n, i) => npcTo(n, GATHER_WINDOW[i % GATHER_WINDOW.length], 1.3 + (i % 3) * .2));
+}
 let npcAlertT = null;
 function npcAlert(dur){
   const s = get('iStrip');
+  if(!s) return;
   s.classList.add('on');
   clearTimeout(npcAlertT);
-  npcAlertT = setTimeout(()=>s.classList.remove('on'), dur || 2500);
-}
-
-/* --- کارت اعزام خدمه --- */
-function openCrewCard(n){
-  const c = get('crewCard');
-  const inc = state.incidents.find(i => !i.assigned);
-  const busy = n.state === 'busy' || n.state === 'working';
-  let html = '<div class="cc-head">خدمهٔ #' + fa(n.i+1) + ' — ' + n.role + '</div>';
-  html += '<div class="cc-status">وضعیت: ' + (busy ? 'مشغول' : 'آزاد') + '</div>';
-  if(inc){
-    const o = inc.def.options[0];
-    if(busy) html += '<button disabled>در حال مأموریت است...</button>';
-    else html += '<button id="ccSend">اعزام به ' + ROOM_LABEL[o.room] + '</button>';
-  }
-  html += '<button id="ccClose" class="cc-x">بستن ✕</button>';
-  c.innerHTML = html;
-  c.classList.add('show');
-  const send = $('ccSend');
-  if(send) send.addEventListener('click', () => { c.classList.remove('show'); assignTask(inc, n, inc.def.options[0], true); });
-  $('ccClose').addEventListener('click', () => c.classList.remove('show'));
-}
-function npcReact(mode){
-  if(mode === 'window'){
-    npcs.forEach((n, i) => npcTo(n, GATHER_WINDOW[i % GATHER_WINDOW.length], 1.3 + (i%3)*.2));
-  }
+  npcAlertT = setTimeout(() => s.classList.remove('on'), dur || 2500);
 }
 window.addEventListener('resize', () => npcs.forEach(place));
-buildCrew(4);   // پیش‌نمایش اولیه؛ با شروع بازی طبق CREW واقعی بازسازی می‌شود
 
-/* --- نمای داخلی همیشه فعال است؛ پنل خدمه و کارت اعزام ساده --- */
-
-/* ---------- منطق بازی ---------- */
+/* ============================================================
+   منطق بازی
+   ============================================================ */
 function thrust(){
   if(state.phase !== 'run') return;
-  const cost = costOf(state.temperature);
+  const cost = Math.max(1, Math.round(costOf(state.temperature) * (1 + modOf('costMul'))));
   if(state.energy < cost){
     if(state.failCd <= 0){ state.failCd = 1.1; toast('⚠️','انرژی ناکافی!','#f87171'); sfx.fail(); }
     return;
   }
   state.energy -= cost;
-  state.distance = Math.max(0, state.distance - Math.round(THRUST_DIST * (1 - state.damage * 0.004)));
+  const gain = Math.max(8, Math.round(THRUST_DIST * (1 - state.damage * 0.004) * (1 + modOf('thrust'))));
+  state.distance = Math.max(0, state.distance - gain);
   state.cooldown = COOLDOWN;
   state.thrusts++;
   state.thrustAnim = 1;
   state.speed = Math.min(state.speed + SPEED_GAIN, MAX_SPEED);
-  state.temperature = Math.min(MAX_TEMP, state.temperature + heatPerThrust(state.speed));
+  addTemp(heatPerThrust(state.speed) * (1 + modOf('heat')));
   if(state.temperature >= MAX_TEMP){
     state.damage = Math.min(100, state.damage + 12);
     state.temperature = 88;
-    toast('🔥','اورهیت! آسیب +۱۲٪ — Engineer را اعزام کن','#f87171');
+    toast('🔥','اورهیت! آسیب +۱۲٪ — یک مهندس لازم است','#f87171');
     sfx.overheat();
-    openIncident('engineOverheat');   // اگر ظرفیت پر باشد، خودبه‌خود در صف می‌ماند
+    openIncident('engHeat', { sev: 2 });   // اگر ظرفیت پر باشد، به صف می‌رود
   }
   state.shakeT = .16; viewport.classList.add('shake');
   sfx.thrust();
 }
 
-const fa = n => Math.round(n).toLocaleString('fa-IR');
 const btn = $('thrustBtn');
 
-/* --- HUD بهینه: فقط وقتی مقدار تغییر کرد DOM را به‌روز می‌کنیم (بدون بازنویسی هر فریم) --- */
+/* --- HUD بهینه: فقط وقتی مقدار تغییر کرد DOM را به‌روز می‌کنیم --- */
 const elCache = {}, txtCache = {}, barCache = {}, clsCache = {};
 let destKey = -1, hgCache = -1;
 const get = id => elCache[id] || (elCache[id] = $(id));
 function setText(id, txt){
   if(txtCache[id] === txt) return;
   txtCache[id] = txt;
-  get(id).textContent = txt;
+  const el = get(id); if(el) el.textContent = txt;
 }
-function setBar(id, pct){
-  const v = Math.round(pct * 2);
+function setBar(id, p){
+  const v = Math.round(p * 2);
   if(barCache[id] === v) return;
   barCache[id] = v;
-  get(id).style.width = pct + '%';
+  const el = get(id); if(el) el.style.width = p + '%';
 }
 function setCls(id, cls, on){
   const key = id + '|' + cls, v = on ? 1 : 0;
   if(clsCache[key] === v) return;
   clsCache[key] = v;
-  get(id).classList.toggle(cls, on);
+  const el = get(id); if(el) el.classList.toggle(cls, on);
 }
+const clockStr = s => {
+  const m = Math.floor(s / 60), ss = Math.floor(s % 60);
+  return fa(m) + ':' + (ss < 10 ? '۰' : '') + fa(ss);
+};
 
 function updateHUD(){
-  const t = state.temperature, hot = t > 55, need = costOf(t);
+  const t = state.temperature, need = Math.max(1, Math.round(costOf(t) * (1 + modOf('costMul'))));
   const dmg = Math.round(state.damage);
+  const m = state.mods || {};
   setText('o2Val', fa(Math.round(Math.max(0, state.oxygen))) + '٪');
   setText('enVal', fa(Math.floor(Math.max(0, state.energy))));
   setText('distVal', fa(Math.ceil(Math.max(0, state.distance))) + ' کیلومتر');
+  setText('distSubVal', 'زمان ' + clockStr(state.time) + ' · ' + (m.drift > .4 ? '⚠ ' + fa1(m.drift) + ' km/s عقب' : 'حرکت خودکار ۱ km/s'));
+  const o2r = state.o2Rate * (1 + (m.o2 || 0));
+  setText('o2SubVal', 'مصرف ' + fa1(o2r * 100) + '٪/دقیقه · ' + fa(Math.round(Math.max(0, state.oxygen) / Math.max(.001, o2r) / 60)) + ' دقیقه');
   setBar('o2Bar', Math.max(0, state.oxygen));
   setBar('enBar', Math.max(0, state.energy));
   setBar('distBar', (1 - state.distance / TOTAL) * 100);
   setBar('tempBar', t);
   setText('tempVal', fa(Math.round(t)) + '°');
-  setText('engSubVal', 'وضعیت: ' + (dmg > 0 ? 'آسیب ' + fa(dmg) + '٪' : (hot ? 'داغ' : 'فعال')));
-  const free = npcs.filter(n => n.state !== 'busy' && n.state !== 'working').length;
-  setText('crewVal', state.crew);
-  setText('crewSubVal', 'آزاد: ' + fa(free) + ' · مشغول: ' + fa(state.crew - free));
+  setText('enSubVal', 'بازیابی ' + fa1(Math.max(0, 1.3 * (1 + (m.regen || 0)))) + '/ث · هزینهٔ شتاب ' + fa(need));
+  setText('engSubVal', dmg > 0 ? 'آسیب موتور ' + fa(dmg) + '٪' + (t > 55 ? ' · داغ' : '') : (t > 55 ? 'داغ' : 'فعال'));
+  const free = freeCount();
+  setText('crewVal', fa(state.crew));
+  setText('crewSubVal', 'آزاد ' + fa(free) + ' · مشغول ' + fa(state.crew - free - state.lockedN) + ' · غیرقابل‌استفاده ' + fa(state.lockedN));
   setBar('crewBar', state.crew ? free / state.crew * 100 : 0);
   setCls('statO2', 'crit', state.oxygen < 25);
   setCls('statEn', 'crit', state.energy < need);
-  setCls('statTp', 'hot', hot && dmg === 0);
+  setCls('statTp', 'hot', t > 55 && dmg === 0);
   setCls('statTp', 'crit', dmg > 0);
   setCls('thrustBtn', 'low', state.energy < need);
   setCls('thrustBtn', 'off', dmg >= 60);
   setCls('lowo2', 'on', state.oxygen < 25 && state.phase === 'run');
-  const hg = Math.round((dmg > 0 ? .45 : (t > 55 ? Math.min(.4, (t - 55) / 45 * .4) : 0)) * 20) / 20;
+  const hg = Math.round(((state.incidents.some(i => i.key === 'conduitFire') || dmg > 0) ? .45 :
+    (t > 55 ? Math.min(.4, (t - 55) / 45 * .4) : 0)) * 20) / 20;
   if(hgCache !== hg){ hgCache = hg; get('heatGlow').style.opacity = hg; }
-  setBar('cdFill', Math.max(0, 1 - state.cooldown/COOLDOWN) * 100);
-  setText('thrustSub', dmg > 0
-    ? 'آسیب موتور ' + fa(dmg) + '٪ — شتاب‌های آرام‌تر تا تعمیر'
-    : 'مصرف ' + fa(Math.round(need)) + ' انرژی · گرما +' + fa(heatPerThrust(Math.min(state.speed + SPEED_GAIN, MAX_SPEED))) + '° · فاصله ' + fa(THRUST_DIST) + ' کیلومتر');
-  // --- ظهور تدریجی ایستگاه داخل پنجره (فقط transform/opacity) ---
+  setBar('cdFill', Math.max(0, 1 - state.cooldown / COOLDOWN) * 100);
+  const th = Math.max(8, Math.round(THRUST_DIST * (1 - state.damage * .004) * (1 + (m.thrust || 0))));
+  setText('thrustSub', 'مصرف ' + fa(need) + '⚡ · ' + fa(th) + ' km · گرما +' +
+    fa(Math.round(heatPerThrust(Math.min(state.speed + SPEED_GAIN, MAX_SPEED)) * (1 + (m.heat || 0)))) + '°' +
+    (m.thrust < -.15 ? ' · ⚠ بازده کم' : ''));
   const sv = Math.max(0, 1 - state.distance / STATION_VIEW);
   const sw = get('stationWin');
   if(sv > 0){
-    const sc = .22 + .78 * sv;
-    const key = Math.round(sc * 40);
+    const sc = .22 + .78 * sv, key = Math.round(sc * 40);
     if(destKey !== key){
       destKey = key;
       sw.style.transform = 'scale(' + sc.toFixed(3) + ')';
       sw.style.opacity = (.3 + .7 * sv).toFixed(2);
     }
-  } else if(destKey !== -1){
-    destKey = -1;
-    sw.style.opacity = 0;
-  }
+  } else if(destKey !== -1){ destKey = -1; sw.style.opacity = 0; }
 }
 
 function end(win){
@@ -1072,11 +3201,23 @@ function end(win){
   ambOff();
   const panel = $('endPanel');
   panel.className = 'panel ' + (win ? 'win' : 'lose');
+  const rare = state.hist.filter(k => EV[k] && (EV[k].rare || EV[k].kind === 'rare')).length;
   $('endTitle').textContent = win ? 'مأموریت موفق!' : 'اتمام اکسیژن!';
-  $('endSub').textContent = win
+  $('endSub').innerHTML = (win
     ? 'به ایستگاه آلفا رسیدی — خدمهٔ ایستگاه از دیدن تو خوشحال‌اند! 🎉'
-    : 'اکسیژن قبل از رسیدن به مقصد تمام شد... سفینه در فضا سرگردان ماند. 💀';
-  $('rTime').textContent = fa(Math.floor(state.time)) + ' ثانیه';
+    : 'اکسیژن قبل از رسیدن به مقصد تمام شد... سفینه در فضا سرگردان ماند. 💀') +
+    '<div class="end-recap">' +
+    '<span>✅ حل‌شده: <b>' + fa(state.resolved) + '</b></span>' +
+    '<span>📈 وخیم‌شده: <b>' + fa(state.escalated) + '</b></span>' +
+    '<span>🕳 رهاشده: <b>' + fa(state.ignored) + '</b></span>' +
+    '<span>🚑 مصدوم: <b>' + fa(state.injuries) + '</b></span>' +
+    '<span>🌌 نادر: <b>' + fa(rare) + '</b></span>' +
+    (state.salvaged ? '<span>🎁 غنیمت: <b>' + fa(state.salvaged) + '</b></span>' : '') +
+    (state.contact === 1 ? '<span>👽 تماس: <b>دوستانه</b></span>' : state.contact === -1 ? '<span>👽 تماس: <b>بد</b></span>' : '') +
+    '<span>🎯 بحران کل: <b>' + fa(state.events) + '</b></span>' +
+    '<span>🎲 Run <b>#' + state.seed + '</b></span>' +
+    '</div>';
+  $('rTime').textContent = clockStr(state.time);
   $('rThrusts').textContent = fa(state.thrusts);
   $('rEvents').textContent = fa(state.events);
   $('rO2').textContent = fa(Math.round(state.oxygen)) + '٪';
@@ -1086,39 +3227,47 @@ function end(win){
 }
 
 function resetGame(){
+  state.seed = (window.__loSeed != null) ? (window.__loSeed | 0) : ((Date.now() ^ (performance.now() * 1000)) | 0);
+  seedRng(state.seed);
   Object.assign(state, {
     phase:'countdown', oxygen:100, energy:100, distance:TOTAL, time:0,
     cooldown:0, holding:false, thrustAnim:0, speed:0,
     temperature:0, damage:0,
-    thrusts:0, events:0, regenMul:1, regenMulT:0, failCd:0, nextEvent:12,
-    crew:1 + Math.floor(Math.random()*8),   // خدمهٔ تصادفی: 1 تا 8 نفر
+    thrusts:0, events:0, failCd:0, nextEvent:12,
+    crew: CREW_MIN + Math.floor(rnd() * (CREW_MAX - CREW_MIN + 1)),
     sigShown:false, viewShown:false,
-    incidents:[], pendingOverheat:false, crewT:3, npcTick:2,
-    lowO2Beep:0, heatBeep:0,
+    incidents:[], queue:[], uid:1, hist:[], histCat:[], rareT:0, blindT:0, hintT:0,
+    resolved:0, escalated:0, ignored:0, injuries:0, salvaged:0, blocked:0, lockedN:0,
+    sys:{ mech:100, elec:100, life:100, nav:100, hull:100 },
+    buffs:[], fxt:[], modsDirty:true, contact:0,
+    npcTick:2, lowO2Beep:0, heatBeep:0,
     o2warn1:false, o2warn2:false, heatWarn1:false, heatWarn2:false, shakeT:0
   });
-  state.o2Rate = O2_DRAIN * (0.85 + state.crew * 0.045);  // ۱ نفر: ~۳۴ دقیقه · ۸ نفر: ~۲۵ دقیقه
-  buildCrew(state.crew);   // تعداد NPCها دقیقاً برابر CREW با نقش‌های اختصاصی
-  renderIncident();        // پاک‌سازی کارت‌های بحران از دست قبل
+  for(const k of EVORDER) EV[k].uses = 0;
+  state.o2Rate = O2_DRAIN * (0.9 + state.crew * 0.042);
+  buildCrew(state.crew);
+  renderIncBar(); renderSysStrip();
+  sigCache = ''; sysSig = '';
   cdT = 3.2; lastCd = 99;
   $('endOverlay').classList.add('hidden');
   $('startOverlay').classList.add('hidden');
+  closeCrewCard();
+  computeMods();
   updateHUD();
 }
-function startGame(){
-  ac();
-  resetGame();
-}
+function startGame(){ ac(); resetGame(); }
 
-/* ---------- حلقهٔ اصلی ---------- */
+/* ============================================================
+   حلقهٔ اصلی
+   ============================================================ */
+let uiT = 0;
 function frame(now){
-  const dt = Math.min(.05, (now - last)/1000);
+  const dt = Math.min(.05, (now - last) / 1000);
   last = now;
 
-  state.speed = Math.max(0, state.speed - state.speed*1.2*dt);
-  if(state.thrustAnim > 0) state.thrustAnim = Math.max(0, state.thrustAnim - dt*4);
+  state.speed = Math.max(0, state.speed - state.speed * 1.2 * dt);
+  if(state.thrustAnim > 0) state.thrustAnim = Math.max(0, state.thrustAnim - dt * 4);
   if(state.shakeT > 0){ state.shakeT -= dt; if(state.shakeT <= 0) viewport.classList.remove('shake'); }
-  // خدمه: حرکت، کار با کنسول و تعمیر حادثه‌ها
   state.npcTick -= dt;
   if(state.npcTick <= 0){ state.npcTick = 0.15; npcTick(0.15); }
 
@@ -1128,77 +3277,123 @@ function frame(now){
     if(c !== lastCd && c > 0){ lastCd = c; bigToast(['','۳','۲','۱'][c]); tone(520,.12,'triangle',.08); }
     if(cdT <= 0){
       state.phase = 'run'; ambOn(); sfx.go();
-      toast('🚀','مأموریت آغاز شد — خدمه: ' + fa(state.crew) + ' نفر · اکسیژن: ~' + fa(Math.round(100/state.o2Rate/60)) + ' دقیقه','#4ade80');
-      state.nextEvent = 10 + Math.random()*6;   // اولین بحران کمی بعد از شروع (۱۰ تا ۱۶ ثانیه)
+      toast('🚀','مأموریت آغاز شد — ' + fa(state.crew) + ' خدمه · اکسیژن تا ' + fa(Math.round(100 / state.o2Rate / 60)) + ' دقیقه','#4ade80');
+      state.nextEvent = rf(11, 16);
     }
   }
 
   if(state.phase === 'run'){
     state.time += dt;
-    state.distance = Math.max(0, state.distance - 1*dt);   // حرکت خودکار: ۱ کیلومتر در ثانیه
-    // اثرات حوادث فعال: نشت اکسیژن/اورژانس پزشکی → مصرف بیشتر · قطعی برق → بازیابی صفر
-    const incKeys = state.incidents.map(i => i.key);
-    const oxMult = (incKeys.includes('oxygen') ? 1.3 : 1) * (incKeys.includes('medical') ? 1.2 : 1);
-    const pwrOn  = !incKeys.includes('power');
-    state.oxygen = Math.max(0, state.oxygen - state.o2Rate*oxMult*dt);
-    state.energy = Math.min(100, state.energy + REGEN*state.regenMul*(pwrOn ? 1 : 0)*dt);
-    if(state.regenMulT > 0){ state.regenMulT -= dt; if(state.regenMulT <= 0) state.regenMul = 1; }
-    for(const inc of state.incidents) if(inc.def.passive) inc.def.passive(dt);
-    // --- سیستم حرارتی (تدریجی و قابل جبران) ---
-    state.temperature = Math.max(0, state.temperature - COOLING*dt);
-    state.damage = Math.max(0, state.damage - DMG_REPAIR*dt);
+    if(state.modsDirty) computeMods();
+    const m = state.mods;
+    /* --- زمان‌سنج‌های رویداد --- */
+    if(state.blindT > 0) state.blindT = Math.max(0, state.blindT - dt);
+    if(state.rareT > 0) state.rareT = Math.max(0, state.rareT - dt);
+    for(let i = state.buffs.length - 1; i >= 0; i--){
+      const b = state.buffs[i]; b.t -= dt;
+      if(b.t <= 0){ state.buffs.splice(i, 1); state.modsDirty = true; }
+    }
+    for(let i = state.fxt.length - 1; i >= 0; i--){
+      const e = state.fxt[i]; e.t -= dt;
+      if(e.t <= 0){ state.fxt.splice(i, 1); state.modsDirty = true; }
+    }
+    /* --- منابع --- */
+    state.distance = Math.max(0, state.distance - 1 * dt + (m.drift || 0) * dt);
+    state.oxygen = Math.max(0, state.oxygen - state.o2Rate * (1 + m.o2) * dt);
+    state.energy = Math.min(100, state.energy + REGEN * clamp(1 + m.regen, 0, 2.1) * dt);
+    /* --- حرارت و زیرسیستم‌ها --- */
+    state.temperature = Math.max(0, state.temperature - Math.max(.2, COOLING * (1 + m.cool)) * dt);
+    state.damage = Math.max(0, state.damage - DMG_REPAIR * dt);
+    if(m.hullDmg) state.sys.hull = clamp(state.sys.hull - m.hullDmg * .35 * dt, 0, 100);
+    for(const k of SYSKEYS) state.sys[k] = Math.min(100, state.sys[k] + SYS_TRICKLE * dt);
+    /* --- خستگی خدمه از محیط --- */
+    if(m.fatigue) for(const n of npcs) n.fat = clamp(n.fat + m.fatigue * .26 * dt * (n.state === 'working' ? 1.5 : .45) - buffVal('rest') * .03 * dt, 0, 100);
+    /* --- بحران‌ها --- */
+    incidentsTick(dt);
+    taskTick(dt);
+    directorTick(dt);
+    /* --- هشدارها --- */
     if(state.temperature > 70){
       state.heatBeep -= dt;
       if(state.heatBeep <= 0){ sfx.tempWarn(); state.heatBeep = 1.4; }
     }
-    if(state.temperature > 55 && !state.heatWarn1){
-      state.heatWarn1 = true; toast('🌡️','دمای موتور در حال بالا رفتن است!','#fb923c');
-    }
-    if(state.temperature > 75 && !state.heatWarn2){
-      state.heatWarn2 = true; toast('🔥','مراقب باش — نزدیک آسیب موتور!','#f87171');
-    }
+    if(state.temperature > 55 && !state.heatWarn1){ state.heatWarn1 = true; toast('🌡️','دمای موتور در حال بالا رفتن است!','#fb923c'); }
+    if(state.temperature > 75 && !state.heatWarn2){ state.heatWarn2 = true; toast('🔥','مراقب باش — نزدیک آسیب موتور!','#f87171'); }
     state.cooldown -= dt; state.failCd -= dt;
     if(state.holding && state.cooldown <= 0) thrust();
-    if(state.incidents.length < MAX_INCIDENTS){
-      state.nextEvent -= dt;
-      if(state.nextEvent <= 0) triggerEvent();
-    }
-    state.crewT -= dt;
-    if(state.oxygen < 25){
-      state.lowO2Beep -= dt;
-      if(state.lowO2Beep <= 0){ sfx.o2Warn(); state.lowO2Beep = 1.8; }
-    }
-    if(state.oxygen < 25 && !state.o2warn1){
-      state.o2warn1 = true; toast('⚠️','هشدار: اکسیژن رو به اتمام است!','#f87171');
-      npcAlert(2000);
-    }
-    if(state.oxygen < 12 && !state.o2warn2){
-      state.o2warn2 = true; toast('🆘','آخرین نفس‌ها! زودتر برس!','#f87171');
-    }
-    if(!state.sigShown && state.distance < STATION_SIG){
-      state.sigShown = true;
-      bigToast('📡 سیگنال ایستگاه دریافت شد!', 18); sfx.signal();
-    }
+    if(state.oxygen < 25){ state.lowO2Beep -= dt; if(state.lowO2Beep <= 0){ sfx.o2Warn(); state.lowO2Beep = 1.8; } }
+    if(state.oxygen < 25 && !state.o2warn1){ state.o2warn1 = true; toast('⚠️','هشدار: اکسیژن رو به اتمام است!','#f87171'); npcAlert(2000); }
+    if(state.oxygen < 12 && !state.o2warn2){ state.o2warn2 = true; toast('🆘','آخرین نفس‌ها! زودتر برس!','#f87171'); }
+    if(!state.sigShown && state.distance < STATION_SIG){ state.sigShown = true; bigToast('📡 سیگنال ایستگاه دریافت شد!', 18); sfx.signal(); }
     if(!state.viewShown && state.distance < STATION_VIEW){
-      state.viewShown = true;
-      bigToast('🛰️ ایستگاه در دید است!', 20); sfx.view();
-      npcReact('window');
+      state.viewShown = true; bigToast('🛰️ ایستگاه در دید است!', 20); sfx.view(); npcReact('window');
+    }
+    /* --- قفل‌های خدمه (نمایشی) --- */
+    state.lockedN = npcs.filter(n => n.locked > 0 || n.injured).length;
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    if(state.auto) autoTick();
+    /* --- UI با نرخ کم --- */
+    uiT -= dt;
+    if(uiT <= 0){
+      uiT = .22;
+      if(renderDirty || state.incidents.length) renderIncBar();
+      tickIncBar();
+      renderSysStrip();
+      ccLiveUpdate();
     }
     if(state.oxygen <= 0) end(false);
     else if(state.distance <= 0) end(true);
   }
 
+  if(toastT > 0){ toastT -= dt; if(toastT <= 0 && toastQ.length) flushToast(); }
   updateHUD();
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame);
+
+function incidentsTick(dt){
+  for(let i = state.incidents.length - 1; i >= 0; i--){
+    const inc = state.incidents[i];
+    const d = inc.d;
+    inc.age += dt;
+    const mul = inc.mag * (inc.stable ? .45 : 1) * (1 + inc.stage * .5);
+    if(d.passive) safe2(() => d.passive(inc, dt, mul));
+    if(d.period){
+      inc.dur -= dt * (inc.stable ? 1.5 : 1);
+      if(inc.dur <= 0) expireIncident(inc);
+      continue;
+    }
+    if(!inc.assigned && state.time > inc.escAt) escalate(inc);
+  }
+}
 
 /* ---------- ورودی‌ها ---------- */
 const press = () => {
   if(state.phase !== 'run') return;
   state.holding = true;
   btn.classList.add('held');
-  if(state.cooldown <= 0) thrust();   // پاسخ تقریباً فوری — بدون انتظار فریم
+  if(state.cooldown <= 0) thrust();
 };
 const release = () => { state.holding = false; btn.classList.remove('held'); };
 btn.addEventListener('pointerdown', e => { e.preventDefault(); press(); });
@@ -1206,7 +3401,6 @@ btn.addEventListener('pointerup', release);
 btn.addEventListener('pointerleave', release);
 btn.addEventListener('pointercancel', release);
 btn.addEventListener('contextmenu', e => e.preventDefault());
-
 window.addEventListener('keydown', e => {
   if(e.code === 'Space'){
     e.preventDefault();
@@ -1218,10 +3412,59 @@ window.addEventListener('keydown', e => {
     if(state.phase === 'start') startGame();
     else if(state.phase === 'end') resetGame();
   }
+  if(state.phase === 'run' && e.code === 'Escape') closeCrewCard();
+  if(state.phase === 'run' && e.code === 'Digit1') autoAssignTop('safe');
+  if(state.phase === 'run' && e.code === 'Digit2') autoAssignTop('fast');
+  if(state.phase === 'run' && e.code === 'Digit3') autoAssignTop('risky');
 });
 window.addEventListener('keyup', e => { if(e.code === 'Space') release(); });
 window.addEventListener('blur', release);
-
+/* سیاست خودکار — فقط برای آزمون state.auto (رفتار بازیکن شبیه‌سازی‌شده) */
+function autoTick(){
+  const pol = state.policy || 'greedy';
+  if(pol !== 'passive'){
+    state._acd = (state._acd || 0) - 1 / 60;
+    if(state.energy > 34 && state.temperature < 66 && state.cooldown <= 0 && state._acd <= 0 && !hasFx('derate')){
+      thrust(); state._acd = 3.1;
+    }
+  }
+  if(pol === 'passive') return;
+  if(pol === 'smart'){
+    for(const n of npcs) if(n.fat > 68 && crewFree(n)) restCrew(n);
+  }
+  while(freeCount() > 0){
+    const inc = sortedIncs().find(i => !i.assigned);
+    if(!inc) break;
+    const wasAssigned = inc.assigned;
+    const opts = optList(inc).filter(o => o && o.label);
+    let best = null, bs = -1e9;
+    for(const o of opts){
+      if(optBlockMsg(o)) continue;
+      if(pol === 'greedy'){
+        const s = (o.style === 'safe' ? 3 : o.style === 'fast' ? 5.5 : 4) - (o.energy > state.energy ? 14 : 0) - (o.need > freeCount() ? 20 : 0);
+        if(s > bs){ bs = s; best = o; }
+      } else {
+        if(o.abandon){ if(state.time > inc.escAt - 4){ best = o; bs = 999; } continue; }
+        const ch = optChance(o) / 100;
+        const val = (o.solve ? 1 : .35) * (ch * 1 + (1 - ch) * -.45) * (inc.sev > 1 ? 1.5 : 1)
+                  - (o.energy || 0) * .05 - (durOf(o, bestCrewFor(o)) || 0) * .012 + (o.stage ? .8 : 0);
+        if(val > bs){ bs = val; best = o; }
+      }
+    }
+    if(!best) break;
+    startOption(inc, best);
+    // اگر نتیجه‌ای نداشت (قفل/کمبود خدمه)، همین دور را ببند تا حلقه گیر نکند
+    if(inc.assigned === wasAssigned && state.incidents.indexOf(inc) !== -1) break;
+  }
+}
+/* میان‌بر: ۱/۲/۳ = اعزام فوریِ امن‌ترین/سریع‌ترین/ریسکی‌ترین گزینه به فوری‌ترین بحران */
+function autoAssignTop(style){
+  const inc = sortedIncs().find(i => !i.assigned);
+  if(!inc){ toast('🛡','بحران بی‌پاسخی نیست','#94a3b8'); return; }
+  const opts = optList(inc).filter(o => o && o.label);
+  const o = opts.find(x => x.style === style) || opts[0];
+  if(o) startOption(inc, o);
+}
 $('startBtn').addEventListener('click', startGame);
 $('retryBtn').addEventListener('click', () => { ac(); resetGame(); });
 $('muteBtn').addEventListener('click', () => {
@@ -1229,6 +3472,22 @@ $('muteBtn').addEventListener('click', () => {
   $('muteBtn').textContent = muted ? '🔇' : '🔊';
   if(muted) ambOff(); else if(state.phase === 'run') ambOn();
 });
+get('incBar').addEventListener('click', e => { if(e.target.id === 'incBar') closeCrewCard(); });
+
+buildCrew(4);   // پیش‌نمایش؛ با شروع بازی بازسازی می‌شود
+requestAnimationFrame(frame);
+
+/* قلاب دیباگ/خودکارآزمون (فقط با ?debug در آدرس) */
+if(/[?&](debug|auto)/.test(location.search)){
+  window.__lo = {
+    state, EV, openIncident, startOption, optList, thrust, resetGame, autoAssignTop, seedRng,
+    finishOption, escalate, renderIncBar, renderSysStrip, openCrewCard, renderCrewCard, sortedIncs, expireIncident, incidentsTick, taskTick, directorTick, closeIncident, startGame, setPolicy: p => { state.policy = p; }, ST, FX, SKILLS, ROOM_LABEL, CATS, EFFKEYS_OK,
+    npcsRef: () => npcs, mods: () => state.mods, weightOf, trySpawn, computeMods,
+    html: () => ({ inc: get('incBar').innerHTML, crew: get('crewCard').innerHTML, sys: get('sysStrip').innerHTML }),
+    CATS, SYS, runAuto: () => { state.auto = true; }
+  };
+  window.__lo.setSeed = s => { state.seed = s | 0; seedRng(s | 0); };
+}
 })();
 </script>
 <script>
