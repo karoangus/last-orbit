@@ -2,14 +2,14 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>لست اوربیت — Last Orbit | سفر به ایستگاه آلفا</title>
 <meta name="theme-color" content="#04040d">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Last Orbit">
-<meta name="description" content="سفر ۹٬۰۰۰ کیلومتری به ایستگاه آلفا — بازی فضایی مدیریت اکسیژن، انرژی و خدمه">
+<meta name="description" content="دو مسیر تا ایستگاه آلفا — بازی فضایی سبک با مدیریت اکسیژن، انرژی، بحران‌ها و خدمه">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -141,7 +141,7 @@
   .i-strip.on{opacity:1}
   .i-npcs{position:absolute;inset:0}
   .npc{position:absolute;left:0;top:0;width:18px;height:30px;z-index:3;
-    transition:transform 1.6s ease-in-out;will-change:transform;pointer-events:auto;cursor:pointer}
+    will-change:transform;pointer-events:auto;cursor:pointer}
   .npc i{position:absolute;left:4px;top:3px;width:10px;height:10px;border-radius:50%;
     background:#e0f2fe;box-shadow:0 0 6px #67e8f9}
   .npc b{position:absolute;left:1px;top:14px;width:16px;height:15px;border-radius:5px;opacity:.9}
@@ -304,7 +304,7 @@
   .r-cyan{--acc2:var(--cyan)} .r-mag{--acc2:var(--magenta)} .r-yel{--acc2:var(--yellow)} .r-grn{--acc2:var(--green)}
 
   /* دکمه صدا */
-  #muteBtn{position:fixed;bottom:14px;left:14px;z-index:60;width:42px;height:42px;border-radius:12px;
+  #muteBtn{position:relative;flex:none;width:38px;height:40px;border-radius:12px;
     border:1px solid rgba(255,255,255,.16);background:rgba(6,8,18,.9);
     font-size:18px;cursor:pointer;transition:transform .1s}
   #muteBtn:active{transform:scale(.9)}
@@ -403,6 +403,81 @@
   .overlay .panel{margin:auto}
   .inc-headrow.urgent{animation:urgBorder 1.6s ease-in-out infinite}
   @keyframes urgBorder{0%,100%{box-shadow:0 0 0 rgba(248,113,113,0)}50%{box-shadow:0 0 14px rgba(248,113,113,.45)}}
+
+  /* v2: small, native UI; no canvas, fonts or runtime dependencies. */
+  :focus-visible{outline:2px solid #facc15;outline-offset:4px}
+  button{touch-action:manipulation}
+  .wrap{padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(12px,env(safe-area-inset-bottom))}
+  .flight-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:none}
+  .brand{font:700 12px var(--mono);letter-spacing:3px;color:#a5f3fc;direction:ltr}
+  .brand small{font-size:9px;color:#64748b;letter-spacing:1px;display:block;margin-top:4px}
+  .flight-actions{display:flex;gap:6px;align-items:center}
+  #distVal{font-size:clamp(13px,1.65vw,19px);white-space:nowrap}
+  .stat{display:flex;flex-direction:column}.stat .bar{margin-top:auto}
+  .route-end{text-align:left}.route-end .quiet-btn{min-height:32px;padding:5px 9px;font-size:11px}
+  .quiet-btn{font:600 12px var(--ui);padding:9px 12px;color:#cbd5e1;border:1px solid #26394c;background:#0c1525;border-radius:10px;cursor:pointer;min-height:40px}
+  .quiet-btn:hover{border-color:#67e8f9;color:#fff}
+  .quiet-btn[aria-pressed="true"]{border-color:#22d3ee;color:#67e8f9;background:#0b2934}
+  .mission-route{flex:none;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;color:#94a3b8;font-size:11px}
+  .route-track{position:relative;height:4px;background:#17243a;border-radius:10px;direction:ltr}
+  #routeFill{height:100%;background:#22d3ee;transform-origin:right;transform:scaleX(0);transition:transform .2s linear}
+  .route-track i{position:absolute;top:-3px;height:10px;width:10px;border:2px solid #365069;background:#081322;border-radius:50%}
+  .route-track i.done{background:#22d3ee;border-color:#a5f3fc}
+  #routeStatus{min-width:92px;text-align:left;font-variant-numeric:tabular-nums}
+  .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0 12px}
+  .mode-grid button{text-align:right;min-height:76px;padding:13px;border:1px solid #26394c;border-radius:13px;background:#0a1425;color:#cbd5e1;font:700 14px var(--ui);cursor:pointer}
+  .mode-grid button[aria-pressed="true"]{border-color:#22d3ee;background:#0c2836;box-shadow:inset 0 0 20px #22d3ee0a}
+  .mode-grid small{display:block;color:#94a3b8;font-size:11px;font-weight:400;margin-top:5px;line-height:1.8}
+  .launch-tag{font:10px var(--mono);letter-spacing:3px;color:#4ade80;margin-bottom:18px}
+  .start-benefits{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:14px 0;color:#a5b4c8;font-size:11px}
+  .start-benefits span{padding:5px 9px;background:#0c1728;border-radius:6px}
+  .guide{text-align:right;border-top:1px solid #1a2c3d;margin-top:18px;padding-top:12px}
+  .guide summary{cursor:pointer;color:#94a3b8;font-size:12px;padding:5px 0}
+  .guide .rules{margin-top:12px}
+  .best-record{font-size:12px;color:#fcd34d;min-height:22px;margin:12px 0}
+  #startBtn{width:100%}
+  #crewCard{direction:rtl;text-align:right}
+  #toast{top:auto;bottom:40px;z-index:10}
+  #toast.big{top:45%;bottom:auto}
+  .supply-button{border-color:#4ade80;color:#86efac}
+  .supply-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0 18px}
+  .supply-grid button{font-size:12px;line-height:1.8;padding:10px 6px}
+  .supply-grid small{display:block;color:#94a3b8;font-size:10px}
+  .pause-options{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:16px 0}
+  #pauseOverlay .panel{max-width:500px}
+  #pauseOverlay h2{font-size:23px;margin:12px 0;color:#e2e8f0}
+  .pause-footer{display:flex;justify-content:center;gap:8px;margin-top:12px}
+  .score-card{padding:12px;border:1px solid #284259;background:#0a1827;border-radius:12px;margin:16px 0;color:#67e8f9;font-size:14px}
+  .simulation-stopped #flight *, .simulation-stopped #flight *::before,.simulation-stopped #flight *::after,.simulation-stopped #lowo2{animation-play-state:paused!important}
+  .low-motion *, .low-motion *::before,.low-motion *::after{animation:none!important;transition:none!important}
+  .low-motion .gridfloor,.low-motion .vignette{display:none}
+  .low-motion .stat,.low-motion .viewport,.low-motion .thrust{box-shadow:none}
+  [hidden]{display:none!important}
+  .npc{border:0;background:none;padding:0;color:inherit;font:inherit;text-align:initial}
+  .npc::before{content:'';position:absolute;inset:-8px -12px}
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  @media(max-width:600px){
+    .wrap{gap:8px}.hud{grid-template-columns:repeat(6,1fr);gap:5px}
+    .stat{grid-column:span 2;min-width:0;padding:7px 8px}.stat.tp,.stat.cr{grid-column:span 3}
+    .stat .head{font-size:10px;margin-bottom:3px}.stat-val{font-size:16px;margin-bottom:3px}
+    .stat-sub{font-size:8px;margin-bottom:4px}.bar{height:4px}
+    .flight-head .brand{font-size:10px;letter-spacing:2px}.flight-actions .quiet-btn{padding:6px 9px;font-size:11px}
+    .thrust{padding:10px}.thrust .big{font-size:21px}.thrust .sub{font-size:10px}
+    .keyhint{display:none}.panel{padding:24px 18px}.mission-route{font-size:10px;gap:8px}
+    .viewport{min-height:150px}.syschip{font-size:8px;padding:2px 5px}.syschip i{width:20px}
+  }
+  @media(max-height:600px) and (min-width:601px){
+    .wrap{gap:6px}.hud{gap:5px}.stat{min-width:0;padding:5px 8px}.stat-val{font-size:16px;margin-bottom:2px}
+    .stat-sub,.keyhint{display:none}.thrust{padding:5px 10px}.thrust .big{font-size:18px}
+    .brand small{display:none}.flight-head .quiet-btn{min-height:32px;padding:5px 12px}
+  }
+  @media(max-height:680px) and (max-width:600px){
+    .stat-sub{display:none}.wrap{gap:5px}.stat{padding:5px 7px}.brand small{display:none}
+    .stat .head svg{display:none}.thrust{padding:7px}.flight-head .quiet-btn{min-height:34px}
+  }
+
 </style>
 </head>
 <body>
@@ -412,7 +487,15 @@
   <div id="lowo2"></div>
   <div id="heatGlow"></div>
 
-  <div class="wrap">
+  <div class="wrap" id="flight">
+    <div class="flight-head">
+      <div class="brand">LAST ORBIT <small>ALPHA MISSION / 02</small></div>
+      <div class="flight-actions">
+        <button id="muteBtn" title="صدا" aria-label="بی‌صدا کردن" aria-pressed="false">🔊</button>
+        <button class="quiet-btn" id="guardBtn" aria-pressed="true" title="جلوگیری از داغ‌شدن موتور؛ قابل خاموش‌کردن">🛡 محافظ</button>
+        <button class="quiet-btn" id="pauseBtn" aria-label="توقف و تنظیمات بازی">Ⅱ توقف</button>
+      </div>
+    </div>
     <!-- HUD -->
     <header class="hud">
       <div class="stat o2" id="statO2">
@@ -470,6 +553,11 @@
       </div>
     </header>
 
+    <div class="mission-route" aria-label="مسیر سفر">
+      <span id="sectorName">خروج از مدار</span>
+      <div class="route-track"><div id="routeFill"></div><i style="right:33.33%" id="routeOne"></i><i style="right:66.66%" id="routeTwo"></i></div>
+      <div class="route-end"><span id="routeStatus">ایستگاه آلفا</span><button class="quiet-btn supply-button" id="supplyBtn" hidden>بستهٔ پشتیبانی</button></div>
+    </div>
     <!-- نمای بازی -->
     <main class="viewport" id="viewport">
       <div id="interior">
@@ -505,7 +593,7 @@
       <div class="sys-strip" id="sysStrip"></div>
       <div id="incBar"></div>
       <div id="crewCard"></div>
-      <div id="toast"></div>
+      <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
     </main>
 
     <!-- کنترل‌ها -->
@@ -520,12 +608,21 @@
   </div>
 
   <!-- صفحه شروع -->
-  <div class="overlay" id="startOverlay">
+  <div class="overlay" id="startOverlay" role="dialog" aria-modal="true" aria-labelledby="startTitle">
     <div class="panel">
-      <div class="logo">LAST ORBIT</div>
-      <h1>لست اوربیت</h1>
+      <div class="launch-tag">MISSION CONTROL · V2.0</div><div class="logo">LAST ORBIT</div>
+      <h1 id="startTitle">آخرین مدار. تصمیم با توست.</h1>
       <p class="subtitle">سفر به ایستگاه آلفا</p>
-      <p class="intro">تو فرماندهٔ سفینه‌ای. سفر ۲۰ تا ۳۰ دقیقه‌ای: ۹٬۰۰۰ کیلومتر تا ایستگاه آلفا، با خدمه‌ای که هرکدام یک تخصص دارند و هرکدام فقط یک‌کاره‌اند.</p>
+      <p class="intro">یک سفینه، چند خدمه و یک شانس برای رسیدن.<br>شتاب را کنترل کن، بحران‌ها را به متخصص‌ها بسپار و همه را به آلفا برسان.</p>
+      <div class="mode-grid" aria-label="انتخاب مسیر">
+        <button data-mode="quick" aria-pressed="true">مدار کوتاه <small>۳٬۰۰۰ کیلومتر · حدود ۸ تا ۱۲ دقیقه<br>برای یک دور سریع و شروع یادگیری</small></button>
+        <button data-mode="classic" aria-pressed="false">سفر کامل <small>۹٬۰۰۰ کیلومتر · حدود ۲۰ تا ۳۰ دقیقه<br>آزمون استقامت یک فرمانده</small></button>
+      </div>
+      <div class="start-benefits"><span>۲ نقطهٔ پشتیبانی</span><span>محافظ هوشمند موتور</span><span>توقف امن</span></div>
+      <div id="bestRecord" class="best-record"></div>
+      <button class="bigbtn" id="startBtn">آغاز مأموریت ←</button>
+      <p class="hint">شتاب: نگه‌داشتن دکمه یا Space · توقف: P یا Esc<br>روی خدمه بزن تا مهارت‌ها و مأموریت‌هایشان را ببینی.</p>
+      <details class="guide"><summary>راهنمای فرمانده · چطور زنده برسیم؟</summary>
       <ul class="rules">
         <li><b>🫁 اکسیژن</b> — آرام مصرف می‌شود؛ خدمهٔ بیشتر یعنی مصرف بیشتر. سختی اصلی از تصمیم‌های بد می‌آید، نه از کمبود مصنوعی هوا.</li>
         <li><b>⚡ انرژی و 🌡️ دما</b> — شتاب و اعزام خدمه انرژی می‌خورد؛ اورهیت موتور یک بحران واقعی است، نه یک عدد.</li>
@@ -533,17 +630,17 @@
         <li><b>🧩 بحران‌های چندمرحله‌ای</b> — اول «گرمای موتور» می‌آید، عیب‌یابی می‌کنی، بعد معلوم می‌شود مشکل از سیستم خنک‌کننده است و باید انتخاب کنی: تعمیر کامل، راه‌حل موقت، یا کاهش قدرت موتور.</li>
         <li><b>🔗 اثر متقاطع</b> — قطعی برق، اکسیژن‌سازی را ضعیف می‌کند؛ گرمای موتور، مصرف انرژی را بالا می‌برد؛ طوفان خورشیدی، سیم‌کشی را می‌سوزاند. وضعیت سفینه تعیین می‌کند بحران بعدی از کجا بیاید.</li>
         <li><b>⏱ بحران‌های همزمان</b> — تا ۴ بحران باز می‌ماند و بقیه در صف‌اند؛ اگر بیش از حد منتظر بمانی، وخیم‌تر می‌شوند (مرحلهٔ ۲ و ۳) و بعد با خسارت می‌سوزند.</li>
-        <li><b>👥 خدمه محدود است</b> — هر نفر تا پایان مأموریت قفل است. خستگی بالا کار را کند و پرریسک می‌کند؛ مصدوم فقط با پزشک برمی‌گردد؛ در تشعشع، EVA ممنوع است.</li>
+        <li><b>👥 خدمه محدود است</b> — هر نفر تا پایان مأموریت قفل است. خستگی بالا کار را کند و پرریسک می‌کند؛ مصدوم به درمان یا استراحت نیاز دارد؛ در تشعشع، EVA ممنوع است.</li>
         <li><b>🛡 ⚡ 🎲 سه سبک تصمیم</b> — امن و کند / سریع و پرهزینه / ریسکی و ارزان. روی هر گزینه٪ موفقیت با بهترین خدمهٔ آزاد نوشته شده.</li>
       </ul>
-      <button class="bigbtn" id="startBtn">🚀 آغاز مأموریت</button>
+      </details>
       <div class="hint">مهندس←موتور و بدنه · تکنسین←برق و حیات · ناوبر←مسیر · دانشمند←ناشناس · امنیتی←EVA · پزشک←مصدوم‌ها · خدمه←همه‌کاره</div>
-      <div class="ver">Last Orbit v1.5.0 · کارگردان بحران تطبیقی · ۶۰+ رویداد چندمرحله‌ای</div>
+      <div class="ver">Last Orbit v2.0.0 · بدون دانلود اضافه · آمادهٔ بازی آفلاین</div>
     </div>
   </div>
 
   <!-- پایان بازی -->
-  <div class="overlay hidden" id="endOverlay">
+  <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle">
     <div class="panel" id="endPanel">
       <div class="logo">گزارش مأموریت</div>
       <h1 id="endTitle">مأموریت موفق!</h1>
@@ -554,16 +651,40 @@
         <div class="result r-yel"><div class="rv" id="rEvents">۰</div><div class="rl">رویدادها</div></div>
         <div class="result r-grn"><div class="rv" id="rO2">۰</div><div class="rl">اکسیژن باقی</div></div>
       </div>
+      <div id="scoreReport" class="score-card"></div>
       <button class="bigbtn" id="retryBtn">🔄 تلاش دوباره</button>
+      <div class="pause-footer"><button class="quiet-btn" id="homeBtn">انتخاب مسیر</button></div>
     </div>
   </div>
 
-  <button id="muteBtn" title="صدا">🔊</button>
+  <div class="overlay hidden" id="pauseOverlay" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+    <div class="panel">
+      <div class="logo">MISSION PAUSED</div>
+      <h2 id="pauseTitle">نفسی تازه کن، فرمانده.</h2>
+      <p>زمان، اکسیژن و مأموریت خدمه متوقف‌اند.<br>وقتی آماده‌ای، ادامه بده.</p>
+      <section id="supplyChoices" hidden>
+        <div class="best-record" id="supplyLabel">یک بسته انتخاب کن</div>
+        <div class="supply-grid">
+          <button class="quiet-btn" data-supply="oxygen">🫁 اکسیژن<small>۸٪ ذخیرهٔ بیشتر</small></button>
+          <button class="quiet-btn" data-supply="energy">⚡ انرژی<small>۳۰ واحد شارژ</small></button>
+          <button class="quiet-btn" data-supply="repair">🔧 تعمیر<small>۱۸٪ ترمیم سیستم‌ها<br>۲۰ درجه خنک‌سازی</small></button>
+        </div>
+      </section>
+      <div class="pause-options">
+        <button class="quiet-btn" id="motionBtn" aria-pressed="false">حالت سبک / کم‌تحرک</button>
+        <button class="quiet-btn" id="pauseMuteBtn" aria-pressed="false">بی‌صدا</button>
+      </div>
+      <button class="bigbtn" id="resumeBtn">ادامهٔ مأموریت ←</button>
+      <details class="guide"><summary>یادآوری کنترل‌ها</summary><p>Space: شتاب · ۱/۲/۳ انگلیسی: اعزام امن / سریع / ریسکی · P یا Esc: توقف<br>بسته‌های پشتیبانی در یک‌سوم و دوسوم مسیر آزاد می‌شوند. انتخاب و مصرف آن‌ها با توست. محافظ موتور را برای شتاب پرریسک‌تر خاموش کن.</p></details>
+      <p class="hint">رکوردها ذخیره می‌شوند؛ بستن یا بارگذاری دوبارهٔ صفحه، سفر جاری را از نو شروع می‌کند.</p>
+    </div>
+  </div>
+
 
 <script>
 (function(){
 'use strict';
-const GAME_VERSION = '1.5.0';
+const GAME_VERSION = '2.0.0';
 try{ console.info('%c🚀 Last Orbit v' + GAME_VERSION + ' — کارگردان بحران تطبیقی', 'color:#22d3ee'); }catch(e){}
 const $ = id => document.getElementById(id);
 
@@ -610,8 +731,8 @@ const ROOM_LABEL = {
 
 /* ---------- وضعیت بازی ---------- */
 const state = {
-  phase:'start',            // start | countdown | run | end
-  oxygen:100, energy:100, distance:TOTAL, time:0,
+  phase:'start', sector:0, supplyStock:0, // start | countdown | run | paused | end
+  oxygen:100, energy:100, distance:TOTAL, total:TOTAL, time:0,
   cooldown:0, holding:false, thrustAnim:0, speed:0,
   temperature:0, damage:0,
   thrusts:0, events:0, failCd:0,
@@ -629,7 +750,22 @@ const state = {
   shakeT:0
 };
 let last = performance.now();
-let muted = false, AC = null;
+const STORE = 'last-orbit-v2';
+function readStore(key){
+  try{ return JSON.parse(localStorage.getItem(STORE + key)) || {}; }catch(e){ return {}; }
+}
+function writeStore(key, value){
+  try{ localStorage.setItem(STORE + key, JSON.stringify(value)); }catch(e){}
+}
+const stored = readStore('-settings');
+const settings = {
+  mode: stored.mode === 'classic' ? 'classic' : 'quick',
+  muted: stored.muted === true,
+  guard: stored.guard !== false,
+  motion: typeof stored.motion === 'boolean' ? stored.motion : matchMedia('(prefers-reduced-motion: reduce)').matches
+};
+function saveSettings(){ writeStore('-settings', settings); }
+let muted = settings.muted, AC = null;
 let cdT = 0, lastCd = 99;
 
 /* ---------- تصادف با seed: هر Run متفاوت ولی قابل بازتولید ---------- */
@@ -652,9 +788,13 @@ const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
    صدا (WebAudio — بدون فایل خارجی)
    ============================================================ */
 function ac(){
-  if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
-  if(AC.state === 'suspended') AC.resume();
-  return AC;
+  try{
+    const Audio = window.AudioContext || window.webkitAudioContext;
+    if(!Audio) return null;
+    if(!AC) AC = new Audio();
+    if(AC.state === 'suspended') AC.resume().catch(() => {});
+    return AC;
+  }catch(e){ return null; }
 }
 function tone(f, d, type, vol, to){
   if(muted) return;
@@ -761,7 +901,7 @@ const sfx = {
 const viewport = $('viewport');
 
 /* ---------- اعلان‌ها ---------- */
-let toastTimer = null, toastQ = [], toastT = 0;
+let toastQ = [], toastT = 0;
 function toast(icon, text, color){
   toastQ.push([icon, text, color]);
   if(toastQ.length > 4) toastQ.shift();
@@ -775,16 +915,14 @@ function flushToast(){
   el.style.borderColor = p[2] || '#22d3ee';
   el.style.boxShadow = '0 0 28px ' + (p[2] || '#22d3ee') + '55';
   el.classList.remove('big'); el.classList.add('show');
-  clearTimeout(toastTimer);
+  el.style.fontSize = '';
   toastT = 2.4;
-  toastTimer = setTimeout(()=>{ el.classList.remove('show'); flushToast(); }, 2100);
 }
 function bigToast(text, size){
   const el = $('toast');
-  clearTimeout(toastTimer);
   el.innerHTML = text; el.classList.add('big','show');
   el.style.fontSize = (size || 30) + 'px';
-  toastTimer = setTimeout(()=>el.classList.remove('show','big'), size > 28 ? 900 : 2200);
+  toastT = (size || 30) >= 28 ? .9 : 2.2;
 }
 
 /* ============================================================
@@ -927,6 +1065,12 @@ function optList(inc){
   return d.opts || [];
 }
 function stageDesc(inc){
+  // UI descriptions must not consume gameplay randomness or change on every repaint.
+  const savedRng = rngState;
+  seedRng(state.seed ^ inc.uid ^ (inc.stage << 16));
+  try{ return describeStage(inc); }finally{ rngState = savedRng; }
+}
+function describeStage(inc){
   const d = inc.d;
   if(d.stages){
     const s = d.stages[Math.min(inc.stage, d.stages.length - 1)];
@@ -1850,7 +1994,7 @@ ev({ key:'firstContact', cat:'unk', icon:'👽', title:'تماس اول', color:
    ============================================================ */
 const CAT2SYS = { mech:'mech', elec:'elec', life:'life', nav:'nav', env:'hull', crew:null, unk:null };
 /* هر دسته رویداد، زیرسیستم حساس خودش را دارد: آسیب = احتمال بیشتر (بدون حذف بقیه) */
-function progress01(){ return clamp(1 - state.distance / TOTAL, 0, 1); }
+function progress01(){ return clamp(1 - state.distance / state.total, 0, 1); }
 
 const QUEUE_MAX = 3, QUEUE_TTL = 50;
 function queueFollow(key, delay, sev, note, reqId){
@@ -1977,6 +2121,10 @@ const busy = () => state.incidents.filter(i => !i.assigned).length;
 function freeCrewRatio(){ return npcs.length ? freeCount() / npcs.length : 0; }
 
 function directorTick(dt){
+  if(!state.incidents.some(i => i.key === 'crewInjury') && !state.queue.some(q => q.key === 'crewInjury')){
+    const injured = npcs.find(n => n.injured);
+    if(injured) openIncident('crewInjury', { reqId:injured.i, sev:1 });
+  }
   if(state.queue.length){
     for(let i = state.queue.length - 1; i >= 0; i--){
       const q = state.queue[i];
@@ -2067,8 +2215,15 @@ function openIncident(key, o){
   if(o.note) inc.srcNote = o.note;
   for(const i of state.incidents) i.open = false;   // بحران تازه اولویت دید است
   if(d.open) safe2(() => d.open(inc));
+  // Event-owned locks must be released when their incident closes.
+  const lockIds = inc.m.ids || (inc.m.id != null ? [inc.m.id] : []);
+  for(const id of lockIds){
+    const n = crewById(id);
+    if(n && n.locked > 0 && !n.lockBy) n.lockBy = inc.uid;
+  }
   if(d.kind === 'rare' || d.rare) state.rareT = 105 + rnd() * 90;
   d.uses++;
+  if(d.rare || d.kind === 'rare') state.rareCount = (state.rareCount || 0) + 1;
   state.incidents.push(inc);
   state.hist.unshift(d.key); if(state.hist.length > 9) state.hist.pop();
   state.histCat.unshift(d.cat); if(state.histCat.length > 5) state.histCat.pop();
@@ -2137,18 +2292,22 @@ function shakeSoft(){ state.shakeT = .16; viewport.classList.add('shake'); }
 function shakeHard(){ state.shakeT = .34; viewport.classList.add('shake'); }
 
 /* ---------- حل کردن: رول نتیجه ---------- */
-function rollOpt(o, inc, npc){
+function failureChance(o, inc, npc){
   let failP = o.risk != null ? o.risk : .1;
   const fit = npc ? skillOf(npc, o.skill) : -1;
   failP += (inc.sev - 1) * .055 + inc.stage * .03;
-  failP += fit < 0 ? .14 : (1 - fit) * .09;
+  failP += fit <= 0 ? .14 : (1 - fit) * .09;
   if(npc) failP += npc.fat / 560;
   if(npc && npc.injured) failP += .1;
   failP -= buffVal('rest') * .05;
   if(o.style === 'safe') failP *= .7;
   if(o.style === 'risky') failP *= 1.25;
-  failP = clamp(failP, .015, .8);
-  const partP = clamp((o.part != null ? o.part : .2) * (fit < 0 ? 1.3 : 1), 0, .85);
+  return clamp(failP, .015, .8);
+}
+function rollOpt(o, inc, npc){
+  const failP = failureChance(o, inc, npc);
+  const fit = npc ? skillOf(npc, o.skill) : -1;
+  const partP = clamp((o.part != null ? o.part : .2) * (fit <= 0 ? 1.3 : 1), 0, .85);
   const q = rnd();
   if(q < failP) return 'fail';
   if(q < failP + partP) return 'part';
@@ -2225,7 +2384,7 @@ function applyAbandonScar(inc, o){
 }
 function injure(n, why){
   if(!n || n.injured) return;
-  n.injured = true;
+  n.injured = true; n.restT = 0; n.path = null;
   state.injuries++;
   if(n.task) abortTask(n.task, true);
   n.state = 'idle'; n.stateT = 1; n.el.classList.remove('work', 'fix');
@@ -2236,6 +2395,7 @@ function injure(n, why){
 function lockCrew(n, t, why){
   if(!n) return;
   if(n.task) abortTask(n.task, true);
+  n.path = null; n.restT = 0;
   n.locked = t; n.lockWhy = why || 'درگیر';
   n.state = 'idle'; n.stateT = .5;
   n.el.classList.add('lock');
@@ -2243,7 +2403,7 @@ function lockCrew(n, t, why){
 }
 function unlockCrew(n){
   if(!n) return;
-  n.locked = 0; n.lockWhy = '';
+  n.locked = 0; n.lockWhy = ''; n.lockBy = 0;
   n.el.classList.remove('lock');
   renderDirty = true;
 }
@@ -2288,25 +2448,17 @@ function bestCrewFor(o){
   }
   return best;
 }
-function optChance(o){
+function optChance(o, forced){
   if(o.abandon) return -1;
-  const inc = o._inc;
-  const n = o.need > 0 ? bestCrewFor(o) : null;
+  const inc = o._inc || {sev:1, stage:0};
+  const n = o.need > 0 ? (forced || bestCrewFor(o)) : null;
   if(o.need > 0 && !n) return 0;
-  const fake = { sev: inc ? inc.sev : 1, stage: inc ? inc.stage : 0 };
-  let failP = o.risk != null ? o.risk : .1;
-  const fit = n ? skillOf(n, o.skill) : -1;
-  failP += (fake.sev - 1) * .055 + fake.stage * .03 + (fit < 0 ? .14 : (1 - fit) * .09);
-  if(n) failP += n.fat / 340;
-  failP -= buffVal('rest') * .05;
-  if(o.style === 'safe') failP *= .7;
-  if(o.style === 'risky') failP *= 1.25;
-  return Math.round((1 - clamp(failP, .015, .8)) * 100);
+  return Math.round((1 - failureChance(o, inc, n)) * 100);
 }
 function durOf(o, n){
   let d = o.dur || 30;
   const fit = n ? skillOf(n, o.skill) : -1;
-  if(fit < 0) d *= 1.5; else if(fit === 1) d *= 1.16; else if(fit >= 3) d *= .8;
+  if(fit <= 0) d *= 1.5; else if(fit === 1) d *= 1.16; else if(fit >= 3) d *= .8;
   if(n) d *= 1 + n.fat / 420;
   if(n && o.need > 1) d *= .62;
   return Math.round(d * (1 + (o._inc ? (o._inc.sev - 1) * .06 : 0)));
@@ -2322,7 +2474,7 @@ function renderIncBar(){
   let sig = list.map(i => i.uid + ':' + i.stage + ':' + (i.assigned ? 1 : 0) + ':' + (i.stable ? 1 : 0) +
       ':' + (i.pinned ? 1 : 0) + ':' + (i.open ? 1 : 0) + ':' + i.sev + ':' + (state.blindT > 0 ? 'B' : '') +
       ':' + npcs.map(n => (crewFree(n) ? '1' : '0') + (n.injured ? 'x' : '')).join('') +
-      ':' + (i.swap ? 'S' : '') + ':' + (state.energy > 12 ? 'E' : 'e') + (evaBlockedFlag() ? 'R' : '')).join('|');
+      ':' + (i.swap ? 'S' : '') + ':' + optList(i).map(o => optBlockMsg(o)).join(',') + ':' + (i.task && i.task.go ? 'G' : '') + (evaBlockedFlag() ? 'R' : '')).join('|');
   if(sig === sigCache && !renderDirty){ renderDirty = false; return; }
   sigCache = sig; renderDirty = false;
   let html = '';
@@ -2335,7 +2487,7 @@ function renderIncBar(){
     const opts = optList(inc);
     const blind = state.blindT > 0;
     html += '<div class="inc-card' + (inc.pinned ? ' pinned' : '') + '" data-uid="' + inc.uid + '">';
-    html += '<div class="inc-headrow' + (inc.assigned ? '' : (urgency(inc) > 42 ? ' urgent' : '')) + '" style="border-color:' + color + '">';
+    html += '<div role="button" tabindex="0" aria-expanded="' + inc.open + '" class="inc-headrow' + (inc.assigned ? '' : (urgency(inc) > 42 ? ' urgent' : '')) + '" style="border-color:' + color + '">';
     html += '<span class="inc-pin" data-pin title="اولویت">' + (inc.pinned ? '⚑' : '⚐') + '</span>';
     html += '<span class="inc-title" style="color:' + color + '">' + (d.icon || cat.icon) + ' ' + d.title +
             (stageCount(inc) > 1 ? ' <b class="inc-stage">' + fa(Math.min(inc.stage + 1, stageCount(inc))) + '/' + fa(stageCount(inc)) + '</b>' : '') + '</span>';
@@ -2412,7 +2564,18 @@ function renderIncBar(){
     }
     html += '</div></div>';
   }
+  const scroll = p.scrollTop;
+  const bodyScroll = [...p.querySelectorAll('.inc-body')].map(el => [el.closest('[data-uid]').dataset.uid, el.scrollTop]);
+  const focused = document.activeElement;
+  const focusUid = focused?.closest('[data-uid]')?.dataset.uid;
+  const focusOpt = focused?.dataset.opt;
   p.innerHTML = html;
+  p.scrollTop = scroll;
+  for(const [uid, top] of bodyScroll){
+    const body = p.querySelector('[data-uid="' + uid + '"] .inc-body');
+    if(body) body.scrollTop = top;
+  }
+  if(focusUid && focusOpt != null) p.querySelector('[data-uid="' + focusUid + '"] [data-opt="' + focusOpt + '"]')?.focus({preventScroll:true});
   p.classList.add('show');
   for(const inc of state.incidents){
     const card = p.querySelector('.inc-card[data-uid="' + inc.uid + '"]');
@@ -2446,7 +2609,11 @@ let incBarBound = false;
 function bindIncBar(p){
   if(incBarBound) return;
   incBarBound = true;
+  p.addEventListener('keydown', e => {
+    if(e.target.matches('.inc-headrow') && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); e.target.click(); }
+  });
   p.addEventListener('click', e => {
+    if(state.phase !== 'run') return;
     const card = e.target.closest ? e.target.closest('.inc-card') : null;
     if(!card) return;
     const inc = state.incidents.find(x => String(x.uid) === card.dataset.uid);
@@ -2494,8 +2661,13 @@ function renderSysStrip(){
 }
 
 /* ---------- کارت خدمه ---------- */
-let ccUid = -1;
+let ccUid = -1, ccSignature = '';
+function crewCardSignature(n){
+  return [n.state, n.injured, n.locked > 0, Math.ceil(n.restT / 5), Math.round(n.fat / 5), n.task?.inc.uid,
+    state.incidents.map(i => i.uid + ':' + i.assigned + ':' + i.stage).join(',')].join('|');
+}
 function openCrewCard(n){
+  if(state.phase !== 'run') return;
   ccUid = n.i;
   renderCrewCard(n);
   get('crewCard').classList.add('show');
@@ -2504,10 +2676,11 @@ function closeCrewCard(){ ccUid = -1; get('crewCard').classList.remove('show'); 
 function renderCrewCard(n){
   const c = get('crewCard');
   if(!c) return;
+  ccSignature = crewCardSignature(n);
   const open = state.incidents.filter(i => !i.assigned);
   const busyN = n.state === 'busy' || n.state === 'working';
   let h = '<div class="cc-head">نفر #' + fa(n.i + 1) + ' — ' + n.role + '</div>';
-  const stat = n.injured ? 'مصدوم 🚑' : n.locked ? 'قفل: ' + n.lockWhy : busyN ? 'در حال مأموریت' : 'آزاد';
+  const stat = n.injured ? 'مصدوم 🚑' : n.locked ? 'قفل: ' + n.lockWhy : busyN ? 'در حال مأموریت' : n.restT > 0 ? 'در حال استراحت' : 'آزاد';
   h += '<div class="cc-status">' + stat + ' · خستگی ' + fa(n.fat) + '٪</div>';
   h += '<div class="cc-skills">' + Object.keys(SKILLS).map(k =>
       '<span class="' + (skillOf(n, k) >= 2 ? 'hi' : skillOf(n, k) >= 1 ? 'mid' : 'lo') + '">' + SKILLS[k].fa + ' ' + fa(skillOf(n, k)) + '</span>').join('') + '</div>';
@@ -2516,15 +2689,18 @@ function renderCrewCard(n){
     h += '<div class="cc-task">' + n.task.inc.d.icon + ' ' + n.task.inc.d.title + ' · <b data-ccp>' + fa(p) + '٪</b></div>';
     h += '<button id="ccRecall">فراخوانی (پیشرفت از دست می‌رود)</button>';
   } else if(n.injured){
-    h += '<div class="cc-note">فقط پزشک می‌تواند درمانش کند — یک بحران «خدمهٔ مصدوم» باز شده است.</div>';
+    h += '<div class="cc-note">از بحران «خدمهٔ مصدوم» درمان را انتخاب کن. پزشک شانس بهتری دارد؛ درمان هم‌تیمی و استراحت هم ممکن است.</div>';
+  } else if(n.restT > 0){
+    h += '<div class="cc-note">در حال استراحت — تا ' + fa(Math.ceil(n.restT)) + ' ثانیهٔ دیگر آماده می‌شود.</div>';
   } else if(n.locked){
     h += '<div class="cc-note">' + n.lockWhy + ' — تا رفعِ بحرانِ مربوطه در دسترس نیست.</div>';
   } else {
     if(!open.length) h += '<div class="cc-note">بحران بی‌پاسخی نیست.</div>';
     for(const inc of open.slice(0, 4)){
       const o = bestOptFor(inc, n);
-      const ch = o ? Math.round(clamp((1 - clamp((o.risk != null ? o.risk : .1) + (1 - skillOf(n, o.skill)) * .09 + n.fat / 340, .015, .8)) * 100, 0, 100)) : 0;
-      h += '<button class="cc-send" data-uid="' + inc.uid + '">' + inc.d.icon + ' ' + inc.d.title +
+      if(o) o._inc = inc;
+      const ch = o ? optChance(o, n) : 0;
+      h += '<button class="cc-send"' + (o ? '' : ' disabled') + ' data-uid="' + inc.uid + '">' + inc.d.icon + ' ' + inc.d.title +
            '<i>' + (o ? (o.label + ' · ' + fa(durOf(o, n)) + 's · ' + fa(ch) + '٪') : '—') + '</i></button>';
     }
     if(n.fat > 14) h += '<button id="ccRest">😴 استراحت ' + fa(24) + 's (خستگی −' + fa(26) + ')</button>';
@@ -2548,236 +2724,11 @@ function ccLiveUpdate(){
   const c = get('crewCard');
   if(!c || ccUid < 0) return;
   const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
+  if(n && ccSignature !== crewCardSignature(n)){
+    const focus = c.contains(document.activeElement) ? document.activeElement.id : '';
+    renderCrewCard(n);
+    if(focus) $(focus)?.focus({preventScroll:true});
   }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
-  const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
-  if(n && n.task && el){
-    const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
-    if(el.textContent !== txt) el.textContent = txt;
-  }
-}
-function ccLiveUpdate(){
-  const c = get('crewCard');
-  if(!c || ccUid < 0) return;
-  const n = npcs[ccUid];
   const el = c.querySelector ? c.querySelector('[data-ccp]') : null;
   if(n && n.task && el){
     const txt = fa(Math.round(clamp(n.task.t / n.task.dur, 0, 1) * 100)) + '٪';
@@ -2786,7 +2737,7 @@ function ccLiveUpdate(){
 }
 function bestOptFor(inc, n){
   const opts = (optList(inc) || []).filter(o => o && o.label && o.need > 0 && !optBlockMsg(Object.assign({}, o)));
-  if(!opts.length) return (optList(inc) || [])[0] || null;
+  if(!opts.length) return null;
   let best = opts[0], bs = -1e9;
   for(const o of opts){
     const s = skillOf(n, o.skill) * 10 - (o.dur || 30) * .06 - (o.energy || 0) * .8 + (o.roles && o.roles.indexOf(n.role) !== -1 ? 4 : 0);
@@ -2795,7 +2746,7 @@ function bestOptFor(inc, n){
   return best;
 }
 function restCrew(n){
-  if(!crewFree(n)) return;
+  if(state.phase !== 'run' || !crewFree(n)) return;
   n.restT = 24;
   n.state = 'rest'; n.stateT = 24;
   npcTo(n, ST.med, 2.2);
@@ -2841,7 +2792,7 @@ let npcs = [], claims = {};
 
 const skillOf = (n, k) => (n && n.sk && n.sk[k]) || 0;
 const crewById = i => (i == null || i < 0 || !npcs.length) ? null : (npcs[i] || null);
-function crewFree(n){ return !!n && !n.injured && !n.locked && n.state !== 'busy' && n.state !== 'working'; }
+function crewFree(n){ return !!n && !n.injured && !n.locked && !n.task && !n.restT && n.state !== 'busy' && n.state !== 'working'; }
 function pickFreeCrewId(exclude){
   const pool = [];
   for(const n of npcs) if(crewFree(n) && n.i !== exclude) pool.push(n.i);
@@ -2861,7 +2812,9 @@ function buildCrew(count){
   for(let i = 0; i < count; i++){
     const role = ROLES[i % ROLES.length];
     const def = ROLE_DEF[role];
-    const el = document.createElement('div');
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.setAttribute('aria-label', 'نفر ' + fa(i + 1) + '، ' + role);
     el.className = 'npc';
     el.innerHTML = '<i></i><b></b><span class="tool">' + def.tool + '</span><u class="fatbar"></u>';
     el.querySelector('b').style.background = NPC_COLORS[i % NPC_COLORS.length];
@@ -2877,13 +2830,18 @@ function buildCrew(count){
   npcs.forEach(n => n.el.addEventListener('click', ev2 => { ev2.stopPropagation(); openCrewCard(n); }));
   npcs.forEach(place);
 }
+let crewBox = { width:0, height:0 };
+function measureCrew(){
+  const r = $('iNpcs').getBoundingClientRect();
+  crewBox = { width:r.width, height:r.height };
+  npcs.forEach(place);
+}
 function place(n){
-  const box = $('iNpcs');
-  if(!box) return;
-  const r = box.getBoundingClientRect();
-  if(r.width < 10) return;
-  const ox = (n.i % 2 === 0 ? -7 : 7);
-  n.el.style.transform = 'translate(' + ((n.pos.x / 100 * r.width) + ox) + 'px,' + (n.pos.y / 100 * r.height) + 'px)';
+  if(crewBox.width < 10) return;
+  const ox = n.i % 2 === 0 ? -7 : 7;
+  const value = 'translate(' + (n.pos.x / 100 * crewBox.width + ox).toFixed(2) + 'px,' +
+    (n.pos.y / 100 * crewBox.height).toFixed(2) + 'px)';
+  if(n.el.style.transform !== value) n.el.style.transform = value;
 }
 function npcWalk(n, st, dur){
   if(n.claimKey){ delete claims[n.claimKey]; n.claimKey = null; }
@@ -2909,16 +2867,15 @@ function decide(n){
 function npcTick(dt){
   for(const n of npcs){
     if(n.locked > 0){
-      n.locked -= dt;
       const heldByInc = n.lockBy && state.incidents.some(i => i.uid === n.lockBy);
-      if(n.locked <= 0 && !heldByInc) unlockCrew(n);
+      n.locked = Math.max(heldByInc ? .01 : 0, n.locked - dt);
+      if(n.locked <= 0) unlockCrew(n);
     }
     if(n.path){
       n.path.t += dt;
       const k = Math.min(1, n.path.t / n.path.dur);
       n.pos.x = n.path.sx + (n.path.ex - n.path.sx) * k;
       n.pos.y = n.path.sy + (n.path.ey - n.path.sy) * k;
-      place(n);
       if(k >= 1){
         n.path = null;
         if(n.state === 'busy' && n.task){
@@ -2949,6 +2906,7 @@ function npcTick(dt){
       n.fat = Math.max(0, n.fat - 1.9 * dt);
       n.restT -= dt;
       if(n.restT <= 0){
+        n.restT = 0;
         n.state = 'idle'; n.stateT = 1 + rnd() * 2;
         toast('🙂', 'نفر ' + fa(n.i + 1) + ' سرحال‌تر برگشت', '#4ade80');
         renderDirty = true;
@@ -2969,7 +2927,8 @@ function npcTick(dt){
 }
 /* ---------- اعزام و انجام مأموریت ---------- */
 function startOption(inc, o, forced){
-  if(!inc || inc.assigned || !o || !o.label) return;
+  if(state.phase !== 'run' || !state.incidents.includes(inc) || inc.assigned || !o || !o.label) return;
+  o._inc = inc;
   if(o.need === 0){
     if(state.energy < (o.energy || 0)){ toast('⚠️','انرژی کافی نیست','#f87171'); sfx.deny(); return; }
     if(evaBlocked(o)){ toast('🚫','تشعشع بالاست — بیرون‌زدن ممنوع','#f87171'); sfx.deny(); return; }
@@ -3029,7 +2988,7 @@ function assignTask(inc, team, o){
   renderDirty = true;
 }
 function taskTick(dt){
-  for(const inc of state.incidents){
+  for(const inc of [...state.incidents]){
     const task = inc.task;
     if(!task) continue;
     if(!task.go) continue;
@@ -3053,15 +3012,17 @@ function completeTask(inc, task){
 }
 function abortTask(task, soft){
   if(!task || !task.crew) return;
+  task.inc.task = null; task.inc.assigned = false; task.inc.swap = false;
+  renderDirty = true;
   task.crew.forEach(n => {
-    n.task = null;
+    n.task = null; n.path = null;
     n.state = 'idle'; n.stateT = 1 + rnd() * 2;
     n.el.classList.remove('work', 'fix');
     if(soft) n.fat = clamp(n.fat + 5, 0, 100);
   });
 }
 function recallIncident(inc){
-  if(!inc) return;
+  if(state.phase !== 'run' || !inc) return;
   if(inc.task) abortTask(inc.task, true);
   inc.task = null; inc.assigned = false; inc.swap = false;
   inc.escAt = Math.min(inc.escAt, state.time + 12);
@@ -3070,16 +3031,18 @@ function recallIncident(inc){
   renderDirty = true;
 }
 function swapCrew(inc, n){
-  if(!inc || !inc.task || !crewFree(n)) return;
-  abortTask(inc.task, true);
-  const o = inc.task.o;
-  inc.task = null; inc.assigned = false;
-  assignTask(inc, [n], o);
+  if(state.phase !== 'run' || !inc || !inc.task || !crewFree(n)) return;
+  const task = inc.task, o = task.o;
+  const team = [n, ...task.crew.slice(1)];
+  abortTask(task, true);
+  assignTask(inc, team, { ...o, energy:0, o2:0 });
   toast('🔄', 'مأموریت به نفر #' + fa(n.i + 1) + ' منتقل شد — کار از اول', '#a78bfa');
 }
 function npcTo(n, st, dur){ npcWalk(n, st, dur); n.stateT = 0; }
 function npcReact(mode){
-  if(mode === 'window') npcs.forEach((n, i) => npcTo(n, GATHER_WINDOW[i % GATHER_WINDOW.length], 1.3 + (i % 3) * .2));
+  if(mode === 'window') npcs.forEach((n, i) => {
+    if(crewFree(n)) npcTo(n, GATHER_WINDOW[i % GATHER_WINDOW.length], 1.3 + (i % 3) * .2);
+  });
 }
 let npcAlertT = null;
 function npcAlert(dur){
@@ -3089,13 +3052,18 @@ function npcAlert(dur){
   clearTimeout(npcAlertT);
   npcAlertT = setTimeout(() => s.classList.remove('on'), dur || 2500);
 }
-window.addEventListener('resize', () => npcs.forEach(place));
+window.addEventListener('resize', measureCrew);
+if('ResizeObserver' in window) new ResizeObserver(measureCrew).observe($('iNpcs'));
 
 /* ============================================================
    منطق بازی
    ============================================================ */
 function thrust(){
-  if(state.phase !== 'run') return;
+  if(state.phase !== 'run' || state.cooldown > 0) return;
+  if(settings.guard && state.temperature + heatPerThrust(Math.min(MAX_SPEED, state.speed + SPEED_GAIN)) * (1 + modOf('heat')) >= 78){
+    if(state.failCd <= 0){ state.failCd = 2; toast('🛡', 'محافظ موتور: کمی صبر کن تا موتور خنک شود', '#67e8f9'); }
+    return;
+  }
   const cost = Math.max(1, Math.round(costOf(state.temperature) * (1 + modOf('costMul'))));
   if(state.energy < cost){
     if(state.failCd <= 0){ state.failCd = 1.1; toast('⚠️','انرژی ناکافی!','#f87171'); sfx.fail(); }
@@ -3156,11 +3124,11 @@ function updateHUD(){
   setText('enVal', fa(Math.floor(Math.max(0, state.energy))));
   setText('distVal', fa(Math.ceil(Math.max(0, state.distance))) + ' کیلومتر');
   setText('distSubVal', 'زمان ' + clockStr(state.time) + ' · ' + (m.drift > .4 ? '⚠ ' + fa1(m.drift) + ' km/s عقب' : 'حرکت خودکار ۱ km/s'));
-  const o2r = state.o2Rate * (1 + (m.o2 || 0));
-  setText('o2SubVal', 'مصرف ' + fa1(o2r * 100) + '٪/دقیقه · ' + fa(Math.round(Math.max(0, state.oxygen) / Math.max(.001, o2r) / 60)) + ' دقیقه');
+  const o2r = state.o2Rate * Math.max(0, 1 + (m.o2 || 0));
+  setText('o2SubVal', 'مصرف ' + fa1(o2r * 60) + '٪/دقیقه · ' + fa(Math.round(Math.max(0, state.oxygen) / Math.max(.001, o2r) / 60)) + ' دقیقه');
   setBar('o2Bar', Math.max(0, state.oxygen));
   setBar('enBar', Math.max(0, state.energy));
-  setBar('distBar', (1 - state.distance / TOTAL) * 100);
+  setBar('distBar', progress01() * 100);
   setBar('tempBar', t);
   setText('tempVal', fa(Math.round(t)) + '°');
   setText('enSubVal', 'بازیابی ' + fa1(Math.max(0, 1.3 * (1 + (m.regen || 0)))) + '/ث · هزینهٔ شتاب ' + fa(need));
@@ -3197,11 +3165,15 @@ function updateHUD(){
 }
 
 function end(win){
+  if(state.phase === 'end') return;
   state.phase = 'end';
+  release();
   ambOff();
+  document.body.classList.add('simulation-stopped');
+  saveResult(win);
   const panel = $('endPanel');
   panel.className = 'panel ' + (win ? 'win' : 'lose');
-  const rare = state.hist.filter(k => EV[k] && (EV[k].rare || EV[k].kind === 'rare')).length;
+  const rare = state.rareCount || 0;
   $('endTitle').textContent = win ? 'مأموریت موفق!' : 'اتمام اکسیژن!';
   $('endSub').innerHTML = (win
     ? 'به ایستگاه آلفا رسیدی — خدمهٔ ایستگاه از دیدن تو خوشحال‌اند! 🎉'
@@ -3214,6 +3186,7 @@ function end(win){
     '<span>🌌 نادر: <b>' + fa(rare) + '</b></span>' +
     (state.salvaged ? '<span>🎁 غنیمت: <b>' + fa(state.salvaged) + '</b></span>' : '') +
     (state.contact === 1 ? '<span>👽 تماس: <b>دوستانه</b></span>' : state.contact === -1 ? '<span>👽 تماس: <b>بد</b></span>' : '') +
+    '<span>📦 پشتیبانی: <b>' + fa(state.supplies) + '</b></span>' +
     '<span>🎯 بحران کل: <b>' + fa(state.events) + '</b></span>' +
     '<span>🎲 Run <b>#' + state.seed + '</b></span>' +
     '</div>';
@@ -3222,15 +3195,154 @@ function end(win){
   $('rEvents').textContent = fa(state.events);
   $('rO2').textContent = fa(Math.round(state.oxygen)) + '٪';
   $('endOverlay').classList.remove('hidden');
+  $('retryBtn').focus();
+  updateHUD(); updateFlight();
   btn.classList.remove('held');
   if(win) sfx.win(); else sfx.lose();
 }
 
+/* ---------- Mission control: small persistent profile, not a save-game ---------- */
+function applySettings(){
+  muted = settings.muted;
+  document.body.classList.toggle('low-motion', settings.motion);
+  $('guardBtn').setAttribute('aria-pressed', settings.guard);
+  $('guardBtn').textContent = settings.guard ? '🛡 محافظ روشن' : '🛡 محافظ خاموش';
+  $('motionBtn').setAttribute('aria-pressed', settings.motion);
+  for(const id of ['muteBtn', 'pauseMuteBtn']) $(id).setAttribute('aria-pressed', muted);
+  $('muteBtn').textContent = muted ? '🔇' : '🔊';
+  $('muteBtn').setAttribute('aria-label', muted ? 'روشن کردن صدا' : 'بی‌صدا کردن');
+  document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === settings.mode));
+  if(muted) ambOff(); else if(state.phase === 'run') ambOn();
+}
+function validRecord(mode){
+  const r = readStore('-records')[mode];
+  return r && Number.isFinite(r.score) && r.score >= 0 ? r : null;
+}
+function renderRecords(){
+  const r = validRecord(settings.mode);
+  $('bestRecord').textContent = r ? 'بهترین امتیاز این مسیر: ' + fa(r.score) : 'اولین رکورد این مسیر را ثبت کن.';
+}
+function saveResult(win){
+  const score = Math.max(0, Math.round(progress01() * 1000 + (win ? 1000 : 0) + state.oxygen * 5 + state.resolved * 35 - state.injuries * 30));
+  const old = validRecord(state.mode);
+  const record = !old || score > old.score;
+  if(record){
+    const records = {};
+    for(const mode of ['quick', 'classic']){ const r = validRecord(mode); if(r) records[mode] = r; }
+    records[state.mode] = {score, win, time:Math.round(state.time)};
+    writeStore('-records', records);
+  }
+  $('scoreReport').textContent = (record ? '✦ رکورد جدید! ' : '') + 'امتیاز ' + fa(score) + ' · ' + (state.mode === 'quick' ? 'مدار کوتاه' : 'سفر کامل');
+}
+let beforePause = 'run', previousFocus = null;
+function pauseGame(){
+  if(state.phase !== 'run' && state.phase !== 'countdown') return;
+  beforePause = state.phase;
+  previousFocus = document.activeElement;
+  release(); closeCrewCard(); ambOff();
+  state.phase = 'paused';
+  document.body.classList.add('simulation-stopped');
+  $('flight').inert = true;
+  $('pauseOverlay').classList.remove('hidden');
+  updateSupply();
+  $('resumeBtn').focus();
+}
+function resumeGame(){
+  if(state.phase !== 'paused' || document.hidden) return;
+  state.phase = beforePause;
+  $('pauseOverlay').classList.add('hidden');
+  $('flight').inert = false;
+  document.body.classList.remove('simulation-stopped');
+  accumulator = 0; last = performance.now();
+  if(state.phase === 'run'){ ac(); ambOn(); }
+  if(previousFocus?.isConnected) previousFocus.focus({preventScroll:true});
+  scheduleFrame();
+}
+function updateSupply(){
+  const stock = state.supplyStock || 0;
+  if($('supplyBtn').hidden !== !stock) $('supplyBtn').hidden = !stock;
+  if($('routeStatus').hidden !== !!stock) $('routeStatus').hidden = !!stock;
+  setText('supplyBtn', '🎁 پشتیبانی (' + fa(stock) + ')');
+  if($('supplyChoices').hidden !== !stock) $('supplyChoices').hidden = !stock;
+  setText('supplyLabel', fa(stock) + ' بسته آماده است — انتخاب با توست');
+}
+function missionTick(){
+  const reached = Math.min(2, Math.floor(progress01() * 3));
+  while(state.sector < reached){
+    state.sector++;
+    state.supplyStock++;
+    toast('📦', 'نقطهٔ پشتیبانی! از بالای صفحه بستهٔ دلخواهت را انتخاب کن.', '#4ade80');
+    sfx.signal();
+  }
+}
+function claimSupply(kind){
+  if(!['run', 'paused'].includes(state.phase) || !(state.supplyStock > 0)) return;
+  if(!['oxygen', 'energy', 'repair'].includes(kind)) return;
+  state.supplyStock--; state.supplies++;
+  if(kind === 'oxygen') state.oxygen = Math.min(100, state.oxygen + 8);
+  if(kind === 'energy') state.energy = Math.min(100, state.energy + 30);
+  if(kind === 'repair'){
+    for(const key of SYSKEYS) state.sys[key] = Math.min(100, state.sys[key] + 18);
+    state.damage = Math.max(0, state.damage - 18);
+    state.temperature = Math.max(0, state.temperature - 20);
+  }
+  state.modsDirty = true; renderDirty = true;
+  updateSupply(); updateHUD();
+  toast('✅', 'بستهٔ پشتیبانی دریافت شد', '#4ade80');
+}
+function updateFlight(){
+  const p = progress01();
+  setText('sectorName', ['خروج از مدار', 'گذرگاه عمیق', 'تقرب به آلفا'][Math.min(2, Math.floor(p * 3))]);
+  setText('routeStatus', fa(Math.round(p * 100)) + '٪ · آلفا');
+  const fill = $('routeFill'), value = 'scaleX(' + p.toFixed(3) + ')';
+  if(fill.style.transform !== value) fill.style.transform = value;
+  setCls('routeOne', 'done', state.sector >= 1);
+  setCls('routeTwo', 'done', state.sector >= 2);
+  $('pauseBtn').disabled = !['run', 'countdown'].includes(state.phase);
+  updateSupply();
+}
+$('pauseBtn').addEventListener('click', pauseGame);
+$('resumeBtn').addEventListener('click', resumeGame);
+$('supplyBtn').addEventListener('click', pauseGame);
+$('guardBtn').addEventListener('click', () => { settings.guard = !settings.guard; saveSettings(); applySettings(); });
+$('motionBtn').addEventListener('click', () => { settings.motion = !settings.motion; saveSettings(); applySettings(); });
+$('pauseMuteBtn').addEventListener('click', () => { settings.muted = !settings.muted; saveSettings(); applySettings(); });
+document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => {
+  settings.mode = b.dataset.mode; saveSettings(); applySettings(); renderRecords();
+}));
+document.querySelectorAll('[data-supply]').forEach(b => b.addEventListener('click', () => claimSupply(b.dataset.supply)));
+$('homeBtn').addEventListener('click', () => {
+  state.phase = 'start';
+  $('endOverlay').classList.add('hidden'); $('startOverlay').classList.remove('hidden');
+  renderRecords(); $('startBtn').focus();
+});
+// Keep keyboard focus inside the visible modal, including dynamically opened help.
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Tab') return;
+  const overlay = document.querySelector('.overlay:not(.hidden)');
+  if(!overlay) return;
+  const nodes = [...overlay.querySelectorAll('button:not(:disabled), summary, [tabindex="0"]')].filter(el => el.getClientRects().length);
+  if(!nodes.length) return;
+  const first = nodes[0], lastNode = nodes[nodes.length - 1];
+  if(!overlay.contains(document.activeElement) || (e.shiftKey && document.activeElement === first)){
+    e.preventDefault(); (e.shiftKey ? lastNode : first).focus();
+  } else if(!e.shiftKey && document.activeElement === lastNode){ e.preventDefault(); first.focus(); }
+});
+
 function resetGame(){
+  ambOff();
+  release();
+  document.body.classList.remove('simulation-stopped');
+  $('pauseOverlay').classList.add('hidden');
+  $('flight').inert = false;
+  toastQ = []; toastT = 0;
+  $('toast').classList.remove('show', 'big');
+  clearTimeout(npcAlertT); $('iStrip').classList.remove('on');
+  viewport.classList.remove('shake');
   state.seed = (window.__loSeed != null) ? (window.__loSeed | 0) : ((Date.now() ^ (performance.now() * 1000)) | 0);
   seedRng(state.seed);
   Object.assign(state, {
-    phase:'countdown', oxygen:100, energy:100, distance:TOTAL, time:0,
+    phase:'countdown', oxygen:100, energy:100, distance:TOTAL, total:TOTAL, time:0,
     cooldown:0, holding:false, thrustAnim:0, speed:0,
     temperature:0, damage:0,
     thrusts:0, events:0, failCd:0, nextEvent:12,
@@ -3239,42 +3351,66 @@ function resetGame(){
     incidents:[], queue:[], uid:1, hist:[], histCat:[], rareT:0, blindT:0, hintT:0,
     resolved:0, escalated:0, ignored:0, injuries:0, salvaged:0, blocked:0, lockedN:0,
     sys:{ mech:100, elec:100, life:100, nav:100, hull:100 },
-    buffs:[], fxt:[], modsDirty:true, contact:0,
+    buffs:[], fxt:[], modsDirty:true, contact:0, neglect:0, log:[], rareCount:0,
+    sector:0, supplyStock:0, supplies:0, _acd:0,
     npcTick:2, lowO2Beep:0, heatBeep:0,
     o2warn1:false, o2warn2:false, heatWarn1:false, heatWarn2:false, shakeT:0
   });
+  state.mode = settings.mode;
+  state.total = state.mode === 'quick' ? 3000 : TOTAL;
+  state.distance = state.total;
   for(const k of EVORDER) EV[k].uses = 0;
   state.o2Rate = O2_DRAIN * (0.9 + state.crew * 0.042);
   buildCrew(state.crew);
   renderIncBar(); renderSysStrip();
   sigCache = ''; sysSig = '';
-  cdT = 3.2; lastCd = 99;
+  cdT = 3; lastCd = 99;
   $('endOverlay').classList.add('hidden');
   $('startOverlay').classList.add('hidden');
+  btn.focus({preventScroll:true});
   closeCrewCard();
   computeMods();
-  updateHUD();
+  modsT = 0; uiT = 0; hudT = 0; accumulator = 0; last = performance.now();
+  updateHUD(); updateFlight();
+  scheduleFrame();
 }
 function startGame(){ ac(); resetGame(); }
 
 /* ============================================================
    حلقهٔ اصلی
    ============================================================ */
-let uiT = 0;
+let uiT = 0, hudT = 0, modsT = 0, accumulator = 0, rafId = null;
+const STEP = 1 / 60;
+function scheduleFrame(){
+  if(rafId === null && !document.hidden) rafId = requestAnimationFrame(frame);
+}
 function frame(now){
-  const dt = Math.min(.05, (now - last) / 1000);
+  rafId = null;
+  if(state.phase === 'paused' || document.hidden || state.phase === 'end') return;
+  const elapsed = Math.max(0, Math.min(.25, (now - last) / 1000));
+  accumulator += elapsed;
   last = now;
+  while(accumulator >= STEP){
+    step(STEP); accumulator -= STEP;
+    if(state.phase === 'end') break;
+  }
+  npcs.forEach(place);
+  hudT -= elapsed;
+  if(hudT <= 0){ hudT = .1; updateHUD(); updateFlight(); }
+  scheduleFrame();
+}
+function step(dt){
+  if(state.phase === 'paused' || state.phase === 'end') return;
 
   state.speed = Math.max(0, state.speed - state.speed * 1.2 * dt);
   if(state.thrustAnim > 0) state.thrustAnim = Math.max(0, state.thrustAnim - dt * 4);
   if(state.shakeT > 0){ state.shakeT -= dt; if(state.shakeT <= 0) viewport.classList.remove('shake'); }
-  state.npcTick -= dt;
-  if(state.npcTick <= 0){ state.npcTick = 0.15; npcTick(0.15); }
+  npcTick(dt);
 
   if(state.phase === 'countdown'){
     cdT -= dt;
     const c = Math.ceil(cdT);
-    if(c !== lastCd && c > 0){ lastCd = c; bigToast(['','۳','۲','۱'][c]); tone(520,.12,'triangle',.08); }
+    if(c !== lastCd && c > 0){ lastCd = c; bigToast(fa(c), 30); tone(520,.12,'triangle',.08); }
     if(cdT <= 0){
       state.phase = 'run'; ambOn(); sfx.go();
       toast('🚀','مأموریت آغاز شد — ' + fa(state.crew) + ' خدمه · اکسیژن تا ' + fa(Math.round(100 / state.o2Rate / 60)) + ' دقیقه','#4ade80');
@@ -3284,7 +3420,8 @@ function frame(now){
 
   if(state.phase === 'run'){
     state.time += dt;
-    if(state.modsDirty) computeMods();
+    modsT -= dt;
+    if(state.modsDirty || modsT <= 0){ computeMods(); modsT = .25; }
     const m = state.mods;
     /* --- زمان‌سنج‌های رویداد --- */
     if(state.blindT > 0) state.blindT = Math.max(0, state.blindT - dt);
@@ -3299,7 +3436,7 @@ function frame(now){
     }
     /* --- منابع --- */
     state.distance = Math.max(0, state.distance - 1 * dt + (m.drift || 0) * dt);
-    state.oxygen = Math.max(0, state.oxygen - state.o2Rate * (1 + m.o2) * dt);
+    state.oxygen = clamp(state.oxygen - state.o2Rate * Math.max(0, 1 + m.o2) * dt, 0, 100);
     state.energy = Math.min(100, state.energy + REGEN * clamp(1 + m.regen, 0, 2.1) * dt);
     /* --- حرارت و زیرسیستم‌ها --- */
     state.temperature = Math.max(0, state.temperature - Math.max(.2, COOLING * (1 + m.cool)) * dt);
@@ -3330,30 +3467,7 @@ function frame(now){
     }
     /* --- قفل‌های خدمه (نمایشی) --- */
     state.lockedN = npcs.filter(n => n.locked > 0 || n.injured).length;
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
-    if(state.auto) autoTick();
+    if(state.auto) autoTick(dt);
     /* --- UI با نرخ کم --- */
     uiT -= dt;
     if(uiT <= 0){
@@ -3363,13 +3477,15 @@ function frame(now){
       renderSysStrip();
       ccLiveUpdate();
     }
+    missionTick();
     if(state.oxygen <= 0) end(false);
     else if(state.distance <= 0) end(true);
   }
 
-  if(toastT > 0){ toastT -= dt; if(toastT <= 0 && toastQ.length) flushToast(); }
-  updateHUD();
-  requestAnimationFrame(frame);
+  if(toastT > 0){
+    toastT -= dt;
+    if(toastT <= 0){ $('toast').classList.remove('show', 'big'); if(toastQ.length) flushToast(); }
+  }
 }
 
 function incidentsTick(dt){
@@ -3401,29 +3517,45 @@ btn.addEventListener('pointerup', release);
 btn.addEventListener('pointerleave', release);
 btn.addEventListener('pointercancel', release);
 btn.addEventListener('contextmenu', e => e.preventDefault());
+btn.addEventListener('click', e => { if(e.detail === 0) thrust(); });
 window.addEventListener('keydown', e => {
+  const interactive = e.target.closest?.('button, input, select, textarea, summary, [contenteditable]');
+  if(e.code === 'Escape' || (e.code === 'KeyP' && !e.target.closest?.('input, select, textarea, [contenteditable]'))){
+    e.preventDefault();
+    if(e.repeat) return;
+    if(state.phase === 'paused') resumeGame();
+    else if(ccUid >= 0) closeCrewCard();
+    else pauseGame();
+    return;
+  }
+  if(interactive && e.target !== btn) return;
   if(e.code === 'Space'){
     e.preventDefault();
+    if(e.repeat) return;
     if(state.phase === 'run') press();
     else if(state.phase === 'start') startGame();
-    else if(state.phase === 'end') resetGame();
   }
+  if(e.repeat) return;
   if(e.code === 'Enter' || e.code === 'KeyR'){
     if(state.phase === 'start') startGame();
     else if(state.phase === 'end') resetGame();
   }
-  if(state.phase === 'run' && e.code === 'Escape') closeCrewCard();
   if(state.phase === 'run' && e.code === 'Digit1') autoAssignTop('safe');
   if(state.phase === 'run' && e.code === 'Digit2') autoAssignTop('fast');
   if(state.phase === 'run' && e.code === 'Digit3') autoAssignTop('risky');
 });
 window.addEventListener('keyup', e => { if(e.code === 'Space') release(); });
-window.addEventListener('blur', release);
+window.addEventListener('pointerup', release);
+window.addEventListener('blur', () => { release(); pauseGame(); });
+document.addEventListener('visibilitychange', () => {
+  if(document.hidden){ release(); pauseGame(); }
+  else if(state.phase !== 'paused'){ last = performance.now(); accumulator = 0; scheduleFrame(); }
+});
 /* سیاست خودکار — فقط برای آزمون state.auto (رفتار بازیکن شبیه‌سازی‌شده) */
-function autoTick(){
+function autoTick(dt){
   const pol = state.policy || 'greedy';
   if(pol !== 'passive'){
-    state._acd = (state._acd || 0) - 1 / 60;
+    state._acd = (state._acd || 0) - dt;
     if(state.energy > 34 && state.temperature < 66 && state.cooldown <= 0 && state._acd <= 0 && !hasFx('derate')){
       thrust(); state._acd = 3.1;
     }
@@ -3459,7 +3591,8 @@ function autoTick(){
 }
 /* میان‌بر: ۱/۲/۳ = اعزام فوریِ امن‌ترین/سریع‌ترین/ریسکی‌ترین گزینه به فوری‌ترین بحران */
 function autoAssignTop(style){
-  const inc = sortedIncs().find(i => !i.assigned);
+  if(state.phase !== 'run') return;
+  const inc = state.incidents.filter(i => !i.assigned).sort((a,b) => urgency(b) - urgency(a))[0];
   if(!inc){ toast('🛡','بحران بی‌پاسخی نیست','#94a3b8'); return; }
   const opts = optList(inc).filter(o => o && o.label);
   const o = opts.find(x => x.style === style) || opts[0];
@@ -3468,14 +3601,16 @@ function autoAssignTop(style){
 $('startBtn').addEventListener('click', startGame);
 $('retryBtn').addEventListener('click', () => { ac(); resetGame(); });
 $('muteBtn').addEventListener('click', () => {
-  muted = !muted;
-  $('muteBtn').textContent = muted ? '🔇' : '🔊';
-  if(muted) ambOff(); else if(state.phase === 'run') ambOn();
+  settings.muted = !settings.muted; saveSettings(); applySettings();
 });
 get('incBar').addEventListener('click', e => { if(e.target.id === 'incBar') closeCrewCard(); });
 
 buildCrew(4);   // پیش‌نمایش؛ با شروع بازی بازسازی می‌شود
-requestAnimationFrame(frame);
+measureCrew();
+applySettings();
+renderRecords();
+updateFlight();
+scheduleFrame();
 
 /* قلاب دیباگ/خودکارآزمون (فقط با ?debug در آدرس) */
 if(/[?&](debug|auto)/.test(location.search)){
@@ -3484,6 +3619,8 @@ if(/[?&](debug|auto)/.test(location.search)){
     finishOption, escalate, renderIncBar, renderSysStrip, openCrewCard, renderCrewCard, sortedIncs, expireIncident, incidentsTick, taskTick, directorTick, closeIncident, startGame, setPolicy: p => { state.policy = p; }, ST, FX, SKILLS, ROOM_LABEL, CATS, EFFKEYS_OK,
     npcsRef: () => npcs, mods: () => state.mods, weightOf, trySpawn, computeMods,
     html: () => ({ inc: get('incBar').innerHTML, crew: get('crewCard').innerHTML, sys: get('sysStrip').innerHTML }),
+    step, frame, settings, pauseGame, resumeGame, missionTick, claimSupply, crewFree,
+    stageDesc, failureChance, optChance, injure, lockCrew, restCrew, recallIncident, swapCrew, npcReact, abortTask, updateHUD,
     CATS, SYS, runAuto: () => { state.auto = true; }
   };
   window.__lo.setSeed = s => { state.seed = s | 0; seedRng(s | 0); };
@@ -3496,16 +3633,18 @@ if(/[?&](debug|auto)/.test(location.search)){
   if(!('serviceWorker' in navigator)) return;
   function showUpdateBar(){
     if(document.getElementById('updBar')) return;
-    var b = document.createElement('div');
+    var b = document.createElement('button');
     b.id = 'updBar';
     b.style.cssText = 'position:fixed;bottom:14px;right:14px;left:14px;z-index:99;max-width:430px;margin:0 auto;text-align:center;font:600 13px system-ui,Tahoma,sans-serif;color:#06121a;background:linear-gradient(90deg,#22d3ee,#67e8f9);border-radius:12px;padding:10px 14px;box-shadow:0 0 24px rgba(34,211,238,.5);cursor:pointer;direction:rtl';
     b.textContent = '🔄 نسخهٔ جدید بازی آماده است — برای به‌روزرسانی ضربه بزن';
-    b.addEventListener('click', function(){ window.location.reload(); });
+    b.addEventListener('click', function(){
+      if(window.confirm('به‌روزرسانی شود؟ سفر جاری از نو شروع می‌شود؛ رکوردها محفوظ می‌مانند.')) window.location.reload();
+    });
     document.body.appendChild(b);
   }
   window.addEventListener('load', function(){
     navigator.serviceWorker.register('sw.js').then(function(reg){
-      function check(){ try{ reg.update(); }catch(e){} }
+      function check(){ reg.update().catch(function(){}); }
       setInterval(check, 60*60*1000);
       document.addEventListener('visibilitychange', function(){ if(!document.hidden) check(); });
       if(reg.waiting) showUpdateBar();
